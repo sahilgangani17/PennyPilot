@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
             label: 'Home'
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.analytics_outlined),
+            icon: Icon(Icons.bar_chart),
             label: 'Analysis'
           ),
           BottomNavigationBarItem(
@@ -87,8 +87,8 @@ class _HomePageState extends State<HomePage> {
             label: 'Profile'
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz),
-            label: 'More'
+            icon: Icon(Icons.settings),
+            label: 'Settings'
           ),
         ],
       ),
