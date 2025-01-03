@@ -1,55 +1,101 @@
-
+main
 import 'package:flutter/material.dart';
+import 'dashboard.dart'; // Dashboard page
+// import 'profilepage.dart'; // Profile page
+// import 'analysispage.dart'; // Analysis page
+// import 'settings_page.dart'; // Settings page
 
 class HomePage extends StatefulWidget {
-  const HomePage({
-    super.key
-  });
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
 
-  List<String> category = [
-    'Other',
-    'Food and Dining',
-    'Shopping',
-    'Travelling',
-    'Entertainment',
-    'Medical',
-    'Education',
-    'Bills and Utilities',
-    'Investments',
-    'Rent',
-    'Taxes',
-    'Insurance',
-    'Gifts and Donation'
+  final List<Widget> _pages = [
+    const Dashboard(),       // Home now points to Dashboard
+    // const AnalysisPage(),    // Analysis page
+    // const ProfilePage(),     // Profile page
+    // const SettingsPage(),    // Settings page
   ];
- 
-  TextEditingController amountController = TextEditingController();
-  TextEditingController categoryController = TextEditingController();
-  
+
+  void _onItemTapped(int index) {
+    if (index != 2) { // Ignore the middle "invisible" item
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Penny Pilot'),
+        backgroundColor: Colors.blue,
+      ),
+      body: _pages[_selectedIndex],  // Show selected page
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        iconSize: 32,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.house),
+            label: 'Home',  // This now links to the Dashboard
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bar_chart),
+            label: 'Analysis',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.abc, color: Colors.transparent),
+            label: '', // Invisible middle item
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _openNewTransaction();
+        },
+        tooltip: 'Add Transaction',
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+
   void _openNewTransaction() {
     showDialog(
-      context: context, 
+      context: context,
       builder: (context) => AlertDialog(
-        title: Text('New Expense'),
+        title: const Text('New Expense'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              controller: amountController,
-              decoration: InputDecoration(
+              controller: TextEditingController(),
+              decoration: const InputDecoration(
                 icon: Icon(Icons.currency_rupee_sharp),
                 hintText: '0',
-                labelText: 'Amount'
+                labelText: 'Amount',
               ),
             ),
             TextField(
-              controller: categoryController,
-              decoration: InputDecoration(
+              controller: TextEditingController(),
+              decoration: const InputDecoration(
                 icon: Icon(Icons.more_horiz),
                 hintText: 'Others',
                 labelText: 'Category',
@@ -57,44 +103,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-      )
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        iconSize: 32,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.house),
-            label: 'Home'
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bar_chart),
-            label: 'Analysis'
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.abc,color: Colors.transparent),
-            label: ''
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile'
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings'
-          ),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: _openNewTransaction,
-        tooltip: 'Add Transaction',
-        child: const Icon(Icons.add),
       ),
     );
   }
