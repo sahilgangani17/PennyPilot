@@ -1,4 +1,3 @@
-main
 import 'package:flutter/material.dart';
 import 'dashboard.dart'; // Dashboard page
 // import 'profilepage.dart'; // Profile page
@@ -33,10 +32,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Penny Pilot'),
-        backgroundColor: Colors.blue,
-      ),
       body: _pages[_selectedIndex],  // Show selected page
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -68,9 +63,7 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _openNewTransaction();
-        },
+        onPressed: _openNewTransaction,
         tooltip: 'Add Transaction',
         child: const Icon(Icons.add),
       ),
