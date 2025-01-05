@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:penny_pilot/widgets/NewTransaction.dart';
 import 'dashboard.dart'; // Dashboard page
 // import 'profilepage.dart'; // Profile page
 // import 'analysispage.dart'; // Analysis page
@@ -74,28 +75,7 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('New Expense'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: TextEditingController(),
-              decoration: const InputDecoration(
-                icon: Icon(Icons.currency_rupee_sharp),
-                hintText: '0',
-                labelText: 'Amount',
-              ),
-            ),
-            TextField(
-              controller: TextEditingController(),
-              decoration: const InputDecoration(
-                icon: Icon(Icons.more_horiz),
-                hintText: 'Others',
-                labelText: 'Category',
-              ),
-            ),
-          ],
-        ),
+        content: AddNewTransaction(),
       ),
     );
   }
