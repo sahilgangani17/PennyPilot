@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:penny_pilot/pages/homepage.dart'; // Ensure this import is correct
+import 'package:penny_pilot/pages/AllPages.dart';
+import 'package:penny_pilot/pages/login.dart';
 
 class AuthService {
   // Function to create a new user
@@ -10,12 +11,29 @@ class AuthService {
         email: data['email'],
         password: data['password'],
       );
-      
-      // Navigate to HomePage and remove all previous routes
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-        (route) => false,  // This will remove all previous routes
+
+      // Show a success dialog before navigating to Login
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Account Created"),
+            content: const Text("Your account has been created successfully."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Login()),
+                    (route) => false, // Remove all previous routes
+                  );
+                },
+                child: const Text("OK"),
+              ),
+            ],
+          );
+        },
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -24,8 +42,8 @@ class AuthService {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text("Sign Up Failed"),
-              content: Text("The account already exists for that email."),
+              title: const Text("Sign Up Failed"),
+              content: const Text("The account already exists for that email."),
             );
           },
         );
@@ -35,7 +53,7 @@ class AuthService {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text("Sign Up Failed"),
+              title: const Text("Sign Up Failed"),
               content: Text(e.message ?? 'An error occurred.'),
             );
           },
@@ -51,19 +69,18 @@ class AuthService {
         email: data['email'],
         password: data['password'],
       );
-      
-      // Navigate to HomePage and remove all previous routes
+
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-        (route) => false,  // This will remove all previous routes
+        MaterialPageRoute(builder: (context) =>  HomePage()),
+        (route) => false, 
       );
     } on FirebaseAuthException catch (e) {
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Login Error"),
+            title: const Text("Login Error"),
             content: Text(e.message ?? 'An error occurred.'),
           );
         },
