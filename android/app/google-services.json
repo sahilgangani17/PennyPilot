@@ -1,0 +1,134 @@
+{
+  "project_info": {
+    "project_number": "852999262790",
+    "project_id": "penny-piolet-mjf0fo",
+    "storage_bucket": "penny-piolet-mjf0fo.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852999262790:android:b23a649c491b107ada3047",
+        "android_client_info": {
+          "package_name": "com.example.penny_pilot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852999262790-k744ol1ljqq5n38d7se1ffqfq7jip3ac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApjCFBKNtb6bjoARcIZjObzf2fuB11BqI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852999262790-k744ol1ljqq5n38d7se1ffqfq7jip3ac.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "852999262790-h1r4sefurvmntjfihgcpacrjpeus8725.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.pennypilot"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852999262790:android:ed5642ce4498d79eda3047",
+        "android_client_info": {
+          "package_name": "com.mycompany.pennypilot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852999262790-ui1h816qogip2esnu9a4n2hh0dfpocev.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mycompany.pennypilot",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "852999262790-k744ol1ljqq5n38d7se1ffqfq7jip3ac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApjCFBKNtb6bjoARcIZjObzf2fuB11BqI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852999262790-k744ol1ljqq5n38d7se1ffqfq7jip3ac.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "852999262790-h1r4sefurvmntjfihgcpacrjpeus8725.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.pennypilot"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852999262790:android:7b9b5ee444483355da3047",
+        "android_client_info": {
+          "package_name": "com.mycompany.pennypiolet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852999262790-2khl51v8jmg26pb8lnnpkm8cj336imiv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mycompany.pennypiolet",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "852999262790-k744ol1ljqq5n38d7se1ffqfq7jip3ac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApjCFBKNtb6bjoARcIZjObzf2fuB11BqI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852999262790-k744ol1ljqq5n38d7se1ffqfq7jip3ac.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "852999262790-h1r4sefurvmntjfihgcpacrjpeus8725.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.pennypilot"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
