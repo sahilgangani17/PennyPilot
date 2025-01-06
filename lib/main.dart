@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Penny Pilot',
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
       ),
       debugShowCheckedModeBanner: false,
       home: const AuthWrapper(),
