@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:penny_pilot/utils/appvalidate.dart';
 import 'package:penny_pilot/utils/icon_list.dart';
 
 class AddNewTransaction extends StatefulWidget {
@@ -12,9 +13,30 @@ class _AddNewTransactionState extends State<AddNewTransaction> {
   var type = 'Expenses';
   var category = "others";
 
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  var isLoader = false;
+  var appvalidate = Appvalidate();
+
+  Future<void> _submitForm() async {
+    if (_formkey.currentState!.validate()) {
+      setState(() {
+        isLoader = true;
+      });
+      // var data = {
+      //   "email": _emailController.text,
+      //   "password": _passwordController.text,
+      // };
+      // await authService.login(data, context);
+      setState(() {
+        isLoader = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formkey,
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -23,6 +45,8 @@ class _AddNewTransactionState extends State<AddNewTransaction> {
             children: [
               // Title Input
               TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: appvalidate.isEmptyCheck,
                 decoration: const InputDecoration(
                   labelText: 'Title',
                   border: OutlineInputBorder(),
@@ -32,6 +56,8 @@ class _AddNewTransactionState extends State<AddNewTransaction> {
 
               // Amount Input
               TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: appvalidate.isEmptyCheck,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: 'Amount',
@@ -83,15 +109,13 @@ class _AddNewTransactionState extends State<AddNewTransaction> {
               // Add Transaction Button
               ElevatedButton(
                 onPressed: () {
-                  // // Add transaction logic here
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //   SnackBar(
-                  //     content: Text(
-                  //         'Transaction Added: Type: $type, Category: $category'),
-                  //   ),
-                  // );
+                  if (isLoader == false){
+                  _submitForm();
+                  }
                 },
-                child: const Text("Add Transaction"),
+                child: 
+                isLoader ? Center(child: CircularProgressIndicator()):
+                const Text("Add Transaction"),
               ),
             ],
           ),
