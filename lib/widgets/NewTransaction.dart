@@ -10,49 +10,17 @@ class AddNewTransaction extends StatefulWidget {
 
 class _AddNewTransactionState extends State<AddNewTransaction> {
   var type = 'Expenses';
-  var category = "others";
+  var category = "Others";
 
   @override
   Widget build(BuildContext context) {
     return Form(
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Title Input
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Title',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Amount Input
-              TextFormField(
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Amount',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Category Dropdown
-              CategoryDropdown(
-                cattype: category,
-                onChanged: (String? value) {
-                  if (value != null) {
-                    setState(() {
-                      category = value;
-                    });
-                  }
-                },
-              ),
-              const SizedBox(height: 16),
-
               // Type Dropdown
               DropdownButtonFormField<String>(
                 value: type,
@@ -79,6 +47,38 @@ class _AddNewTransactionState extends State<AddNewTransaction> {
                 },
               ),
               const SizedBox(height: 20),
+
+              // Amount Input
+              TextFormField(
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Amount',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Category Dropdown
+              CategoryDropdown(
+                cattype: category,
+                onChanged: (String? value) {
+                  if (value != null) {
+                    setState(() {
+                      category = value;
+                    });
+                  }
+                },
+              ),
+              const SizedBox(height: 16),
+              
+              // Description Input
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Description',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 16),
 
               // Add Transaction Button
               ElevatedButton(
@@ -128,12 +128,12 @@ class CategoryDropdown extends StatelessWidget {
             children: [
               Icon(
                 e['icon'] as IconData, // Type casting for safety
-                color: Colors.black54,
+                //color: Colors.black54,
               ),
               const SizedBox(width: 8),
               Text(
                 e['name'],
-                style: const TextStyle(color: Colors.black45),
+                //style: const TextStyle(color: Colors.black45),
               ),
             ],
           ),

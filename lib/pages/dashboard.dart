@@ -1,6 +1,6 @@
   import 'package:flutter/material.dart';
   import 'package:penny_pilot/widgets/HeroCard_dashboard.dart';
-  import 'package:penny_pilot/widgets/TraansactionCard_dashboard.dart';
+  import 'package:penny_pilot/widgets/RecentTransactionCard.dart';
 
   class Dashboard extends StatelessWidget {
     const Dashboard({super.key});
@@ -8,7 +8,8 @@
     @override
     Widget build(BuildContext context) {
       return Scaffold(
-        appBar: AppBar(
+        appBar: AppBar( 
+          //forceMaterialTransparency: true,
           automaticallyImplyLeading: false,
           toolbarHeight: 64,
           title: Text(
