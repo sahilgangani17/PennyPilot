@@ -65,7 +65,7 @@ class TransactionCard extends StatelessWidget {
                     ),
                     title: Row(
                       children: [
-                        Expanded(child: appicons.getExpensecategoryName('')),
+                        Expanded(child: Text('Not Cool')),
                         Spacer(),
                         Text(
                           "₹ 0000",

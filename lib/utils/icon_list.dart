@@ -71,15 +71,4 @@ class AppIcons {
       );
     return category['icon'];
   }
-
-  Widget getExpensecategoryName(String categoryname) {
-      final category = homeExpenseCategories.firstWhere(
-        (category) =>   category['name'] == categoryname, 
-        orElse: ()=> {
-          "name" : "Not Cool"
-        }
-      );
-    return Text(category['name']);
-  }
-
 }
