@@ -4,21 +4,11 @@
 
   class Dashboard extends StatelessWidget {
     const Dashboard({super.key});
+    static const title = 'Dashboard';
 
     @override
     Widget build(BuildContext context) {
       return Scaffold(
-        appBar: AppBar( 
-          //forceMaterialTransparency: true,
-          automaticallyImplyLeading: false,
-          toolbarHeight: 64,
-          title: Text(
-            'Dashboard',
-            style: TextStyle(color: Colors.black, fontSize: 32),
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.blueGrey,
-        ),
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(16.0),
