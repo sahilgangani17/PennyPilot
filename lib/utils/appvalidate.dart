@@ -14,24 +14,24 @@ class Appvalidate {
 
   String? validatePhoneNo(value){
     if(value!.isEmpty){
-      return 'PLease enter a Phone No';
+      return 'Please enter a Phone No';
     }
     if (value.length != 10){
-      return 'Plase Enter Validate Phone No';
+      return 'Please enter a valid Phone No';
     }
     return null;
   }
 
   String? validateUsername(value){
     if(value!.isEmpty){
-      return 'PLease enter a Phone No';
+      return 'Please enter an Username';
     }
     return null;
   }
 
   String? validatePassword(value){
     if(value!.isEmpty){
-      return 'PLease enter a Password';
+      return 'Please enter a Password';
     }
     
     return null;

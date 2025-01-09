@@ -47,12 +47,12 @@ class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: Form(
         key: _formkey,
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
                 SizedBox(height: 60),
@@ -117,6 +117,7 @@ class _SignupState extends State<Signup> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blueGrey,
+                      foregroundColor: Colors.white,
                     ),
                     onPressed: () {
                       isLoader ? print("Loading") : _submitForm();
