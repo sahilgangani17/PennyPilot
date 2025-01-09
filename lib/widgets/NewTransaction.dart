@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:penny_pilot/utils/icon_list.dart';
 
 class AddNewTransaction extends StatefulWidget {
@@ -21,6 +22,22 @@ class _AddNewTransactionState extends State<AddNewTransaction> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+
+              // Heading
+              Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child: Center(
+                  child: Text(
+                    'Add New Transaction',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 30,
+                    ),
+                  )
+                )
+              ),
+
               // Type Dropdown
               DropdownButtonFormField<String>(
                 value: type,
@@ -52,6 +69,7 @@ class _AddNewTransactionState extends State<AddNewTransaction> {
               TextFormField(
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.currency_rupee_sharp),
                   labelText: 'Amount',
                   border: OutlineInputBorder(),
                 ),
@@ -91,8 +109,14 @@ class _AddNewTransactionState extends State<AddNewTransaction> {
                   //   ),
                   // );
                 },
-                child: const Text("Add Transaction"),
+                child: const Text("Save"),
               ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Discard",style: TextStyle(color: Colors.red),),
+              )
             ],
           ),
         ),

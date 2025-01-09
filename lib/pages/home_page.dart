@@ -112,8 +112,8 @@ class _HomePageState extends State<HomePage> {
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
+              icon: Icon(Icons.savings),
+              label: 'Savings',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),
