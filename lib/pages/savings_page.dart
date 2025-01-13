@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
-// TODO: -- Remaining Logic And Some Pop Ups with backend --For Sankalp Dawada
-class SavingGoals extends StatelessWidget {
+import 'package:penny_pilot/widgets/add_goal.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+
+// TODO: -- Remaining Logic build up and  backend --For Sankalp Dawada
+class SavingGoals extends StatefulWidget {
   const SavingGoals({super.key});
 
+  @override
+  State<SavingGoals> createState() => _SavingGoalsState();
+}
+
+class _SavingGoalsState extends State<SavingGoals> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +82,14 @@ class SavingGoals extends StatelessWidget {
                   ),
                 ),
                   ElevatedButton.icon(
-                  onPressed: (){},
+                  onPressed: (){
+                    showDialog(
+                      context: context,
+                      builder: (context)=>AlertDialog(
+                        content: AddGoal(),
+                      ),
+                      );
+                  },
                   icon: Icon(
                     Icons.add,
                     color: Colors.white,// +
