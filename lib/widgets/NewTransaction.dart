@@ -32,124 +32,130 @@ class _AddNewTransactionState extends State<AddNewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formkey,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Heading
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Center(
-                  child: Text(
-                    'Add New Transaction',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 30,
+    return Expanded(
+      child: Form(
+        key: _formkey,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Heading
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Center(
+                    child: Text(
+                      'Add New Transaction',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-
-              // Title Input
-              TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: appvalidate.isEmptyCheck,
-                decoration: const InputDecoration(
-                  labelText: 'Title',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Type Dropdown
-              DropdownButtonFormField<String>(
-                value: type,
-                decoration: const InputDecoration(
-                  labelText: 'Type',
-                  border: OutlineInputBorder(),
-                ),
-                items: const [
-                  DropdownMenuItem(
-                    child: Text('Expenses'),
-                    value: 'Expenses',
+                const SizedBox(height: 16),
+      
+                // Title Input
+                TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: appvalidate.isEmptyCheck,
+                  decoration: const InputDecoration(
+                    labelText: 'Title',
+                    border: OutlineInputBorder(),
                   ),
-                  DropdownMenuItem(
-                    child: Text('Income'),
-                    value: 'Income',
+                ),
+                const SizedBox(height: 16),
+      
+                // Type Dropdown
+                DropdownButtonFormField<String>(
+                  value: type,
+                  decoration: const InputDecoration(
+                    labelText: 'Type',
+                    border: OutlineInputBorder(),
                   ),
-                ],
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() {
-                      type = value;
-                    });
-                  }
-                },
-              ),
-              const SizedBox(height: 20),
-
-              // Amount Input
-              TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: appvalidate.isEmptyCheck,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.currency_rupee_sharp),
-                  labelText: 'Amount',
-                  border: OutlineInputBorder(),
+                  items: const [
+                    DropdownMenuItem(
+                      child: Text('Expenses'),
+                      value: 'Expenses',
+                    ),
+                    DropdownMenuItem(
+                      child: Text('Income'),
+                      value: 'Income',
+                    ),
+                    DropdownMenuItem(
+                      child : Text("Savings"),
+                      value: 'Savings',
+                    ),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() {
+                        type = value;
+                      });
+                    }
+                  },
                 ),
-              ),
-              const SizedBox(height: 16),
-
-              // Category Dropdown
-              CategoryDropdown(
-                cattype: category,
-                onChanged: (String? value) {
-                  if (value != null) {
-                    setState(() {
-                      category = value;
-                    });
-                  }
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // Description Input
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                  border: OutlineInputBorder(),
+                const SizedBox(height: 20),
+      
+                // Amount Input
+                TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: appvalidate.isEmptyCheck,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.currency_rupee_sharp),
+                    labelText: 'Amount',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16),
-
-              // Add Transaction Button
-              ElevatedButton(
-                onPressed: () {
-                  if (!isLoader) {
-                    _submitForm();
-                  }
-                },
-                child: isLoader
-                    ? const Center(child: CircularProgressIndicator())
-                    : const Text("Add Transaction"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text(
-                  "Discard",
-                  style: TextStyle(color: Colors.red),
+                const SizedBox(height: 16),
+      
+                // Category Dropdown
+                CategoryDropdown(
+                  cattype: category,
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      setState(() {
+                        category = value;
+                      });
+                    }
+                  },
                 ),
-              )
-            ],
+                const SizedBox(height: 16),
+      
+                // Description Input
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Description',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+      
+                // Add Transaction Button
+                ElevatedButton(
+                  onPressed: () {
+                    if (!isLoader) {
+                      _submitForm();
+                    }
+                  },
+                  child: isLoader
+                      ? const Center(child: CircularProgressIndicator())
+                      : const Text("Add Transaction"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    "Discard",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

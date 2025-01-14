@@ -108,7 +108,7 @@ class CardOne extends StatelessWidget {
               Icon(
                 icon, 
                 color: color,
-                size: 50,
+                size: 45,
               )
             ],
           ),
