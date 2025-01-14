@@ -1,23 +1,14 @@
   import 'package:flutter/material.dart';
   import 'package:penny_pilot/widgets/HeroCard_dashboard.dart';
-  import 'package:penny_pilot/widgets/TraansactionCard_dashboard.dart';
+  import 'package:penny_pilot/widgets/RecentTransactionCard.dart';
 
   class Dashboard extends StatelessWidget {
     const Dashboard({super.key});
+    static const title = 'Dashboard';
 
     @override
     Widget build(BuildContext context) {
       return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: 64,
-          title: Text(
-            'Dashboard',
-            style: TextStyle(color: Colors.black, fontSize: 32),
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.blueGrey,
-        ),
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(16.0),

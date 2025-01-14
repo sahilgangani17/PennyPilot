@@ -28,7 +28,7 @@ class TransactionCard extends StatelessWidget {
           ListView.builder(
             shrinkWrap: true, 
             physics: NeverScrollableScrollPhysics(), 
-            itemCount: 4,
+            itemCount: 5,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
@@ -47,8 +47,8 @@ class TransactionCard extends StatelessWidget {
                   ),
                   child: ListTile(
                     minVerticalPadding: 10 ,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                    leading: Container(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    leading: SizedBox(
                       width: 70,
                       height: 100,
                       child: Container(
@@ -59,13 +59,13 @@ class TransactionCard extends StatelessWidget {
                           color: Colors.green.withOpacity(0.2)
                         ), 
                         child: Center(
-                          child: FaIcon(appicons.getExpensecategoryIcon('transport'))
+                          child: FaIcon(appicons.getExpensecategoryIcon(''))
                           ), 
                       ),
                     ),
                     title: Row(
                       children: [
-                        Expanded(child: Text("Car Loan")),
+                        Expanded(child: Text('Not Cool')),
                         Spacer(),
                         Text(
                           "₹ 0000",

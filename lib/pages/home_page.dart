@@ -2,7 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:penny_pilot/pages/login.dart';
 import 'package:penny_pilot/widgets/NewTransaction.dart';
-import 'dashboard.dart';
+import 'dashboard_page.dart';
+import 'analysis_page.dart';
+import 'savings_page.dart';
+import 'settings_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -35,12 +38,14 @@ class _HomePageState extends State<HomePage> {
 
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [
-    const Dashboard(),
-    // const AnalysisPage(),
-    // const ProfilePage(),
-    // const SettingsPage(),
+  final List<List<dynamic>> _pages = [
+    ['Dashboard', const Dashboard()],
+    ['Analysis', const AnalysisPage()],
+    [],
+    ['Saving Goals', const SavingGoals()],
+    ['Settings', const SettingsPage()],
   ];
+
 
   void _onItemTapped(int index) {
     if (index != 2) {
@@ -81,6 +86,13 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
+          backgroundColor: Colors.blueGrey[200],
+          toolbarHeight: 64,
+          centerTitle: true,
+          title: Text(
+            _pages[_selectedIndex][0],
+            style: TextStyle(color: Colors.black, fontSize: 32)
+          ),
           actions: [
             IconButton(
               onPressed: () {
@@ -92,7 +104,7 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
-        body: _pages[_selectedIndex],
+        body: _pages[_selectedIndex][1],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           iconSize: 32,
@@ -112,8 +124,8 @@ class _HomePageState extends State<HomePage> {
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
+              icon: Icon(Icons.savings),
+              label: 'Savings',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),

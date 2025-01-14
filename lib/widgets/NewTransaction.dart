@@ -11,7 +11,7 @@ class AddNewTransaction extends StatefulWidget {
 
 class _AddNewTransactionState extends State<AddNewTransaction> {
   var type = 'Expenses';
-  var category = "others";
+  var category = "Others";
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   var isLoader = false;
@@ -22,11 +22,8 @@ class _AddNewTransactionState extends State<AddNewTransaction> {
       setState(() {
         isLoader = true;
       });
-      // var data = {
-      //   "email": _emailController.text,
-      //   "password": _passwordController.text,
-      // };
-      // await authService.login(data, context);
+      // Simulate a network request or data processing
+      await Future.delayed(const Duration(seconds: 2));
       setState(() {
         isLoader = false;
       });
@@ -39,10 +36,26 @@ class _AddNewTransactionState extends State<AddNewTransaction> {
       key: _formkey,
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Heading
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Center(
+                  child: Text(
+                    'Add New Transaction',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 30,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+
               // Title Input
               TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -51,31 +64,6 @@ class _AddNewTransactionState extends State<AddNewTransaction> {
                   labelText: 'Title',
                   border: OutlineInputBorder(),
                 ),
-              ),
-              const SizedBox(height: 16),
-
-              // Amount Input
-              TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: appvalidate.isEmptyCheck,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Amount',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Category Dropdown
-              CategoryDropdown(
-                cattype: category,
-                onChanged: (String? value) {
-                  if (value != null) {
-                    setState(() {
-                      category = value;
-                    });
-                  }
-                },
               ),
               const SizedBox(height: 16),
 
@@ -106,17 +94,61 @@ class _AddNewTransactionState extends State<AddNewTransaction> {
               ),
               const SizedBox(height: 20),
 
+              // Amount Input
+              TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: appvalidate.isEmptyCheck,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.currency_rupee_sharp),
+                  labelText: 'Amount',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Category Dropdown
+              CategoryDropdown(
+                cattype: category,
+                onChanged: (String? value) {
+                  if (value != null) {
+                    setState(() {
+                      category = value;
+                    });
+                  }
+                },
+              ),
+              const SizedBox(height: 16),
+
+              // Description Input
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Description',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 16),
+
               // Add Transaction Button
               ElevatedButton(
                 onPressed: () {
-                  if (isLoader == false){
-                  _submitForm();
+                  if (!isLoader) {
+                    _submitForm();
                   }
                 },
-                child: 
-                isLoader ? Center(child: CircularProgressIndicator()):
-                const Text("Add Transaction"),
+                child: isLoader
+                    ? const Center(child: CircularProgressIndicator())
+                    : const Text("Add Transaction"),
               ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  "Discard",
+                  style: TextStyle(color: Colors.red),
+                ),
+              )
             ],
           ),
         ),
@@ -152,13 +184,9 @@ class CategoryDropdown extends StatelessWidget {
             children: [
               Icon(
                 e['icon'] as IconData, // Type casting for safety
-                color: Colors.black54,
               ),
               const SizedBox(width: 8),
-              Text(
-                e['name'],
-                style: const TextStyle(color: Colors.black45),
-              ),
+              Text(e['name']),
             ],
           ),
         );

@@ -5,68 +5,70 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class AppIcons {
   final List<Map<String, dynamic>> homeExpenseCategories = [
     {
-      "name": "clothing",
+      "name": "Clothing",
       "icon": FontAwesomeIcons.shirt,
     },
     {
-      "name": "food",
+      "name": "Food",
       "icon": FontAwesomeIcons.hamburger,
     },
     {
-      "name": "transport",
+      "name": "Transport",
       "icon": FontAwesomeIcons.car,
     },
     {
-      "name": "grocery",
+      "name": "Grocery",
       "icon": FontAwesomeIcons.shoppingCart,
     },
     {
-      "name": "education",
+      "name": "Education",
       "icon": FontAwesomeIcons.graduationCap,
     },
     {
-      "name": "health",
+      "name": "Health",
       "icon": FontAwesomeIcons.medkit,
     },
     {
-      "name": "entertainment",
+      "name": "Entertainment",
       "icon": FontAwesomeIcons.tv,
     },
     {
-      "name": "utilities",
+      "name": "Utilities and Bills",
       "icon": FontAwesomeIcons.lightbulb,
     },
     {
-      "name": "insurance",
+      "name": "Insurance",
       "icon": FontAwesomeIcons.shieldAlt,
     },
     {
-      "name": "savings",
+      "name": "Savings",
       "icon": FontAwesomeIcons.piggyBank,
     },
     {
-      "name": "loans",
+      "name": "Loans",
       "icon": FontAwesomeIcons.moneyBill,
     },
     {
-      "name": "vacation",
+      "name": "Vacation",
       "icon": FontAwesomeIcons.sun,
     },
     {
-      "name": "gifts",
+      "name": "Gifts",
       "icon": FontAwesomeIcons.gift,
     },
     {
-      "name" : "others",
+      "name" : "Others",
       "icon" : FontAwesomeIcons.cartPlus,
     }
   ];
 
-  IconData getExpensecategoryIcon(String categoryname){
+  IconData getExpensecategoryIcon(String categoryname) {
       final category = homeExpenseCategories.firstWhere(
         (category) =>   category['name'] == categoryname, 
-        orElse: ()=> {"icon" : FontAwesomeIcons.shirt} );
+        orElse: ()=> {
+          "icon" : FontAwesomeIcons.poo
+        }
+      );
     return category['icon'];
   }
-
 }
