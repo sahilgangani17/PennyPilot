@@ -59,7 +59,7 @@ class TransactionCard extends StatelessWidget {
                           color: Colors.green.withOpacity(0.2)
                         ), 
                         child: Center(
-                          child: FaIcon(appicons.getExpensecategoryIcon(''))
+                          child: FaIcon(appicons.getExpenseCategoryIcon(''))
                           ), 
                       ),
                     ),
