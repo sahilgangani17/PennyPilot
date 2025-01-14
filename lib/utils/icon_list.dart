@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -40,10 +39,6 @@ class AppIcons {
       "name": "Insurance",
       "icon": FontAwesomeIcons.shieldAlt,
     },
-    // {
-    //   "name": "Savings",
-    //   "icon": FontAwesomeIcons.piggyBank,
-    // },
     {
       "name": "Loans",
       "icon": FontAwesomeIcons.moneyBill,
@@ -57,18 +52,41 @@ class AppIcons {
       "icon": FontAwesomeIcons.gift,
     },
     {
-      "name" : "Others",
-      "icon" : FontAwesomeIcons.cartPlus,
+      "name": "Others",
+      "icon": FontAwesomeIcons.cartPlus,
     }
   ];
 
-  IconData getExpensecategoryIcon(String categoryname) {
-      final category = homeExpenseCategories.firstWhere(
-        (category) =>   category['name'] == categoryname, 
-        orElse: ()=> {
-          "icon" : FontAwesomeIcons.poo
-        }
-      );
+  final List<Map<String, dynamic>> currency = [
+    {
+      "name": "Rupee",
+      "icon": FontAwesomeIcons.rupeeSign,
+    },
+    // You can add more currencies here
+    {
+      "name": "Dollar",
+      "icon": FontAwesomeIcons.dollarSign,
+    },
+    {
+      "name": "Euro",
+      "icon": FontAwesomeIcons.euroSign,
+    },
+  ];
+
+  IconData getExpenseCategoryIcon(String categoryName) {
+    final category = homeExpenseCategories.firstWhere(
+      (category) => category['name'] == categoryName,
+      orElse: () => {"icon": FontAwesomeIcons.poo},
+    );
     return category['icon'];
+  }
+
+  // Method to get currency icon by name
+  IconData getCurrencyIcon(String currencyName) {
+    final currencyItem = currency.firstWhere(
+      (currency) => currency['name'] == currencyName,
+      orElse: () => {"icon": FontAwesomeIcons.questionCircle},
+    );
+    return currencyItem['icon'];
   }
 }
