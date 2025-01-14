@@ -40,10 +40,10 @@ class AppIcons {
       "name": "Insurance",
       "icon": FontAwesomeIcons.shieldAlt,
     },
-    {
-      "name": "Savings",
-      "icon": FontAwesomeIcons.piggyBank,
-    },
+    // {
+    //   "name": "Savings",
+    //   "icon": FontAwesomeIcons.piggyBank,
+    // },
     {
       "name": "Loans",
       "icon": FontAwesomeIcons.moneyBill,
