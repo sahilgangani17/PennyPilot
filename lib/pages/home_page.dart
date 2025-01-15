@@ -25,10 +25,12 @@ class _HomePageState extends State<HomePage> {
     try {
       await FirebaseAuth.instance.signOut();
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) =>  Login()),
+        MaterialPageRoute(builder: (context) => Login()),
       );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Logout failed')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Logout failed: $e')),  // Show detailed error message
+      );
     } finally {
       setState(() {
         isLogoutLoading = false;
@@ -36,16 +38,15 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  int _selectedIndex = 1; //TODO -- Change index 
+  int _selectedIndex = 1; 
 
-  final List<dynamic> _pages = [
+  final List<Widget> _pages = [
     Dashboard(),
     AnalysisPage(),
-    null,
+    SizedBox.shrink(),  // Empty space for the center item
     SavingGoals(),
     SettingsPage(),
   ];
-
 
   void _onItemTapped(int index) {
     if (index != 2) {
@@ -87,12 +88,20 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           forceMaterialTransparency: true,
-          //backgroundColor: Colors.blueGrey[200],
-          //toolbarHeight: 64,
-          //centerTitle: true,
-          title:Text(
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0), 
+            child: ClipOval(
+              child: Image.asset(
+                'assets/images/penny_pilot.png',  // Correct path to your image
+                width: 80,  
+                height: 80,
+                fit: BoxFit.cover,  // Ensure image fits properly in the circle
+              ),
+            ),
+          ),
+          title: Text(
             'PennyPilot',
-            style: TextStyle(color: Colors.black, fontSize: 32, fontFamily: 'Lexend Deca')
+            style: TextStyle(color: Colors.black, fontSize: 32, fontFamily: 'Lexend Deca'),
           ),
           actions: [
             IconButton(
@@ -100,9 +109,9 @@ class _HomePageState extends State<HomePage> {
                 logout();
               },
               icon: isLogoutLoading
-                  ? CircularProgressIndicator()
-                  : Icon(Icons.logout),
-            )
+                  ? const CircularProgressIndicator()
+                  : const Icon(Icons.logout),
+            ),
           ],
         ),
         body: _pages[_selectedIndex],
@@ -121,7 +130,7 @@ class _HomePageState extends State<HomePage> {
               label: 'Analysis',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.abc, color: Colors.transparent),
+              icon: Icon(Icons.abc, color: Colors.transparent),  // Placeholder
               label: '',
             ),
             BottomNavigationBarItem(
