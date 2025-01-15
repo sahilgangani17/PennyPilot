@@ -1,17 +1,16 @@
 class Txn {
-  final int id;
+  final int? id;
   final double amount;
-  final String type, description, category;
-  final DateTime date;
+  final String type, category, description, date;
 
   Txn({
-    required this.id,
+    this.id,
     required this.type,
     required this.amount,
     required this.category,
     required this.date,
     this.description = 'Not Specified',
-  });
+  }); 
 
   factory Txn.fromJSON(Map<String, dynamic> json) =>
     Txn(
@@ -20,7 +19,7 @@ class Txn {
       amount: json['amount'], 
       category: json['category'], 
       date: json['date'],
-      description: json['description']
+      description: json['description'],
     );
 
   Map<String, dynamic> toJSON() => {
@@ -29,6 +28,6 @@ class Txn {
     'amount': amount, 
     'category': category, 
     'date': date,
-    'description': description
+    'description': description,
   };
 }

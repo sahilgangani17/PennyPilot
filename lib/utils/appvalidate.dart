@@ -40,7 +40,7 @@ class Appvalidate {
   
   String? isEmptyCheck(value){
     if(value!.isEmpty){
-      return 'PLease fill Details';
+      return 'Please fill Details';
     }
     
     return null;

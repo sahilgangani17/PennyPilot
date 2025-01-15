@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:penny_pilot/utils/icon_list.dart';
+import 'package:penny_pilot/widgets/display_txns.dart';
 
 // ignore: must_be_immutable
 class TransactionCard extends StatelessWidget {
@@ -24,82 +24,8 @@ class TransactionCard extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 10), 
-          ListView.builder(
-            shrinkWrap: true, 
-            physics: NeverScrollableScrollPhysics(), 
-            itemCount: 5,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0, 10),
-                        color: Colors.grey.withOpacity(0.09),
-                        blurRadius: 10,
-                        spreadRadius: 4,
-                      ),
-                    ],
-                  ),
-                  child: ListTile(
-                    minVerticalPadding: 10 ,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                    leading: SizedBox(
-                      width: 70,
-                      height: 100,
-                      child: Container(
-                        width: 30, 
-                        height: 30 ,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: Colors.green.withOpacity(0.2)
-                        ), 
-                        child: Center(
-                          child: FaIcon(appicons.getExpenseCategoryIcon(''))
-                          ), 
-                      ),
-                    ),
-                    title: Row(
-                      children: [
-                        Expanded(child: Text('Not Cool')),
-                        Spacer(),
-                        Text(
-                          "₹ 0000",
-                          style: TextStyle(color: Colors.green),
-                        ),
-                      ],
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Balance",
-                              style: TextStyle(color: Colors.grey, fontSize: 13),
-                            ),
-                            Spacer(),
-                            Text(
-                              "₹ 000",
-                              style: TextStyle(color: Colors.grey, fontSize: 13),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          "25 / 12 / 2025",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
+          const SizedBox(height: 10),
+          DisplayTxns(displayTxnType: TxnStates.recentTxns)
         ],
       ),
     );
