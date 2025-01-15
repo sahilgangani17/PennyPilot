@@ -9,31 +9,29 @@ plugins {
 
 android {
     namespace = "com.example.penny_pilot"
-    compileSdk = 34 // Explicitly set to API level 33
-
-    defaultConfig {
-        multiDexEnabled true
-    }
+    compileSdk = 35 // Explicitly set to API level 33
 
     compileOptions {
         coreLibraryDesugaringEnabled true
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-        // sourceCompatibility JavaVersion.VERSION_23
-        // targetCompatibility JavaVersion.VERSION_23
+        // sourceCompatibility = JavaVersion.VERSION_1_8
+        // targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
         // jvmTarget = "23"
     }
 
     defaultConfig {
         applicationId "com.example.penny_pilot"
         minSdkVersion 23 // Updated to fix compatibility issues
-        targetSdkVersion 34 // Align with the latest Android SDK
+        targetSdkVersion 35 // Align with the latest Android SDK
         versionCode flutter.versionCode
         versionName flutter.versionName
+
+        multiDexEnabled true
     }
 
     buildTypes {

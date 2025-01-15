@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:penny_pilot/pages/login.dart';
-import 'package:penny_pilot/widgets/NewTransaction.dart';
+import 'package:penny_pilot/widgets/transaction_options_dialog.dart';
 import 'dashboard_page.dart';
 import 'analysis_page.dart';
 import 'savings_page.dart';
@@ -36,14 +36,14 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 1; //TODO -- Change index 
 
-  final List<List<dynamic>> _pages = [
-    ['Dashboard', const Dashboard()],
-    ['Analysis', const AnalysisPage()],
-    [],
-    ['Saving Goals', const SavingGoals()],
-    ['Settings', const SettingsPage()],
+  final List<dynamic> _pages = [
+    Dashboard(),
+    AnalysisPage(),
+    null,
+    SavingGoals(),
+    SettingsPage(),
   ];
 
 
@@ -86,12 +86,13 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.blueGrey[200],
-          toolbarHeight: 64,
-          centerTitle: true,
-          title: Text(
-            _pages[_selectedIndex][0],
-            style: TextStyle(color: Colors.black, fontSize: 32)
+          forceMaterialTransparency: true,
+          //backgroundColor: Colors.blueGrey[200],
+          //toolbarHeight: 64,
+          //centerTitle: true,
+          title:Text(
+            'PennyPilot',
+            style: TextStyle(color: Colors.black, fontSize: 32, fontFamily: 'Lexend Deca')
           ),
           actions: [
             IconButton(
@@ -104,7 +105,7 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
-        body: _pages[_selectedIndex][1],
+        body: _pages[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           iconSize: 32,
@@ -147,7 +148,7 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        content: AddNewTransaction(),
+        content: TransactionOptions(),
       ),
     );
   }

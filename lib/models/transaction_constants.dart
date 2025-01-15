@@ -4,7 +4,7 @@ const int kVersion1 = 1;
 
 String tableName = 'AllTxns';
 
-String columnId = '_id';
+String columnId = 'id';
 String columnType = 'type';
 String columnAmount = 'amount';
 String columnCategory = 'category';

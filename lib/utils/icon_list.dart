@@ -57,10 +57,25 @@ class AppIcons {
     }
   ];
 
+  final List<Map<String, dynamic>> homeIncomeCategories = [
+    {
+      "name": "Salary",
+      "icon": FontAwesomeIcons.sackDollar,
+    },
+    {
+      "name": "Coupons",
+      "icon": FontAwesomeIcons.receipt,
+    },
+    {
+      "name": "Others",
+      "icon": FontAwesomeIcons.cartPlus,
+    }
+  ];
+
   final List<Map<String, dynamic>> currency = [
     {
       "name": "Rupee",
-      "icon": FontAwesomeIcons.rupeeSign,
+      "icon": FontAwesomeIcons.indianRupeeSign,
     },
     // You can add more currencies here
     {
@@ -73,10 +88,26 @@ class AppIcons {
     },
   ];
 
+  List<Map<String, dynamic>> getTxnType(String? type) {
+    switch(type) {
+      case 'Expenses': return homeExpenseCategories;
+      case 'Income': return homeIncomeCategories;
+    }
+    return [];
+  }
+
   IconData getExpenseCategoryIcon(String categoryName) {
     final category = homeExpenseCategories.firstWhere(
       (category) => category['name'] == categoryName,
-      orElse: () => {"icon": FontAwesomeIcons.poo},
+      orElse: () => {'icon': FontAwesomeIcons.circleQuestion},
+    );
+    return category['icon'];
+  }
+
+  IconData getIncomeCategoryIcon(String categoryName) {
+    final category = homeExpenseCategories.firstWhere(
+      (category) => category['name'] == categoryName,
+      orElse: () => {'icon': FontAwesomeIcons.circleQuestion},
     );
     return category['icon'];
   }
@@ -85,7 +116,7 @@ class AppIcons {
   IconData getCurrencyIcon(String currencyName) {
     final currencyItem = currency.firstWhere(
       (currency) => currency['name'] == currencyName,
-      orElse: () => {"icon": FontAwesomeIcons.questionCircle},
+      orElse: () => {'icon': FontAwesomeIcons.circleQuestion},
     );
     return currencyItem['icon'];
   }

@@ -5,10 +5,7 @@ buildscript {
     }
     dependencies {
         // Update the Gradle Plugin to a version that supports API 34
-        // classpath 'com.android.tools.build:gradle:8.2.0'
         classpath 'com.android.tools.build:gradle:8.2.1'
-        // classpath 'com.android.tools.build:gradle:7.3.1'
-        
     }
 }
 
