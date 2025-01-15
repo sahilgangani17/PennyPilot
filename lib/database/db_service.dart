@@ -124,4 +124,33 @@ class DatabaseService {
       whereArgs: [txn.id],
     );
   }
+
+  // Get Total Income
+  Future<double> getTotalIncome() async {
+    Database db = await instance.database;
+    var result = await db.rawQuery(
+      'SELECT SUM($columnAmount) FROM $tableName WHERE $columnType = ?',
+      ['Income']
+    );
+    
+    if (result.isNotEmpty) {
+      return result.first.values.first as double? ?? 0.0;
+    }
+    return 0.0;
+  }
+
+  // Get Total Expense
+  Future<double> getTotalExpense() async {
+    Database db = await instance.database;
+    var result = await db.rawQuery(
+      'SELECT SUM($columnAmount) FROM $tableName WHERE $columnType = ?',
+      ['Expenses']
+    );
+    
+    if (result.isNotEmpty) {
+      return result.first.values.first as double? ?? 0.0;
+    }
+    return 0.0;
+  }
+
 }
