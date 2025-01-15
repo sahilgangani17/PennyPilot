@@ -31,11 +31,11 @@ class _TransactionOptionsState extends State<TransactionOptions> {
 
   var _heading;
   int? txnId;
-  var txnType = 'Expenses';
-  var txnCategory = 'Others';
+  var txnType = '';
+  var txnCategory = '';
   var txnAmountController = TextEditingController();
   var txnDescriptionController = TextEditingController();
-  
+
   @override
   void initState() {
     super.initState();
@@ -144,6 +144,7 @@ class _TransactionOptionsState extends State<TransactionOptions> {
 
               // Category Dropdown
               CategoryDropdown(
+                txnType: txnType,
                 catType: txnCategory,
                 onChanged: (String? value) {
                   if (value != null) {
@@ -189,6 +190,8 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                       txnAmountController.clear();
                       txnDescriptionController.clear();
                       txnId = null;
+                      txnType = '';
+                      txnCategory = '';
                     });
                   }
                   
@@ -200,7 +203,10 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                   Navigator.pop(context);
                   setState(() {
                     txnAmountController.clear();
-                    txnDescriptionController.clear();
+                      txnDescriptionController.clear();
+                      txnId = null;
+                      txnType = '';
+                      txnCategory = '';
                   });
                 },
                 child: const Text(
@@ -220,15 +226,15 @@ class CategoryDropdown extends StatelessWidget {
   const CategoryDropdown({
     super.key,
     required this.catType,
+    required this.txnType,
     required this.onChanged,
   });
 
-  final String? catType;
+  final String? catType, txnType;
   final ValueChanged<String?> onChanged;
-
+  
   @override
   Widget build(BuildContext context) {
-    final appicon = AppIcons();
     return DropdownButtonFormField<String>(
       value: catType,
       isExpanded: true,
@@ -236,7 +242,7 @@ class CategoryDropdown extends StatelessWidget {
         labelText: "Category",
         border: OutlineInputBorder(),
       ),
-      items: appicon.homeExpenseCategories.map((e) {
+      items: AppIcons().getTxnType(txnType).map((e) {
         return DropdownMenuItem<String>(
           value: e['name'],
           child: Row(

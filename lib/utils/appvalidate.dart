@@ -37,7 +37,6 @@ class Appvalidate {
     return null;
   }
 
-  
   String? isEmptyCheck(value){
     if(value!.isEmpty){
       return 'Please fill Details';
