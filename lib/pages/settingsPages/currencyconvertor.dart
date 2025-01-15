@@ -9,6 +9,11 @@ class Currencyconvertor extends StatefulWidget {
 class _CurrencyconvertorState extends State<Currencyconvertor> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Currency Converter"),
+        backgroundColor: Colors.grey[300],
+      ),
+    );
   }
 }

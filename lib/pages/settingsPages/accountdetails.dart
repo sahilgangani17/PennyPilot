@@ -10,6 +10,11 @@ class Accountdetails extends StatefulWidget {
 class _AccountdetailsState extends State<Accountdetails> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Account Details"),
+        backgroundColor: Colors.grey[300],
+      ),
+    );
   }
 }

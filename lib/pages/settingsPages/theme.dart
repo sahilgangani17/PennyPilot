@@ -9,6 +9,11 @@ class Themes extends StatefulWidget {
 class _ThemesState extends State<Themes> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Themes"),
+        backgroundColor: Colors.grey[300],
+      ),
+    );
   }
 }

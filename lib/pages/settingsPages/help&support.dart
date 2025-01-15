@@ -9,6 +9,11 @@ class Helpsupport extends StatefulWidget {
 class _HelpsupportState extends State<Helpsupport> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Help & Support"),
+        backgroundColor: Colors.grey[300],
+      ),
+    );
   }
 }
