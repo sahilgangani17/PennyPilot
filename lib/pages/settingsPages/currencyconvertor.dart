@@ -57,8 +57,7 @@ final Map<String, Map<String, double>> _exchangeRates = {
 
   @override
   Widget build(BuildContext context) {
-
-     Widget dropDownVariablefrom = DropdownButton<String>(
+    Widget dropDownVariablefrom = DropdownButton<String>(
       value: initial_dropdownvalue1,
       onChanged: (String? newValue) {
         setState(() {
@@ -72,15 +71,15 @@ final Map<String, Map<String, double>> _exchangeRates = {
         'Pounds(£)',
         'Yen(¥)',
         ]
-  .map<DropdownMenuItem<String>>((String value){
-    return DropdownMenuItem<String>(
-      value: value,
-      child: Text(value),
+        .map<DropdownMenuItem<String>>((String value){
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
     );
-  }).toList(),
-);
 
-Widget dropDownVariableTo =DropdownButton<String>(
+    Widget dropDownVariableTo = DropdownButton<String>(
       value: initial_dropdownvalue2,
       onChanged: (String? newValue) {
         setState(() {
@@ -94,13 +93,13 @@ Widget dropDownVariableTo =DropdownButton<String>(
         'Pounds(£)',
         'Yen(¥)',
         ]
-  .map<DropdownMenuItem<String>>((String value){
-    return DropdownMenuItem<String>(
-      value: value,
-      child: Text(value),
+        .map<DropdownMenuItem<String>>((String value){
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
     );
-  }).toList(),
-);
 
     return Scaffold(
       appBar: AppBar(
@@ -113,7 +112,6 @@ Widget dropDownVariableTo =DropdownButton<String>(
           child: Column(
             children: [
               Container(
-                
                 padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: Colors.white,

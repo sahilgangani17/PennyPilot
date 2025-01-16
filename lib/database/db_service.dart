@@ -46,7 +46,7 @@ class DatabaseService {
     );
   }
 
-  // Create
+  // Create Txn
   Future<int> saveNewTxn(Txn txn) async {
     Database db = await instance.database;
     return await db.insert(
@@ -56,7 +56,7 @@ class DatabaseService {
     );
   }
 
-  // Read
+  // Read All Txns
   Future<List<Txn>> getAllTxns() async {
     Database db = await instance.database;
     var txns = await db.query(tableName, orderBy: '$columnId DESC');
@@ -66,7 +66,7 @@ class DatabaseService {
     return txnsList;
   }
 
-  // Recent Transactions Read
+  // Read Recent Transactions
   Future<List<Txn>> get5RecentTxns() async {
     Database db = await instance.database;
     var txns = await db.query(tableName, orderBy: '$columnId DESC', limit: 5);
@@ -76,7 +76,7 @@ class DatabaseService {
     return txnsList;
   }
 
-  // Expenses Read
+  // Read All Expenses
   Future<List<Txn>> getExpensesTxns() async {
     Database db = await instance.database;
     var txns = await db.query(
@@ -90,7 +90,7 @@ class DatabaseService {
     return txnsList;
   }
 
-  // Incomes Read
+  // Read All Incomes
   Future<List<Txn>> getIncomeTxns() async {
     Database db = await instance.database;
     var txns = await db.query(
@@ -104,7 +104,7 @@ class DatabaseService {
     return txnsList;
   }
 
-  // Update
+  // Update Txn
   Future<int> updateTxn(Txn txn) async {
     Database db = await instance.database;
     return await db.update(
@@ -112,6 +112,7 @@ class DatabaseService {
       txn.toJSON(),
       where: '$columnId = ?',
       whereArgs: [txn.id],
+      conflictAlgorithm: ConflictAlgorithm.rollback,
     );
   }
 

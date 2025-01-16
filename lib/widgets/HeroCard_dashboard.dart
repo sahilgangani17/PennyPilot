@@ -5,7 +5,7 @@ class HeroCard extends StatefulWidget {
   const HeroCard({super.key});
 
   @override
-  _HeroCardState createState() => _HeroCardState();
+  State<HeroCard> createState() => _HeroCardState();
 }
 
 class _HeroCardState extends State<HeroCard> {
@@ -41,11 +41,9 @@ class _HeroCardState extends State<HeroCard> {
             if (incomeSnapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
             }
-
             if (incomeSnapshot.hasError) {
               return Text('Error: ${incomeSnapshot.error}');
             }
-
             double totalIncome = incomeSnapshot.data ?? 0.0;
 
             return FutureBuilder<double>(
@@ -54,11 +52,9 @@ class _HeroCardState extends State<HeroCard> {
                 if (expenseSnapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
                 }
-
                 if (expenseSnapshot.hasError) {
                   return Text('Error: ${expenseSnapshot.error}');
                 }
-
                 double totalExpense = expenseSnapshot.data ?? 0.0;
 
                 // Calculate total balance (Income - Expense)
@@ -82,6 +78,7 @@ class _HeroCardState extends State<HeroCard> {
             padding: EdgeInsets.all(10),
             child: Row(
               children: [
+                
                 // Income Card
                 FutureBuilder<double>(
                   future: totalIncomeFuture,
@@ -102,6 +99,7 @@ class _HeroCardState extends State<HeroCard> {
                   },
                 ),
                 SizedBox(width: 10),
+                
                 // Expense Card
                 FutureBuilder<double>(
                   future: totalExpenseFuture,

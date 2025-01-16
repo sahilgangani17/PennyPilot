@@ -49,10 +49,10 @@ class _HelpsupportState extends State<Helpsupport> {
               children: [
                 Text('Track your Expenses'),
                 Text('1. You can add Transcation by categorizing your expenses(salary, food, EMIs,stc)'),
-                Text('2.Set your limited budgets for different categorise'),
-                Text('3.Convert your Currencies from INR to any other currency'),
-                Text('4.Get detailed Analysed report for your Expeneses and incomes'),
-                Text('5.Manage your saving and active goals accordingly ')
+                Text('2. Set your limited budgets for different categories'),
+                Text('3. Convert your Currencies from INR to any other currency'),
+                Text('4. Get detailed Analysed report for your Expeneses and incomes'),
+                Text('5. Manage your saving and active goals accordingly ')
               ],
             ),
           ),
@@ -134,9 +134,9 @@ class _HelpsupportState extends State<Helpsupport> {
             child: Column(
               children: [
                 Text('Tips and Trusted Practices'),
-                Text('->Regularly update your Transaction history'),
-                Text('->Review your Spending patterns monthly'),
-                Text('->Set realistic budgets goal'),
+                Text('-> Regularly update your Transaction history'),
+                Text('-> Review your Spending patterns monthly'),
+                Text('-> Set realistic budgets goal'),
                 Text('Enable notification for better tracking'),
                 Text('Export report to tax purposes')
               ],

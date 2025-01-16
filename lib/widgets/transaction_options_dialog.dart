@@ -122,6 +122,7 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                   if (value != null) {
                     setState(() {
                       txnType = value;
+                      txnCategory = 'Others';
                     });
                   }
                 },

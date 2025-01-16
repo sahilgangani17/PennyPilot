@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(8.0), 
             child: ClipOval(
               child: Image.asset(
-                'assets/images/penny_pilot.png',  // Correct path to your image
+                'lib/src/assets/images/penny_pilot.png',  // Correct path to your image
                 width: 80,  
                 height: 80,
                 fit: BoxFit.cover,  // Ensure image fits properly in the circle
