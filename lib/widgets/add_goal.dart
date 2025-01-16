@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:penny_pilot/utils/icon_list.dart';
 
 class AddGoal extends StatefulWidget {
   const AddGoal({super.key});
@@ -17,9 +18,9 @@ class _AddGoalState extends State<AddGoal> {
   void _presentDatePicker() {
     showDatePicker(
       context: context,
-      // initialDate: DateTime.now(),
+      initialDate: DateTime.now(),
       firstDate: DateTime.now(), 
-      lastDate: DateTime(2050), 
+      lastDate: DateTime(DateTime.now().year + 100), 
     ).then((pickedDate) {
       if (pickedDate == null) {
         return;
@@ -49,41 +50,33 @@ class _AddGoalState extends State<AddGoal> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Form( // Wrap with a Form widget
+    return Form ( 
         key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Add Saving Goal',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
+          children: [
+            
+            //Heading
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Center(
+                child: Text(
+                  'Add\nSaving Goal',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 30,
+                    color: Colors.black,
                   ),
-                ),
-                CloseButton(
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
+                )
+              )
             ),
-            const SizedBox(height: 15),
 
+            // Goal Name Input
             TextFormField(
-              controller: _goalNameController, 
+              controller: _goalNameController,
               decoration: const InputDecoration(
                 labelText: 'Goal Name',
-                filled: true,
-                fillColor: Color.fromARGB(100, 200, 213, 185),
                 border: OutlineInputBorder(),
               ),
               validator: (value) { 
@@ -93,18 +86,16 @@ class _AddGoalState extends State<AddGoal> {
                 return null; 
               },
             ),
+            const SizedBox(height: 16),
 
-            const SizedBox(height: 15),
-
+            // Target Amount Input
             TextFormField(
               controller: _targetAmountController, 
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Target Amount (₹)',
-                filled: true,
-                fillColor: Color.fromARGB(100, 200, 213, 185),
+              decoration: InputDecoration(
+                labelText: 'Target Amount',
                 border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.currency_rupee_sharp),
+                prefixIcon: Icon(AppIcons().getCurrencyIcon('Rupee')),
               ),
               validator: (value) { 
                 if (value == null || value.isEmpty) {
@@ -118,29 +109,35 @@ class _AddGoalState extends State<AddGoal> {
                 return null; // Return null if valid
               },
             ),
+            const SizedBox(height: 16),
 
-            const SizedBox(height: 15),
-
-            const Text(
+            // Target Date
+            /* const Text(
               'Target Date',
               textAlign: TextAlign.left,
             ),
+            const SizedBox(height: 4,), */
             InkWell(
               onTap: _presentDatePicker,
               child: Container(
+                height: 50,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(100, 200, 213, 185),
+                  border: Border.all(color: Colors.black45),
+                  borderRadius: BorderRadius.circular(4)
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align text and icon
                   children: [
-                  Text(
-                      _selectedDate == null
-                        ? 'Select Target Date'
-                        : 'Selected: ${_selectedDate.toString().split(' ')[0]}',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                    _selectedDate == null
+                      ? Text(
+                        'Select Target Date',
+                        style: const TextStyle(color: Colors.black45),
+                      )
+                      : Text(
+                        'Selected: ${_selectedDate.toString().split(' ')[0]}',
+                        style: const TextStyle(color: Colors.black),
+                      ),
                     const Icon(Icons.calendar_today), // Add a calendar icon
                   ],
                 ),
@@ -153,9 +150,19 @@ class _AddGoalState extends State<AddGoal> {
               onPressed: _selectedDate == null ? null : _submitData, 
               child: const Text('Save Goal'),
             ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Discard',
+                  style: TextStyle(color: Colors.red),
+                ),
+              )
+            
           ],
         ),
-      ),
+      
     );
   }
 }
