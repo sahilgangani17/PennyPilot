@@ -113,10 +113,10 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                     value: 'Income',
                     child: Text('Income'),
                   ),
-                  DropdownMenuItem(
-                      value: 'Savings',
-                      child : Text('Savings'),
-                    ),
+                  // DropdownMenuItem(
+                  //     value: 'Savings',
+                  //     child : Text('Savings'),
+                  //   ),
                 ],
                 onChanged: (value) {
                   if (value != null) {
