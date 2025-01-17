@@ -37,7 +37,7 @@ class _AddGoalState extends State<AddGoal> {
       double targetAmount = double.parse(_targetAmountController.text);
 
       // Save goal to the database
-      await DatabaseService.instance.addSavingGoal(goalName, targetAmount);
+      await DatabaseSaving.instance.addSavingGoal(goalName, targetAmount);
 
       // Close the dialog and notify parent widget
       Navigator.of(context).pop(true); // Notify that goal was added

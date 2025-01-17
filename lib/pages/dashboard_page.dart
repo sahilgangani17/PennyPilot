@@ -1,11 +1,14 @@
-  import 'package:flutter/material.dart';
-  import 'package:penny_pilot/widgets/HeroCard_dashboard.dart';
-  import 'package:penny_pilot/widgets/RecentTransactionCard.dart';
+import 'package:flutter/material.dart';
+import 'package:penny_pilot/widgets/HeroCard_dashboard.dart';
+import 'package:penny_pilot/widgets/RecentTransactionCard.dart';
+class Dashboard extends StatefulWidget {
+  const Dashboard({super.key});
+  
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
 
-  class Dashboard extends StatelessWidget {
-    const Dashboard({super.key});
-    static const title = 'Dashboard';
-
+class _DashboardState extends State<Dashboard> {
     @override
     Widget build(BuildContext context) {
       return Scaffold(
@@ -22,5 +25,6 @@
           ),
         ),
       );
-    }
+    
   }
+}

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:penny_pilot/widgets/display_txns.dart';
+import 'package:penny_pilot/widgets/txn_page_expenses.dart';
+import 'package:penny_pilot/widgets/txn_page_income.dart';
+import 'package:penny_pilot/widgets/txn_page_all.dart';
+import 'package:penny_pilot/widgets/txn_page_savings.dart';
 
 class AnalysisPage extends StatefulWidget {
   const AnalysisPage({
@@ -19,6 +22,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
     'All': AllTxnPage(), //All
     'Expenses': ExpenseTxnPage(), //Expenses
     'Income': IncomeTxnPage(), //Income
+    'Savings': GoalTxnPage(),
   };
 
   @override
@@ -44,6 +48,10 @@ class _AnalysisPageState extends State<AnalysisPage> {
             DropdownMenuItem(
               value: 'Income',
               child: Text('Income'),
+            ),
+            DropdownMenuItem(
+              value: 'Savings',
+              child: Text('Savings'),
             ),
           ],
           onChanged: (value) {
@@ -99,29 +107,4 @@ class _AnalysisPageState extends State<AnalysisPage> {
       )
     );
   } */
-}
-
-class AllTxnPage extends StatelessWidget {
-  const AllTxnPage({super.key});
-  
-  @override
-  Widget build(BuildContext context) {
-    return DisplayTxns(displayTxnType: TxnStates.allTxn);
-  }
-}
-class ExpenseTxnPage extends StatelessWidget {
-  const ExpenseTxnPage({super.key});
-  
-  @override
-  Widget build(BuildContext context) {
-    return DisplayTxns(displayTxnType: TxnStates.expensesTxns);
-  }
-}
-class IncomeTxnPage extends StatelessWidget {
-  const IncomeTxnPage({super.key});
-  
-  @override
-  Widget build(BuildContext context) {
-    return DisplayTxns(displayTxnType: TxnStates.incomeTxns);
-  }
 }

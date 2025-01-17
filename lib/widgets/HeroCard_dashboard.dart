@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:penny_pilot/database/db_service.dart';
+import 'package:penny_pilot/database/db_txns.dart';
 
 class HeroCard extends StatefulWidget {
   const HeroCard({super.key});
@@ -16,8 +16,8 @@ class _HeroCardState extends State<HeroCard> {
   void initState() {
     super.initState();
     // Initialize the future objects to fetch data
-    totalIncomeFuture = DatabaseService.instance.getTotalIncome();
-    totalExpenseFuture = DatabaseService.instance.getTotalExpense();
+    totalIncomeFuture = DatabaseTxn.instance.getTotalIncome();
+    totalExpenseFuture = DatabaseTxn.instance.getTotalExpense();
   }
 
   @override

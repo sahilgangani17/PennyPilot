@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:penny_pilot/database/db_service.dart';
+import 'package:penny_pilot/database/db_txns.dart';
+import 'package:penny_pilot/pages/home_page.dart';
 import 'package:penny_pilot/utils/icon_list.dart';
 import 'package:penny_pilot/models/transaction.dart';
 import 'package:penny_pilot/widgets/transaction_options_dialog.dart';
@@ -30,51 +31,10 @@ class _TransactionTile extends State<TransactionTile> {
   @override
   void initState() {
     super.initState();
-    txn = widget.txn;
-    color = txn?.type == 'Expenses' ? Colors.red : Colors.green;
-    flutterLocalNotificationsPlugin = widget.flutterLocalNotificationsPlugin;
-  }
-
-  Future<void> _addNotification(String category, double amount) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> notifications = prefs.getStringList('notifications') ?? [];
-
-    String notification = '$category: \$${amount.toStringAsFixed(2)}';
-
-    notifications.add(notification);
-    await prefs.setStringList('notifications', notifications);
-
-    // Check if notifications are enabled
-    bool granted = await flutterLocalNotificationsPlugin
-            .resolvePlatformSpecificImplementation<
-                AndroidFlutterLocalNotificationsPlugin>()
-            ?.areNotificationsEnabled() ??
-        false;
-
-    if (!granted) {
-      print("Notifications are not enabled for this app. Please enable them in system settings.");
-      return;
-    }
-
-    // Show the notification if permissions are granted
-    try {
-      await flutterLocalNotificationsPlugin.show(
-        0,
-        '$category Transaction',
-        notification,
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-            'your_channel_id',
-            'your_channel_name',
-            channelDescription: 'your_channel_description',
-            importance: Importance.max,
-            priority: Priority.high,
-          ),
-        ),
-      );
-    } catch (e) {
-      print("Error showing notification: $e");
-    }
+    txn = widget.txn!;
+      color = txn!.type == 'Expenses' 
+        ? Colors.red 
+        : Colors.green;
   }
 
   @override
@@ -108,11 +68,10 @@ class _TransactionTile extends State<TransactionTile> {
                 color: color?.withOpacity(0.2),
               ),
               child: Center(
-                child: FaIcon(
-                    widget.appicons.getExpenseCategoryIcon(txn?.category ?? '')),
-              ),
+                child: FaIcon(widget.appicons.getExpenseCategoryIcon(txn != null ? txn!.category : '')),
+              ), 
             ),
-          ),
+          ),  
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -166,12 +125,10 @@ class _TransactionTile extends State<TransactionTile> {
                   ),
                   IconButton(
                     onPressed: () {
-                      if (txn != null) {
-                        DatabaseService.instance.deleteTxn(txn!);
-                      }
-                    },
-                    icon: Icon(Icons.delete, color: Colors.grey),
-                  ),
+                      DatabaseService.instance.deleteTxn(txn!);
+                    }, 
+                    icon: Icon(Icons.delete, color: Colors.grey,)
+                  )
                 ],
               ),
             ],

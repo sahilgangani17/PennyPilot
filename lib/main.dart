@@ -44,7 +44,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else if (snapshot.hasData) {
-          return const HomePage(); // User is logged in
+          return HomePage(); // User is logged in
         } else {
           return const PennyPilotApp(); // User is not logged in
         }

@@ -9,8 +9,11 @@ import 'package:penny_pilot/pages/settings_page.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
+  HomePage({
+    super.key, 
+    this.selectedIndex = 0,
+  });
+  int selectedIndex;   //TODO: Change Selected Index
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -64,7 +67,7 @@ class _HomePageState extends State<HomePage> {
   void _onItemTapped(int index) {
     if (index != 2) {
       setState(() {
-        _selectedIndex = index;
+        widget.selectedIndex = index;
       });
     }
   }
@@ -154,11 +157,11 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        body: _pages[_selectedIndex],
+        body: _pages[widget.selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           iconSize: 32,
-          currentIndex: _selectedIndex,
+          currentIndex: widget.selectedIndex,
           onTap: _onItemTapped,
           items: const [
             BottomNavigationBarItem(
@@ -195,8 +198,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _openNewTransaction() {
-    showDialog(
+  void _openNewTransaction() async {
+    await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         content: TransactionOptions(
@@ -206,5 +209,10 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage(selectedIndex: widget.selectedIndex,)),
+    );
+
   }
 }

@@ -1,15 +1,17 @@
+import 'package:penny_pilot/models/goal.dart';
+import 'package:penny_pilot/models/transaction.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class DatabaseService {
-  static final DatabaseService instance = DatabaseService._init();
+class DatabaseSaving {
+  static final DatabaseSaving instance = DatabaseSaving._init();
   static Database? _database;
 
-  DatabaseService._init();
+  DatabaseSaving._init();
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-    _database = await _initDB('savings.db');
+      _database = await _initDB('savings.db');
     return _database!;
   }
 
@@ -130,13 +132,13 @@ class DatabaseService {
     );
   }
 
-  Future<List<Map<String, dynamic>>> fetchGoalHistory() async {
-    final db = await instance.database;
-    return await db.query(
-      'goal_history',
-      orderBy: 'id DESC', // Fetch completed goals ordered by id
-    );
-  }
+  
+ Future<List<Goal>> fetchGoalHistory() async {
+  final db = await instance.database; // Use the getter to obtain the database instance
+  final result = await db.query('goal_history');
+  return result.map((map) => Goal.fromJSON(map)).toList(); // Map the results to Goal objects
+}
+
 
   Future<double> fetchTotalSavings() async {
     final db = await instance.database;
