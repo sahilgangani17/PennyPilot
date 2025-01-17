@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+
+
 
 class Currencyconvertor extends StatefulWidget {
   const Currencyconvertor({super.key});
 
   @override
   State<Currencyconvertor> createState() => _CurrencyconvertorState();
+
+  //   @override
+  // void initState() {
+  //   super.initState();
+  //   _loadDefaultCurrency(); // Load the default currency
+  // }
+  
 }
 
 class _CurrencyconvertorState extends State<Currencyconvertor> {
@@ -244,11 +254,12 @@ class _CurrencyconvertorState extends State<Currencyconvertor> {
                                           );
                                         },
                                         icon: Icon(Icons.copy)),
-                                    IconButton(
-                                        onPressed: () {
-                                          //Logic to add amoount in transaction
-                                        },
-                                        icon: Icon(Icons.add)),
+                                    // IconButton(
+                                    //     onPressed: () {
+                                    //       //Logic to add amount in transaction
+
+                                    //     },
+                                    //     icon: Icon(Icons.add)),
                                   ],
                                 )
                               ],
@@ -265,3 +276,8 @@ class _CurrencyconvertorState extends State<Currencyconvertor> {
         ));
   }
 }
+
+// Future<void> _setDefaultCurrency(String currency) async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   await prefs.setString('defaultCurrency', currency);
+// }
