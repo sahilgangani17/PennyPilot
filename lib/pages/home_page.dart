@@ -159,12 +159,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _openNewTransaction() {
-    showDialog(
+  void _openNewTransaction() async {
+    await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         content: TransactionOptions(),
       ),
     );
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()),
+    );
+
   }
 }

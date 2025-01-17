@@ -28,9 +28,9 @@ class _TransactionTile extends State<TransactionTile> {
   void initState() {
     super.initState();
     txn = widget.txn!;
-      color = txn!.type == 'Expenses' 
-        ? Colors.red 
-        : Colors.green;
+    color = txn!.type == 'Expenses' 
+      ? Colors.red 
+      : Colors.green;
   }
 
   @override
@@ -64,7 +64,10 @@ class _TransactionTile extends State<TransactionTile> {
                 color: color!.withOpacity(0.2)
               ), 
               child: Center(
-                child: FaIcon(widget.appicons.getExpenseCategoryIcon(txn != null ? txn!.category : '')),
+                child: FaIcon( (txn!.type == 'Expenses') 
+                    ? widget.appicons.getExpenseCategoryIcon(txn!.category)
+                    : widget.appicons.getIncomeCategoryIcon(txn!.category)
+                ),
               ), 
             ),
           ),  
