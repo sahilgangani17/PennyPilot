@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  int _selectedIndex = 3;   //TODO: Change Selected Index
+  int _selectedIndex = 0;   //TODO: Change Selected Index
 
   final List<Widget> _pages = [
     Dashboard(),
