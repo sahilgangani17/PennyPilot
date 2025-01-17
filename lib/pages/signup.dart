@@ -19,11 +19,18 @@ class _SignupState extends State<Signup> {
   final _passwordController = TextEditingController();
 
   var authService = AuthService();
+  var isLoader = false;
   bool _isPasswordVisible = false;
+
+  var appvalidate = Appvalidate();
 
   // Submit form data
   Future<void> _submitForm() async {
     if (_formkey.currentState!.validate()) {
+      setState(() {
+        isLoader = true;
+      });
+
       var data = {
         "username": _usernameController.text,
         "email": _emailController.text,
@@ -31,16 +38,13 @@ class _SignupState extends State<Signup> {
         "password": _passwordController.text,
       };
 
+      await DatabaseUser.instance.insertUser(data);
+      // await _saveDataToJson(data); // Save form data to JSON
+      await authService.createUser(data, context); // Simulate user creation (e.g., Firebase)
 
-      await DatabaseUser.instance.insertUser(data);  
-
-      // Simulate user creation (e.g., Firebase or another auth service)
-      await authService.createUser(data, context);
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Login()),
-      );
+      setState(() {
+        isLoader = false;
+      });
     }
   }
 
@@ -56,54 +60,76 @@ class _SignupState extends State<Signup> {
             child: Column(
               children: [
                 SizedBox(height: 60),
-                Text(
-                  "Create New Account",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
+                SizedBox(
+                  width: 250,
+                  child: Text(
+                    "Create New Account",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 TextFormField(
                   controller: _usernameController,
-                  decoration: InputDecoration(labelText: "Username"),
-                  validator: Appvalidate().validateUsername,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  decoration: _buildInputDecoration("Username", Icons.person),
+                  validator: appvalidate.validateUsername,
                 ),
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _emailController,
-                  decoration: InputDecoration(labelText: "Email"),
-                  validator: Appvalidate().validateEmail,
+                  keyboardType: TextInputType.emailAddress,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  decoration: _buildInputDecoration("Email", Icons.email),
+                  validator: appvalidate.validateEmail,
                 ),
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _phonenoController,
-                  decoration: InputDecoration(labelText: "Phone No."),
-                  validator: Appvalidate().validatePhoneNo,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  decoration: _buildInputDecoration("PhoneNo", Icons.phone),
+                  validator: appvalidate.validatePhoneNo,
                 ),
-                  
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _passwordController,
                   obscureText: !_isPasswordVisible,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   decoration: InputDecoration(
                     labelText: "Password",
                     suffixIcon: IconButton(
-                      icon: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+                      icon: Icon(
+                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                      ),
                       onPressed: () {
                         setState(() {
                           _isPasswordVisible = !_isPasswordVisible;
                         });
                       },
                     ),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                   ),
-                  validator: Appvalidate().isEmptyCheck,
+                  validator: appvalidate.validatePassword,
                 ),
                 SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: _submitForm,
-                  child: Text("Create Account"),
+                SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueGrey,
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: () {
+                      isLoader ? print("Loading") : _submitForm();
+                    },
+                    child: isLoader
+                        ? const Center(child: CircularProgressIndicator())
+                        : const Text("Create Account"),
+                  ),
                 ),
                 SizedBox(height: 16),
                 TextButton(
@@ -113,13 +139,24 @@ class _SignupState extends State<Signup> {
                       MaterialPageRoute(builder: (context) => Login()),
                     );
                   },
-                  child: Text("Login", style: TextStyle(fontSize: 18, color: Colors.blueGrey)),
+                  child: const Text(
+                    "Login",
+                    style: TextStyle(fontSize: 18, color: Colors.blueGrey),
+                  ),
                 ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  InputDecoration _buildInputDecoration(String label, IconData suffixIcon) {
+    return InputDecoration(
+      labelText: label,
+      suffixIcon: Icon(suffixIcon),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
     );
   }
 }
