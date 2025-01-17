@@ -34,6 +34,7 @@ class _SavingGoalsState extends State<SavingGoals> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -49,15 +50,15 @@ class _SavingGoalsState extends State<SavingGoals> {
                 final totalSavings = snapshot.data ?? 0.0;
                 return Container(
                   padding: const EdgeInsets.all(20),
-                  color: Colors.blue[800],
+                  //color: Colors.blue[800],
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const Text(
                         'Total Savings',
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+                          //color: Colors.white,
+                          fontSize: 40,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -65,7 +66,7 @@ class _SavingGoalsState extends State<SavingGoals> {
                       Text(
                         '₹${totalSavings.toStringAsFixed(2)}',
                         style: const TextStyle(
-                          color: Colors.white,
+                          //color: Colors.white,
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
                         ),
@@ -124,6 +125,7 @@ class _SavingGoalsState extends State<SavingGoals> {
                         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                           return const Center(child: Text('No active goals.'));
                         }
+
                         final goals = snapshot.data!;
                         return ListView.builder(
                           shrinkWrap: true,
@@ -132,11 +134,11 @@ class _SavingGoalsState extends State<SavingGoals> {
                           itemBuilder: (context, index) {
                             final goal = goals[index];
                             return GoalTile(
+                              progressColor: Colors.blue,
                               goalId: goal['id'],
                               goal: goal['title'],
                               savedAmount: goal['saved_amount'],
                               targetAmount: goal['target_amount'],
-                              progressColor: Colors.blue,
                               isCompleted: goal['isCompleted'] == 1,
                               onProgressUpdated: _refreshGoals,
                             );

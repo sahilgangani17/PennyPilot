@@ -1,4 +1,7 @@
 double convertStringToDouble(String string) {
   double? amount = double.tryParse(string);
-  return amount ?? 0;
+  if (amount != null && amount < 0) {
+    return 0;
+  }
+  return amount!;
 }

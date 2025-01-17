@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:penny_pilot/database/db_saving.dart';  // Add this import to use DatabaseService
+import 'package:penny_pilot/database/db_saving.dart';
+import 'package:penny_pilot/utils/icon_list.dart';  // Add this import to use DatabaseService
 
 class AddGoal extends StatefulWidget {
   const AddGoal({super.key});
@@ -66,6 +67,7 @@ class _AddGoalState extends State<AddGoal> {
               ),
             ),
             // Goal Name Input
+            
             TextFormField(
               controller: _goalNameController,
               decoration: const InputDecoration(
@@ -80,6 +82,7 @@ class _AddGoalState extends State<AddGoal> {
               },
             ),
             const SizedBox(height: 16),
+            
             // Target Amount Input
             TextFormField(
               controller: _targetAmountController, 
@@ -87,7 +90,7 @@ class _AddGoalState extends State<AddGoal> {
               decoration: InputDecoration(
                 labelText: 'Target Amount',
                 border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.attach_money),
+                prefixIcon: Icon(AppIcons().getCurrencyIcon('Rupee')),
               ),
               validator: (value) { 
                 if (value == null || value.isEmpty) {
