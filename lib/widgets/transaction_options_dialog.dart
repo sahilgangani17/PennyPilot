@@ -64,7 +64,7 @@ class _TransactionOptionsState extends State<TransactionOptions> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      // key: _formKey,
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -156,7 +156,7 @@ class _TransactionOptionsState extends State<TransactionOptions> {
               // Add Transaction Button
               ElevatedButton(
                 onPressed: () async {
-                  if (txnAmountController.text.isNotEmpty && _formKey.currentState!.validate()) {
+                  if (txnAmountController.text.isNotEmpty ) {
                     Navigator.pop(context);
                     DateTime today = DateTime.now();
                     double txnAmount = convertStringToDouble(txnAmountController.text);
