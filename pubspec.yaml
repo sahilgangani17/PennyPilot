@@ -53,9 +53,11 @@ dependencies:
   # for Chart
   fl_chart: ^0.70.2
 
-  path_provider: ^2.1.1  # Use the latest version
+  path_provider: ^2.1.5
 
-  shared_preferences: ^2.1.0
+  shared_preferences: ^2.3.5
+
+  # shared_preferences: ^2.1.0
 
 dev_dependencies:
   flutter_test:
