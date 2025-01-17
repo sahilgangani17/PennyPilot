@@ -105,7 +105,7 @@ class AppIcons {
   }
 
   IconData getIncomeCategoryIcon(String categoryName) {
-    final category = homeExpenseCategories.firstWhere(
+    final category = homeIncomeCategories.firstWhere(
       (category) => category['name'] == categoryName,
       orElse: () => {'icon': FontAwesomeIcons.circleQuestion},
     );
