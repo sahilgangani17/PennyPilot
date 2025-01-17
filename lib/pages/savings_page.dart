@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:penny_pilot/widgets/add_goal.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:penny_pilot/database/db_saving.dart';  // Database service
+import 'package:penny_pilot/widgets/add_goal.dart'; // Add Goal dialog
+import 'package:penny_pilot/widgets/goal_tile.dart'; // Goal Tile widget
 
-// TODO: -- Remaining Logic build up and  backend --For Sankalp Dawada
 class SavingGoals extends StatefulWidget {
   const SavingGoals({super.key});
 
@@ -11,287 +11,146 @@ class SavingGoals extends StatefulWidget {
 }
 
 class _SavingGoalsState extends State<SavingGoals> {
+  late Future<List<Map<String, dynamic>>> _goals; // Active goals
+  late Future<double> _totalSavings; // Total savings
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  void _fetchData() {
+    _goals = DatabaseService.instance.fetchAllGoals(); // Fetch active goals
+    _totalSavings = DatabaseService.instance.fetchTotalSavings(); // Fetch total savings
+  }
+
+  void _refreshGoals() {
+    setState(() {
+      _fetchData(); // Re-fetch data
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(100, 200, 213, 185),
-  body: SingleChildScrollView(
-    child: Column(
-      
-      children:[ 
-        Container(
-          color: Colors.blue[800],
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              padding: EdgeInsets.all(20),
-              color: Colors.blue[800],
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Total Savings',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold
-                  ),),
-                  SizedBox(height: 10,),
-                  Text(
-                    '₹12,450',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold
-                      ),
-                      ),
-                      // SizedBox(height: 5,),
-                      Text(
-                        '+₹2,450 this month',
+            // Total Savings Section
+            FutureBuilder<double>(
+              future: _totalSavings,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return const Center(child: Text('Error fetching total savings.'));
+                }
+                final totalSavings = snapshot.data ?? 0.0;
+                return Container(
+                  padding: const EdgeInsets.all(20),
+                  color: Colors.blue[800],
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text(
+                        'Total Savings',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 10,
-                          fontStyle: FontStyle.italic,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        '₹${totalSavings.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+
+            // Active Goals Section
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Active Goals',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
-                          )
-                ]
+                        ),
+                        FilledButton.icon(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                content: AddGoal(),
+                              ),
+                            ).then((value) {
+                              if (value == true) {
+                                _refreshGoals(); // Refresh goals if a new one is added
+                              }
+                            });
+                          },
+                          icon: const Icon(Icons.add),
+                          label: const Text('Add Goal'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+
+                    // Active Goals List
+                    FutureBuilder<List<Map<String, dynamic>>>( // Ensure only active goals are fetched
+                      future: _goals,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return const Center(child: Text('Error fetching active goals.'));
+                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                          return const Center(child: Text('No active goals.'));
+                        }
+                        final goals = snapshot.data!;
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: goals.length,
+                          itemBuilder: (context, index) {
+                            final goal = goals[index];
+                            return GoalTile(
+                              goalId: goal['id'],
+                              goal: goal['title'],
+                              savedAmount: goal['saved_amount'],
+                              targetAmount: goal['target_amount'],
+                              progressColor: Colors.blue,
+                              isCompleted: goal['isCompleted'] == 1,
+                              onProgressUpdated: _refreshGoals,
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
-              ),
+            ),
           ],
         ),
       ),
-      Container(
-        
-        margin: EdgeInsets.all(15),
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          ),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Active Goals',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold
-                  ),
-                ),
-                  ElevatedButton.icon(
-                  onPressed: (){
-                    showDialog(
-                      context: context,
-                      builder: (context)=>AlertDialog(
-                        content: AddGoal(),
-                      ),
-                      );
-                  },
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.white,// +
-                    ),
-                    
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:Color.fromARGB(100, 131, 131, 131),
-                      foregroundColor: Colors.white,
-                      ),
-                    label: Text(
-                      'Add Goal',
-                      )
-                    ),       
-              ],
-            ),
-            SizedBox(height: 10,),
-            Container(
-              padding: EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                color: Color.fromARGB(100, 200, 213, 185),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              //Progress Bar
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Example',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold
-                        ),
-                        ),
-                      Text(
-                        '₹10,000',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold
-                        ),
-                        ),
-                    ],
-                  ),
-                  Slider(
-                    activeColor: Colors.green,
-                    thumbColor: Colors.green,
-                    inactiveColor: Color(0xFFE0E0E0),
-                    min: 0.0,
-                    max: 1,
-                    value: 0.4,
-                    onChanged: (newValue) {},
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '₹20,000 Saved',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 15,
-                          fontStyle: FontStyle.italic,
-                        ),
-                        ),
-                        Text(
-                          '40%',
-                          style: TextStyle(
-                            color: Colors.green,
-                          ),
-                          ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: 10,),
-            Container(
-              padding: EdgeInsets.all(15),
-              //Progress Bar
-              decoration: BoxDecoration(
-                color: Color.fromARGB(100, 200, 213, 185),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Example',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold
-                        ),
-                        ),
-                      Text(
-                        '₹10,000',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold
-                        ),
-                        ),
-                    ],
-                  ),
-                  Slider(
-                    activeColor: Colors.orange,
-                    thumbColor: Colors.orange,
-                    inactiveColor: Color(0xFFE0E0E0),
-                    min: 0,
-                    max: 1,
-                    value: 0.25,
-                    onChanged: (newValue) {},
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '₹20,000 Saved',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 15,
-                          fontStyle: FontStyle.italic,
-                        ),
-                        ),
-                        Text(
-                          '25%',
-                          style: TextStyle(
-                            color: Colors.orange,
-                          ),
-                          ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: 10,),
-            Container(
-              padding: EdgeInsets.all(15),
-              //Progress Bar
-              decoration: BoxDecoration(
-                color: Color.fromARGB(100, 200, 213, 185),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Example',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold
-                        ),
-                        ),
-                      Text(
-                        '₹30,000',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold
-                        ),
-                        ),
-                    ],
-                  ),
-                  Slider(
-                    activeColor: Colors.blue,
-                    thumbColor: Colors.blue,
-                    inactiveColor: Color(0xFFE0E0E0),
-                    min: 0,
-                    max: 1,
-                    value: 0.75,
-                    onChanged: (newValue) {},
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '₹70,000 Saved',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 15,
-                          fontStyle: FontStyle.italic,
-                        ),
-                        ),
-                        Text(
-                          '75%',
-                          style: TextStyle(
-                            color: Colors.blue,
-                          ),
-                          ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ]
-        ),
-      ),
-      ]
-    ),
-  ),
-);
-
+    );
   }
 }

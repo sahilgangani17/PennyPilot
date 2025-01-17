@@ -34,6 +34,7 @@ class _HeroCardState extends State<HeroCard> {
           ),
         ),
         SizedBox(height: 10),
+        
         // FutureBuilder for total balance (Income - Expense)
         FutureBuilder<double>(
           future: totalIncomeFuture,

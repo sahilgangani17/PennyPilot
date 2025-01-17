@@ -133,10 +133,10 @@ class _TransactionOptionsState extends State<TransactionOptions> {
               TextFormField(
                 controller: txnAmountController,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.currency_rupee_sharp),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(AppIcons().getCurrencyIcon('Rupee')),
                   labelText: 'Amount',
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: appvalidate.isEmptyCheck,
