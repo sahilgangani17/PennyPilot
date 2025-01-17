@@ -6,10 +6,12 @@ class Goal {
 
   Goal({
     this.id,
+
     required this.title,
     required this.target_amount,
     required this.saved_amount,
     required this.target_date,
+
   });
 
   factory Goal.fromJSON(Map<String, dynamic> json) =>

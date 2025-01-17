@@ -39,7 +39,7 @@ class _AllTxnPageState extends State<AllTxnPage> {
           return Center(child: CircularProgressIndicator()); // Loading state
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}')); // Error handling
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty || isAllZero(snapshot.data!)) {
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(child: Text('No data available.')); // No data found
         } else {
           final data = snapshot.data!;
@@ -58,10 +58,6 @@ class _AllTxnPageState extends State<AllTxnPage> {
         }
       },
     );
-  }
-
-  bool isAllZero(Map<String,double> data) {
-    return data.values.every((value) => value == 0);
   }
 
   // Helper function to create PieChartSectionData from the data
