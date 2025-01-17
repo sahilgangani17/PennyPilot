@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:penny_pilot/database/db_saving.dart';
-import 'package:penny_pilot/widgets/PieChart.dart';
 import 'package:penny_pilot/widgets/display_completed_goals.dart';
 
 class GoalTxnPage extends StatefulWidget {

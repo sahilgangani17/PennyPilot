@@ -35,9 +35,9 @@ class _AddGoalState extends State<AddGoal> {
     if (_formKey.currentState!.validate()) {
       String goalName = _goalNameController.text;
       double targetAmount = double.parse(_targetAmountController.text);
-
+      String targetDate = '${_selectedDate!.day} / ${_selectedDate!.month} / ${_selectedDate!.year}';
       // Save goal to the database
-      await DatabaseSaving.instance.addSavingGoal(goalName, targetAmount);
+      await DatabaseSaving.instance.addSavingGoal(goalName, targetAmount, targetDate);
 
       // Close the dialog and notify parent widget
       Navigator.of(context).pop(true); // Notify that goal was added

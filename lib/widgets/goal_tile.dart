@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:penny_pilot/database/db_saving.dart';
 
 class GoalTile extends StatefulWidget {
-  final String goal;
+  final String goal, targetDate;
   final double savedAmount;
   final double targetAmount;
   final Color progressColor;
@@ -15,6 +15,7 @@ class GoalTile extends StatefulWidget {
     required this.goal,
     required this.savedAmount,
     required this.targetAmount,
+    required this.targetDate,
     required this.progressColor,
     required this.goalId,
     required this.onProgressUpdated,
@@ -106,19 +107,28 @@ class _GoalTileState extends State<GoalTile> {
             ),
             const SizedBox(height: 10),
 
-            // Target Amount and Progress Percentage
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // Target Amount and Progress Percentage
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Target Amount: ₹${widget.targetAmount.toStringAsFixed(2)}',
+                      style: TextStyle(color: Colors.grey[600], fontSize: 15),
+                    ),
+                    Text(
+                      '${(progress * 100).toStringAsFixed(1)}%',
+                      style: TextStyle(color: widget.progressColor),
+                    ),
+                  ],
+                ),
                 Text(
-                  'Target: ₹${widget.targetAmount.toStringAsFixed(2)}',
+                  'Target Date: ${widget.targetDate}',
                   style: TextStyle(color: Colors.grey[600], fontSize: 15),
-                ),
-                Text(
-                  '${(progress * 100).toStringAsFixed(1)}%',
-                  style: TextStyle(color: widget.progressColor),
-                ),
-              ],
+                )
+              ]
             ),
             const SizedBox(height: 10),
 
