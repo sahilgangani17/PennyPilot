@@ -140,6 +140,7 @@ class _SavingGoalsState extends State<SavingGoals> {
                               savedAmount: goal['saved_amount'],
                               targetAmount: goal['target_amount'],
                               isCompleted: goal['isCompleted'] == 1,
+                              targetDate: goal['target_date'],
                               onProgressUpdated: _refreshGoals,
                             );
                           },
