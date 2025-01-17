@@ -123,6 +123,7 @@ class _HomePageState extends State<HomePage> {
             false;
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           forceMaterialTransparency: true,

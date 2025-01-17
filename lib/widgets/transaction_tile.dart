@@ -65,7 +65,11 @@ class _TransactionTile extends State<TransactionTile> {
                 color: color?.withOpacity(0.2),
               ),
               child: Center(
-                child: FaIcon(widget.appicons.getExpenseCategoryIcon(txn != null ? txn!.category : '')),
+                child: FaIcon( (txn!.type == 'Expenses')
+                    ? widget.appicons.getExpenseCategoryIcon(txn!.category)
+                    : widget.appicons.getIncomeCategoryIcon(txn!.category) 
+
+                ),
               ), 
             ),
           ),  
