@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  int _selectedIndex = 3;   //TODO: Change Selected Index
+  int _selectedIndex = 0;   //TODO: Change Selected Index
 
   final List<Widget> _pages = [
     Dashboard(),
@@ -88,20 +88,26 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           forceMaterialTransparency: true,
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0), 
-            child: ClipOval(
-              child: Image.asset(
-                'lib/src/assets/images/penny_pilot.png',  // Correct path to your image
-                width: 80,  
-                height: 80,
-                fit: BoxFit.cover,  // Ensure image fits properly in the circle
+          title: Row(
+            children: [
+              SizedBox(
+                width: 48,
+                child: Image.asset(
+                  'lib/src/assets/images/penny_pilot.png',  
+                  fit: BoxFit.cover, 
+                ),
               ),
-            ),
-          ),
-          title: Text(
-            'PennyPilot',
-            style: TextStyle(color: Colors.black, fontSize: 32, fontFamily: 'Lexend Deca'),
+              const SizedBox(width: 10),
+              Text(
+                'PennyPilot',
+                style: TextStyle(
+                  color: Colors.black, 
+                  fontSize: 32, 
+                  fontFamily: 'Raleway', 
+                  fontWeight: FontWeight.w900
+                ),
+              ),
+            ]
           ),
           actions: [
             IconButton(

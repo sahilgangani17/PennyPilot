@@ -11,7 +11,6 @@ enum EditTxnStates {
 }
 
 class TransactionOptions extends StatefulWidget {
- 
   const TransactionOptions({
     super.key,
     this.txn,
@@ -19,14 +18,15 @@ class TransactionOptions extends StatefulWidget {
   });
 
   final Txn? txn;
-  final editTxnState; 
+  final editTxnState;
 
   @override
   State<TransactionOptions> createState() => _TransactionOptionsState();
 }
 
 class _TransactionOptionsState extends State<TransactionOptions> {
-  
+
+
   var appvalidate = Appvalidate();
 
   var _heading;
@@ -43,8 +43,8 @@ class _TransactionOptionsState extends State<TransactionOptions> {
       case EditTxnStates.create:
         _heading = 'Add New Transaction';
         txnId = null;
-        txnType = 'Expenses';
-        txnCategory = 'Others';
+        txnType = 'Expenses'; // Ensure this is a valid option in the dropdown
+        txnCategory = 'Others'; // Ensure this is a valid option for category
         txnAmountController = TextEditingController();
         txnDescriptionController = TextEditingController();
         break;
@@ -64,6 +64,7 @@ class _TransactionOptionsState extends State<TransactionOptions> {
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formKey,
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -85,10 +86,10 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                   )
                 )
               ),
-              
+
               // Type Dropdown
               DropdownButtonFormField<String>(
-                value: txnType,
+                value: txnType.isEmpty ? null : txnType,  // Ensure txnType is not empty
                 decoration: const InputDecoration(
                   labelText: 'Type',
                   border: OutlineInputBorder(),
@@ -107,7 +108,7 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                   if (value != null) {
                     setState(() {
                       txnType = value;
-                      txnCategory = 'Others';
+                      txnCategory = 'Others'; // Reset category to "Others" when type changes
                     });
                   }
                 },
@@ -141,10 +142,10 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                 },
               ),
               const SizedBox(height: 16),
-              
+
               // Description Input
               TextFormField(
-                controller: txnDescriptionController      ,
+                controller: txnDescriptionController,
                 decoration: const InputDecoration(
                   labelText: 'Description',
                   border: OutlineInputBorder(),
@@ -155,22 +156,25 @@ class _TransactionOptionsState extends State<TransactionOptions> {
               // Add Transaction Button
               ElevatedButton(
                 onPressed: () async {
-                  if (txnAmountController.text.isNotEmpty) {
+                  if (txnAmountController.text.isNotEmpty && _formKey.currentState!.validate()) {
                     Navigator.pop(context);
                     DateTime today = DateTime.now();
-                    Txn newTxn = Txn(
-                      id: txnId,
-                      type: txnType,
-                      amount: convertStringToDouble(txnAmountController.text),
-                      category: txnCategory,
-                      description: txnDescriptionController.text.isNotEmpty ? txnDescriptionController.text : 'Not Specified',
-                      date: "${today.day} / ${today.month} / ${today.year}",
-                    );
+                    double txnAmount = convertStringToDouble(txnAmountController.text);
+                    Txn? newTxn = (txnAmount > 0)
+                      ? Txn(
+                          id: txnId,
+                          type: txnType,
+                          amount: txnAmount,
+                          category: txnCategory,
+                          description: txnDescriptionController.text.isNotEmpty ? txnDescriptionController.text : 'Not Specified',
+                          date: "${today.day} / ${today.month} / ${today.year}",
+                        )
+                      : null ;
                     if (widget.txn == null) {
-                      await DatabaseService.instance.saveNewTxn(newTxn);
+                      await DatabaseService.instance.saveNewTxn(newTxn!);
                     }
                     else {
-                      await DatabaseService.instance.updateTxn(newTxn);
+                      await DatabaseService.instance.updateTxn(newTxn!);
                     }
                     setState(() {
                       txnAmountController.clear();
@@ -180,7 +184,6 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                       txnCategory = '';
                     });
                   }
-                  
                 },
                 child: const Text('Save'),
               ),
@@ -189,10 +192,10 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                   Navigator.pop(context);
                   setState(() {
                     txnAmountController.clear();
-                      txnDescriptionController.clear();
-                      txnId = null;
-                      txnType = '';
-                      txnCategory = '';
+                    txnDescriptionController.clear();
+                    txnId = null;
+                    txnType = '';
+                    txnCategory = '';
                   });
                 },
                 child: const Text(
@@ -218,11 +221,15 @@ class CategoryDropdown extends StatelessWidget {
 
   final String? catType, txnType;
   final ValueChanged<String?> onChanged;
-  
+
   @override
   Widget build(BuildContext context) {
+    if (txnType == null || txnType!.isEmpty) {
+      return Container();  // Do not display dropdown if txnType is null or empty
+    }
+
     return DropdownButtonFormField<String>(
-      value: catType,
+      value: catType!.isEmpty ? null : catType,  // Ensure txnCategory is valid
       isExpanded: true,
       decoration: const InputDecoration(
         labelText: "Category",
@@ -233,7 +240,7 @@ class CategoryDropdown extends StatelessWidget {
           value: e['name'],
           child: Row(
             children: [
-              Icon(e['icon'] as IconData), // Type casting for safety
+              Icon(e['icon'] as IconData),
               const SizedBox(width: 8),
               Text(e['name']),
             ],

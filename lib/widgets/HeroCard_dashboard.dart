@@ -145,7 +145,7 @@ class CardOne extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
+    return Expanded(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5),
         decoration: BoxDecoration(
@@ -153,16 +153,24 @@ class CardOne extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+          child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: TextStyle(color: color, fontSize: 14),
+                  Row(
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(color: color, fontSize: 15),
+                      ),
+                      const SizedBox(height: 10),
+                      Icon(
+                        icon,
+                        color: color,
+                        size: 24,
+                      ),
+                    ],
                   ),
                   Row(
                     children: [
@@ -173,19 +181,12 @@ class CardOne extends StatelessWidget {
                       ),
                       Text(
                         "$amount", // Display the dynamic amount
-                        style: TextStyle(color: color, fontSize: 20),
+                        style: TextStyle(color: color, fontSize: 24),
                       ),
                     ],
                   )
                 ],
               ),
-              Icon(
-                icon,
-                color: color,
-                size: 45,
-              )
-            ],
-          ),
         ),
       ),
     );
