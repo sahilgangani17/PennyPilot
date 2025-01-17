@@ -6,8 +6,8 @@ import 'package:penny_pilot/pages/settingsPages/currencyconvertor.dart';
 import 'package:penny_pilot/pages/settingsPages/help&support.dart';
 import 'package:penny_pilot/pages/settingsPages/notifications.dart';
 import 'package:penny_pilot/pages/settingsPages/aboutus.dart';
-// import 'package:penny_pilot/pages/settingsPages/theme.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -18,6 +18,61 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   double currentRating = 3.0; // To store the current rating
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  bool notificationsEnabled = false; // To manage notification state
+
+  @override
+  void initState() {
+    super.initState();
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+
+    const InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    _loadNotificationState(); // Load notification state
+  }
+
+  // Load notification state from SharedPreferences
+  Future<void> _loadNotificationState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      notificationsEnabled = prefs.getBool('notifications_enabled') ?? false;
+    });
+  }
+
+  // Show a test notification when the switch is turned on
+  Future<void> _showNotification() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'your_channel_id',
+      'your_channel_name',
+      channelDescription: 'your_channel_description',
+      importance: Importance.max,
+      priority: Priority.high,
+      showWhen: false,
+    );
+
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'Test Notification',
+      'This is a test notification body.',
+      platformChannelSpecifics,
+    );
+  }
+
+  // Save notification state to SharedPreferences
+  Future<void> _saveNotificationState(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('notifications_enabled', value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +110,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               // App Settings Section
               Container(
                 padding: EdgeInsets.all(10),
@@ -81,21 +134,6 @@ class _SettingsPageState extends State<SettingsPage> {
                         );
                       },
                     ),
-                    //Theme Page
-                    // SettingsCard(
-                    //   icon: Icons.palette,
-                    //   title: "Theme",
-                    //   subtitle: "Customize app appearance",
-                    //   onTap: () {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => const Themes(),
-                    //       ),
-                    //     );
-                    //   },
-                    // ),
-                    //Backup
                     SettingsCard(
                       icon: Icons.backup,
                       title: "Backup",
@@ -109,15 +147,25 @@ class _SettingsPageState extends State<SettingsPage> {
                         );
                       },
                     ),
-                    //Notification
                     SettingsToggleCard(
                       icon: Icons.notifications,
                       title: "Notifications",
                       subtitle: "Manage your notifications",
-                      value: true,
-                      onChanged: (value) {},
+                      value: notificationsEnabled,
+                      onChanged: (value) async {
+                        setState(() {
+                          notificationsEnabled = value;
+                        });
 
-                      onTap: (){
+                        // Save the notification state to SharedPreferences
+                        await _saveNotificationState(notificationsEnabled);
+
+                        // Show a notification if the switch is turned on
+                        if (notificationsEnabled) {
+                          _showNotification();
+                        }
+                      },
+                      onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -129,11 +177,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ],
                 ),
               ),
-
-              SizedBox(
-                height: 20,
-              ),
-
+              SizedBox(height: 20),
               // Support Section
               Container(
                 padding: EdgeInsets.all(10),
@@ -144,7 +188,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: Column(
                   children: [
                     const SectionTitle(title: "Support"),
-                    //Help And Support
                     SettingsCard(
                       icon: Icons.help_rounded,
                       title: "Help & Support",
@@ -158,7 +201,6 @@ class _SettingsPageState extends State<SettingsPage> {
                         );
                       },
                     ),
-                    //About Us
                     SettingsCard(
                       icon: Icons.info,
                       title: "About Us",
@@ -172,77 +214,77 @@ class _SettingsPageState extends State<SettingsPage> {
                         );
                       },
                     ),
-                    //Rate Us
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8, right: 16, left: 16, bottom: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                    ListTile(
-                    leading: const Icon(
-                    Icons.star_rate_rounded,
-                      color: Colors.amber,
-                    ),
-                    title: const Text("Rate Us"),
-                    subtitle: Text(
-                      "Your Rating: ${currentRating.toStringAsFixed(1)}",
-                      style: const TextStyle(fontSize: 18.0),
-                    ),
-                  ),
-                  const SizedBox(height: 8.0),
-                  RatingBar.builder(
-                    initialRating: currentRating,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemSize: 32.0,
-                    itemPadding:
-                    const EdgeInsets.symmetric(horizontal: 4.0),
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (rating) {
-                      setState(() {
-                        currentRating = rating;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  Align(
-                    alignment: Alignment.center,
-                    child: TextButton(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                                "Thank you for rating us ${currentRating.toStringAsFixed(1)} stars!"),
-                          ),
-                        );
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.blueGrey[300],
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 8.0),
+                    // Rate Us
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 8, right: 16, left: 16, bottom: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListTile(
+                              leading: const Icon(
+                                Icons.star_rate_rounded,
+                                color: Colors.amber,
+                              ),
+                              title: const Text("Rate Us"),
+                              subtitle: Text(
+                                "Your Rating: ${currentRating.toStringAsFixed(1)}",
+                                style: const TextStyle(fontSize: 18.0),
+                              ),
+                            ),
+                            const SizedBox(height: 8.0),
+                            RatingBar.builder(
+                              initialRating: currentRating,
+                              minRating: 1,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              itemSize: 32.0,
+                              itemPadding:
+                                  const EdgeInsets.symmetric(horizontal: 4.0),
+                              itemBuilder: (context, _) => const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              onRatingUpdate: (rating) {
+                                setState(() {
+                                  currentRating = rating;
+                                });
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            Align(
+                              alignment: Alignment.center,
+                              child: TextButton(
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          "Thank you for rating us ${currentRating.toStringAsFixed(1)} stars!"),
+                                    ),
+                                  );
+                                },
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: Colors.blueGrey[300],
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 8.0),
+                                ),
+                                child: const Text("Submit"),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: const Text("Submit"),
                     ),
+                  ],
                 ),
-                      ],
               ),
-              ),// Rating Section
-                      ),
-                    ],
-                  ),
-                ),
             ],
-              ),
           ),
         ),
+      ),
     );
   }
 }
@@ -302,7 +344,6 @@ class SettingsToggleCard extends StatefulWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
   final VoidCallback? onTap;
-
 
   const SettingsToggleCard({
     required this.icon,

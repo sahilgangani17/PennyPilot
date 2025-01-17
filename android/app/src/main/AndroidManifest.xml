@@ -6,8 +6,11 @@
     <application
         android:label="Penny Pilot"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_pennypilot">
+        android:icon="@mipmap/ic_pennypilot"
+        android:enableOnBackInvokedCallback="true"
+        >
         <!-- https://pixelied.com/convert/svg-converter/svg-to-png -->
+        
 
         <activity
             android:name=".MainActivity"

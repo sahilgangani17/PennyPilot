@@ -14,7 +14,7 @@ class TransactionOptions extends StatefulWidget {
   const TransactionOptions({
     super.key,
     this.txn,
-    this.editTxnState = EditTxnStates.create
+    this.editTxnState = EditTxnStates.create, required Null Function(dynamic category, dynamic amount) onTransactionComplete
   });
 
   final Txn? txn;
