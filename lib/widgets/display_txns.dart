@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:penny_pilot/models/transaction.dart';
-import 'package:penny_pilot/database/db_service.dart';
+import 'package:penny_pilot/database/db_txns.dart';
 import 'package:penny_pilot/widgets/transaction_tile.dart';
 
 enum TxnStates {
@@ -25,13 +25,13 @@ class _DisplayTxns extends State<DisplayTxns> {
   Future<List<Txn>> _getData() async {
     switch(widget.displayTxnType!) {
       case TxnStates.allTxn: 
-        return await DatabaseService.instance.getAllTxns();
+        return await DatabaseTxn.instance.getAllTxns();
       case TxnStates.recentTxns:
-        return await DatabaseService.instance.get5RecentTxns();
+        return await DatabaseTxn.instance.get5RecentTxns();
       case TxnStates.expensesTxns: 
-        return await DatabaseService.instance.getExpensesTxns();
+        return await DatabaseTxn.instance.getExpensesTxns();
       case TxnStates.incomeTxns:
-        return await DatabaseService.instance.getIncomeTxns();
+        return await DatabaseTxn.instance.getIncomeTxns();
     }
   }
   

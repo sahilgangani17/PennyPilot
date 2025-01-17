@@ -3,10 +3,10 @@ import 'package:path/path.dart';
 import 'package:penny_pilot/models/transaction_constants.dart';
 import 'package:penny_pilot/models/transaction.dart';
 
-class DatabaseService {
+class DatabaseTxn {
 
-  DatabaseService._privateConstructor();
-  static final DatabaseService instance = DatabaseService._privateConstructor();
+  DatabaseTxn._privateConstructor();
+  static final DatabaseTxn instance = DatabaseTxn._privateConstructor();
 
   static Database? _database;
   
