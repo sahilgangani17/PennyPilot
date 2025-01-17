@@ -18,13 +18,13 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   double currentRating = 3.0; // To store the current rating
-  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-  bool notificationsEnabled = false; // To manage notification state
+  // late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  // bool notificationsEnabled = false; // To manage notification state
 
   @override
   void initState() {
     super.initState();
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    // flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
 
@@ -32,47 +32,47 @@ class _SettingsPageState extends State<SettingsPage> {
       android: initializationSettingsAndroid,
     );
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    // flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
-    _loadNotificationState(); // Load notification state
+    // _loadNotificationState(); // Load notification state
   }
 
   // Load notification state from SharedPreferences
-  Future<void> _loadNotificationState() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      notificationsEnabled = prefs.getBool('notifications_enabled') ?? false;
-    });
-  }
+  // Future<void> _loadNotificationState() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     notificationsEnabled = prefs.getBool('notifications_enabled') ?? false;
+  //   });
+  // }
 
   // Show a test notification when the switch is turned on
-  Future<void> _showNotification() async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'your_channel_id',
-      'your_channel_name',
-      channelDescription: 'your_channel_description',
-      importance: Importance.max,
-      priority: Priority.high,
-      showWhen: false,
-    );
+  // Future<void> _showNotification() async {
+  //   const AndroidNotificationDetails androidPlatformChannelSpecifics =
+  //       AndroidNotificationDetails(
+  //     'your_channel_id',
+  //     'your_channel_name',
+  //     channelDescription: 'your_channel_description',
+  //     importance: Importance.max,
+  //     priority: Priority.high,
+  //     showWhen: false,
+  //   );
 
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
+  //   const NotificationDetails platformChannelSpecifics =
+  //       NotificationDetails(android: androidPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      'Test Notification',
-      'This is a test notification body.',
-      platformChannelSpecifics,
-    );
-  }
+  //   await flutterLocalNotificationsPlugin.show(
+  //     0,
+  //     'Test Notification',
+  //     'This is a test notification body.',
+  //     platformChannelSpecifics,
+  //   );
+  // }
 
   // Save notification state to SharedPreferences
-  Future<void> _saveNotificationState(bool value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('notifications_enabled', value);
-  }
+  // Future<void> _saveNotificationState(bool value) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setBool('notifications_enabled', value);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -147,33 +147,34 @@ class _SettingsPageState extends State<SettingsPage> {
                         );
                       },
                     ),
-                    SettingsToggleCard(
-                      icon: Icons.notifications,
-                      title: "Notifications",
-                      subtitle: "Manage your notifications",
-                      value: notificationsEnabled,
-                      onChanged: (value) async {
-                        setState(() {
-                          notificationsEnabled = value;
-                        });
+                    //Notification
+                  //   SettingsToggleCard(
+                  //     icon: Icons.notifications,
+                  //     title: "Notifications",
+                  //     subtitle: "Manage your notifications",
+                  //     value: notificationsEnabled,
+                  //     onChanged: (value) async {
+                  //       setState(() {
+                  //         notificationsEnabled = value;
+                  //       });
 
-                        // Save the notification state to SharedPreferences
-                        await _saveNotificationState(notificationsEnabled);
+                  //       // Save the notification state to SharedPreferences
+                  //       await _saveNotificationState(notificationsEnabled);
 
-                        // Show a notification if the switch is turned on
-                        if (notificationsEnabled) {
-                          _showNotification();
-                        }
-                      },
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Notifications(),
-                          ),
-                        );
-                      },
-                    ),
+                  //       // Show a notification if the switch is turned on
+                  //       if (notificationsEnabled) {
+                  //         _showNotification();
+                  //       }
+                  //     },
+                  //     onTap: () {
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => const Notifications(),
+                  //         ),
+                  //       );
+                  //     },
+                  //   ),
                   ],
                 ),
               ),

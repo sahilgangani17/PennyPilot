@@ -72,27 +72,27 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _showTransactionNotification(String category, double amount) async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'your_channel_id',
-      'your_channel_name',
-      channelDescription: 'your_channel_description',
-      importance: Importance.max,
-      priority: Priority.high,
-      showWhen: false,
-    );
+  // Future<void> _showTransactionNotification(String category, double amount) async {
+  //   const AndroidNotificationDetails androidPlatformChannelSpecifics =
+  //       AndroidNotificationDetails(
+  //     'your_channel_id',
+  //     'your_channel_name',
+  //     channelDescription: 'your_channel_description',
+  //     importance: Importance.max,
+  //     priority: Priority.high,
+  //     showWhen: false,
+  //   );
 
-    final NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
+  //   final NotificationDetails platformChannelSpecifics =
+  //       NotificationDetails(android: androidPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      '$category Transaction',
-      'You have a new $category of \$${amount.toStringAsFixed(2)}.',
-      platformChannelSpecifics,
-    );
-  }
+  //   await flutterLocalNotificationsPlugin.show(
+  //     0,
+  //     '$category Transaction',
+  //     'You have a new $category of \$${amount.toStringAsFixed(2)}.',
+  //     platformChannelSpecifics,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
