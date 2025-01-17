@@ -1,4 +1,4 @@
-import 'package:penny_pilot/models/transaction.dart';
+import 'package:penny_pilot/models/goal.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -33,7 +33,7 @@ class DatabaseSaving {
         title TEXT NOT NULL,
         target_amount REAL NOT NULL,
         saved_amount REAL DEFAULT 0,
-        created_at TEXT NOT NULL,
+        target_date TEXT NOT NULL,
         isCompleted INTEGER DEFAULT 0
       );
     ''');
@@ -44,7 +44,7 @@ class DatabaseSaving {
         title TEXT NOT NULL,
         target_amount REAL NOT NULL,
         saved_amount REAL NOT NULL,
-        created_at TEXT NOT NULL,
+        target_date TEXT NOT NULL,
         completed_at TEXT NOT NULL
       );
     ''');
@@ -58,7 +58,7 @@ class DatabaseSaving {
           title TEXT NOT NULL,
           target_amount REAL NOT NULL,
           saved_amount REAL NOT NULL,
-          created_at TEXT NOT NULL,
+          target_date TEXT NOT NULL,
           completed_at TEXT NOT NULL
         );
       ''');
@@ -66,13 +66,13 @@ class DatabaseSaving {
   }
 
   // Method to add a new saving goal to the saving_goals table
-  Future<int> addSavingGoal(String title, double targetAmount) async {
+  Future<int> addSavingGoal(String title, double targetAmount, String date) async {
     final db = await instance.database;
     return await db.insert('saving_goals', {
       'title': title,
       'target_amount': targetAmount,
       'saved_amount': 0, // Initial saved amount is 0
-      'created_at': DateTime.now().toIso8601String(), // Timestamp when goal is created
+      'target_date': date, // Timestamp when goal is created
       'isCompleted': 0, // Initially the goal is not completed
     });
   }
@@ -106,14 +106,14 @@ class DatabaseSaving {
     final goal = await db.query('saving_goals', where: 'id = ?', whereArgs: [id]);
     if (goal.isNotEmpty) {
       final goalData = goal.first;
-
+      var now = DateTime.now();
       // Move the completed goal to goal_history
       await db.insert('goal_history', {
         'title': goalData['title'],
         'target_amount': goalData['target_amount'],
         'saved_amount': goalData['saved_amount'],
-        'created_at': goalData['created_at'],
-        'completed_at': DateTime.now().toIso8601String(),
+        'target_date': goalData['target_date'],
+        'completed_at': '${now.day} / ${now.month} / ${now.year}',
       });
 
       // Delete the goal from saving_goals
@@ -131,18 +131,11 @@ class DatabaseSaving {
     );
   }
 
-  // Future<List<Map<String, dynamic>>> fetchGoalHistory() async {
-  //   final db = await instance.database;
-  //   return await db.query(
-  //     'goal_history',
-  //     orderBy: 'id DESC', // Fetch completed goals ordered by id
-  //   );
-  // }
-
- Future<List<Txn>> fetchGoalHistory() async {
+  
+ Future<List<Goal>> fetchGoalHistory() async {
   final db = await instance.database; // Use the getter to obtain the database instance
   final result = await db.query('goal_history');
-  return result.map((map) => Txn.fromJSON(map)).toList(); // Map the results to Txn objects
+  return result.map((map) => Goal.fromJSON(map)).toList(); // Map the results to Goal objects
 }
 
 

@@ -2,20 +2,36 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:penny_pilot/pages/login.dart';
 import 'package:penny_pilot/widgets/transaction_options_dialog.dart';
-import 'dashboard_page.dart';
-import 'analysis_page.dart';
-import 'savings_page.dart';
-import 'settings_page.dart';
+import 'package:penny_pilot/pages/dashboard_page.dart';
+import 'package:penny_pilot/pages/analysis_page.dart';
+import 'package:penny_pilot/pages/savings_page.dart';
+import 'package:penny_pilot/pages/settings_page.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
+  HomePage({
+    super.key, 
+    this.selectedIndex = 0,
+  });
+  int selectedIndex;   //TODO: Change Selected Index
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   var isLogoutLoading = false;
+
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  @override
+  void initState() {
+    super.initState();
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
 
   logout() async {
     setState(() {
@@ -29,7 +45,7 @@ class _HomePageState extends State<HomePage> {
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Logout failed: $e')),  // Show detailed error message
+        SnackBar(content: Text('Logout failed: $e')),
       );
     } finally {
       setState(() {
@@ -38,12 +54,12 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  int _selectedIndex = 0;   //TODO: Change Selected Index
+  int _selectedIndex = 0; //TODO: Change Selected Index
 
   final List<Widget> _pages = [
     Dashboard(),
     AnalysisPage(),
-    SizedBox.shrink(),  // Empty space for the center item
+    SizedBox.shrink(), // Empty space for the center item
     SavingGoals(),
     SettingsPage(),
   ];
@@ -51,10 +67,32 @@ class _HomePageState extends State<HomePage> {
   void _onItemTapped(int index) {
     if (index != 2) {
       setState(() {
-        _selectedIndex = index;
+        widget.selectedIndex = index;
       });
     }
   }
+
+  // Future<void> _showTransactionNotification(String category, double amount) async {
+  //   const AndroidNotificationDetails androidPlatformChannelSpecifics =
+  //       AndroidNotificationDetails(
+  //     'your_channel_id',
+  //     'your_channel_name',
+  //     channelDescription: 'your_channel_description',
+  //     importance: Importance.max,
+  //     priority: Priority.high,
+  //     showWhen: false,
+  //   );
+
+  //   final NotificationDetails platformChannelSpecifics =
+  //       NotificationDetails(android: androidPlatformChannelSpecifics);
+
+  //   await flutterLocalNotificationsPlugin.show(
+  //     0,
+  //     '$category Transaction',
+  //     'You have a new $category of \$${amount.toStringAsFixed(2)}.',
+  //     platformChannelSpecifics,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +123,7 @@ class _HomePageState extends State<HomePage> {
             false;
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           forceMaterialTransparency: true,
@@ -93,21 +132,20 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 width: 48,
                 child: Image.asset(
-                  'lib/src/assets/images/penny_pilot.png',  
-                  fit: BoxFit.cover, 
+                  'lib/src/assets/images/penny_pilot.png',
+                  fit: BoxFit.cover,
                 ),
               ),
               const SizedBox(width: 10),
               Text(
                 'PennyPilot',
                 style: TextStyle(
-                  color: Colors.black, 
-                  fontSize: 32, 
-                  fontFamily: 'Raleway', 
-                  fontWeight: FontWeight.w900
-                ),
+                    color: Colors.black,
+                    fontSize: 32,
+                    fontFamily: 'Raleway',
+                    fontWeight: FontWeight.w900),
               ),
-            ]
+            ],
           ),
           actions: [
             IconButton(
@@ -120,11 +158,11 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        body: _pages[_selectedIndex],
+        body: _pages[widget.selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           iconSize: 32,
-          currentIndex: _selectedIndex,
+          currentIndex: widget.selectedIndex,
           onTap: _onItemTapped,
           items: const [
             BottomNavigationBarItem(
@@ -136,7 +174,7 @@ class _HomePageState extends State<HomePage> {
               label: 'Analysis',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.abc, color: Colors.transparent),  // Placeholder
+              icon: Icon(Icons.abc, color: Colors.transparent), // Placeholder
               label: '',
             ),
             BottomNavigationBarItem(
@@ -151,7 +189,9 @@ class _HomePageState extends State<HomePage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
         floatingActionButton: FloatingActionButton(
-          onPressed: _openNewTransaction,
+          onPressed: () {
+            _openNewTransaction();
+          },
           tooltip: 'Add Transaction',
           child: const Icon(Icons.add),
         ),
@@ -163,13 +203,8 @@ class _HomePageState extends State<HomePage> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        content: TransactionOptions(),
+        content: TransactionOptions(page: widget.selectedIndex),
       ),
     );
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HomePage()),
-    );
-
   }
 }

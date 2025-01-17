@@ -57,6 +57,8 @@ dependencies:
 
   shared_preferences: ^2.3.5
 
+  # shared_preferences: ^2.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
