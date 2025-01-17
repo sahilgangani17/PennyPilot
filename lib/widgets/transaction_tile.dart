@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:penny_pilot/database/db_txns.dart';
+import 'package:penny_pilot/pages/home_page.dart';
 import 'package:penny_pilot/utils/icon_list.dart';
 import 'package:penny_pilot/models/transaction.dart';
 import 'package:penny_pilot/widgets/transaction_options_dialog.dart';
@@ -9,10 +10,12 @@ class TransactionTile extends StatefulWidget {
   TransactionTile({
     super.key,
     required this.txn,
+    required this.page,
   });
 
   var appicons = AppIcons();
   final Txn? txn;
+  final int page;
 
   @override
   State<TransactionTile> createState() => _TransactionTile();
@@ -115,8 +118,12 @@ class _TransactionTile extends State<TransactionTile> {
                     icon: Icon(Icons.edit, color: Colors.grey),
                   ),
                   IconButton(
-                    onPressed: () {
-                      DatabaseTxn.instance.deleteTxn(txn!);
+                    onPressed: () async {
+                      await DatabaseTxn.instance.deleteTxn(txn!);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage(selectedIndex: widget.page)),
+                      );
                     }, 
                     icon: Icon(Icons.delete, color: Colors.grey,)
                   )

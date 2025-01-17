@@ -21,12 +21,13 @@ class DisplayTxns extends StatefulWidget {
 }
 
 class _DisplayTxns extends State<DisplayTxns> {
-  
+  int page = 1;
   Future<List<Txn>> _getData() async {
     switch(widget.displayTxnType!) {
       case TxnStates.allTxn: 
         return await DatabaseTxn.instance.getAllTxns();
       case TxnStates.recentTxns:
+        page = 0;
         return await DatabaseTxn.instance.get5RecentTxns();
       case TxnStates.expensesTxns: 
         return await DatabaseTxn.instance.getExpensesTxns();
@@ -49,7 +50,7 @@ class _DisplayTxns extends State<DisplayTxns> {
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             children: snapshot.data!.map((txn) {
-                return TransactionTile(txn: txn);
+                return TransactionTile(page: page, txn: txn);
               }).toList(),
             );
       }
