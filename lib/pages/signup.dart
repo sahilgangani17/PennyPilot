@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:penny_pilot/Services/auth_service.dart';
 import 'package:penny_pilot/database/db_user.dart';
 import 'package:penny_pilot/pages/login.dart';
+import 'package:penny_pilot/utils/appvalidate.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -67,20 +68,21 @@ class _SignupState extends State<Signup> {
                 TextFormField(
                   controller: _usernameController,
                   decoration: InputDecoration(labelText: "Username"),
-                  validator: (value) => value!.isEmpty ? 'Please enter a username' : null,
+                  validator: Appvalidate().validateUsername,
                 ),
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(labelText: "Email"),
-                  validator: (value) => value!.isEmpty ? 'Please enter an email' : null,
+                  validator: Appvalidate().validateEmail,
                 ),
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _phonenoController,
                   decoration: InputDecoration(labelText: "Phone No."),
-                  validator: (value) => value!.isEmpty ? 'Please enter a phone number' : null,
+                  validator: Appvalidate().validatePhoneNo,
                 ),
+                  
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _passwordController,
@@ -96,7 +98,7 @@ class _SignupState extends State<Signup> {
                       },
                     ),
                   ),
-                  validator: (value) => value!.isEmpty ? 'Please enter a password' : null,
+                  validator: Appvalidate().isEmptyCheck,
                 ),
                 SizedBox(height: 16),
                 ElevatedButton(
