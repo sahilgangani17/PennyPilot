@@ -67,7 +67,7 @@ class _TransactionTile extends State<TransactionTile> {
                 child: FaIcon(widget.appicons.getExpenseCategoryIcon(txn != null ? txn!.category : '')),
               ), 
             ),
-          ),
+          ),  
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

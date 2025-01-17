@@ -41,7 +41,7 @@ class _GoalTileState extends State<GoalTile> {
     final newSavedAmount = widget.savedAmount + addAmount;
 
     // Update goal progress in the database
-    await DatabaseService.instance.updateGoalProgress(widget.goalId, newSavedAmount);
+    await DatabaseSaving.instance.updateGoalProgress(widget.goalId, newSavedAmount);
 
     // Update the progress bar
     setState(() {
@@ -51,7 +51,7 @@ class _GoalTileState extends State<GoalTile> {
     // Check if the goal is completed after the update
     if (newSavedAmount >= widget.targetAmount) {
       // Mark as completed and move to history
-      await DatabaseService.instance.markGoalAsCompleted(widget.goalId);
+      await DatabaseSaving.instance.markGoalAsCompleted(widget.goalId);
     }
 
     // Refresh parent UI to show updated goals

@@ -45,6 +45,10 @@ class _AnalysisPageState extends State<AnalysisPage> {
               value: 'Income',
               child: Text('Income'),
             ),
+            DropdownMenuItem(
+              value: 'Savings',
+              child: Text('Savings'),
+            ),
           ],
           onChanged: (value) {
             if (value != null) {
@@ -123,5 +127,14 @@ class IncomeTxnPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DisplayTxns(displayTxnType: TxnStates.incomeTxns);
+  }
+}
+
+class SavingTxtPage extends StatelessWidget {
+  const SavingTxtPage({super.key});
+  
+  @override
+  Widget build(BuildContext context) {
+    return DisplayTxns(displayTxnType: TxnStates.savingTxns);
   }
 }

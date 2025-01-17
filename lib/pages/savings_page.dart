@@ -21,8 +21,8 @@ class _SavingGoalsState extends State<SavingGoals> {
   }
 
   void _fetchData() {
-    _goals = DatabaseService.instance.fetchAllGoals(); // Fetch active goals
-    _totalSavings = DatabaseService.instance.fetchTotalSavings(); // Fetch total savings
+    _goals = DatabaseSaving.instance.fetchAllGoals(); // Fetch active goals
+    _totalSavings = DatabaseSaving.instance.fetchTotalSavings(); // Fetch total savings
   }
 
   void _refreshGoals() {
