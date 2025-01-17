@@ -35,7 +35,7 @@ class _AccountdetailsState extends State<Accountdetails> {
     print('Current user email: $widget.currentUserEmail'); // Debugging line
 
     // Fetch user data from the database based on the email
-    var users = await DatabaseUser.instance.fetchUsersByEmail(widget.currentUserEmail);
+    var users = await DatabaseUser.instance.fetchUsersByEmail(widget.currentUserEmail.toString());
 
     if (users.isNotEmpty) {
       setState(() {
