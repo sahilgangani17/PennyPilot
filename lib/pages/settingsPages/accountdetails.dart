@@ -4,8 +4,9 @@ import 'package:penny_pilot/database/db_user.dart';
 import 'package:penny_pilot/pages/login.dart';
 
 class Accountdetails extends StatefulWidget {
-  const Accountdetails({super.key});
+  Accountdetails({super.key});
 
+    final currentUserEmail = FirebaseAuth.instance.currentUser?.email;
   @override
   State<Accountdetails> createState() => _AccountdetailsState();
 }
@@ -19,10 +20,9 @@ class _AccountdetailsState extends State<Accountdetails> {
   // Fetch user details from the database based on current Firebase email
   Future<void> _fetchUserDetails() async {
     // Get current user's email from Firebase Authentication
-    final currentUserEmail = FirebaseAuth.instance.currentUser?.email;
 
     // Check if the user is logged in
-    if (currentUserEmail == null) {
+    if (widget.currentUserEmail == null) {
       print("No user is currently logged in.");
       // Redirect to Login if no user is logged in
       Navigator.pushReplacement(
@@ -32,10 +32,10 @@ class _AccountdetailsState extends State<Accountdetails> {
       return;
     }
 
-    print('Current user email: $currentUserEmail'); // Debugging line
+    print('Current user email: $widget.currentUserEmail'); // Debugging line
 
     // Fetch user data from the database based on the email
-    var users = await DatabaseUser.instance.fetchUsersByEmail(currentUserEmail);
+    var users = await DatabaseUser.instance.fetchUsersByEmail(widget.currentUserEmail);
 
     if (users.isNotEmpty) {
       setState(() {
@@ -45,7 +45,7 @@ class _AccountdetailsState extends State<Accountdetails> {
         password = "********"; // Do not display the actual password
       });
     } else {
-      print("No user found with email: $currentUserEmail");
+      print("No user found with email: $widget.currentUserEmail");
       // Handle case when there are no users found with the provided email
     }
   }
