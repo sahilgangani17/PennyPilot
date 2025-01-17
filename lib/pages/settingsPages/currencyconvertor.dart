@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Currencyconvertor extends StatefulWidget {
   const Currencyconvertor({super.key});
@@ -230,10 +231,23 @@ class _CurrencyconvertorState extends State<Currencyconvertor> {
                                 Row(
                                   children: [
                                     IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          //Copy to clip Board Logic
+                                          Clipboard.setData(
+                                              ClipboardData(text: _result));
+                                          // Optionally, show a Snackbar to confirm the copy operation
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    'Result copied to clipboard')),
+                                          );
+                                        },
                                         icon: Icon(Icons.copy)),
                                     IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          //Logic to add amoount in transaction
+                                        },
                                         icon: Icon(Icons.add)),
                                   ],
                                 )
