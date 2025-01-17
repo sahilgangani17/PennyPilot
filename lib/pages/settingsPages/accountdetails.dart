@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:penny_pilot/pages/home_page.dart';
 import 'package:penny_pilot/pages/login.dart';
 
 class Accountdetails extends StatefulWidget {

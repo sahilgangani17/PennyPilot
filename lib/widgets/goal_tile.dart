@@ -94,11 +94,15 @@ class _GoalTileState extends State<GoalTile> {
             const SizedBox(height: 10),
 
             // Progress Bar
-            LinearProgressIndicator(
-              value: progress > 1 ? 1 : progress,
-              color: widget.progressColor,
-              backgroundColor: widget.progressColor.withAlpha(50),
-              minHeight: 6,
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: LinearProgressIndicator(
+                value: progress > 1 ? 1 : progress,
+                color: widget.progressColor,
+                backgroundColor: widget.progressColor.withAlpha(50),
+                borderRadius: BorderRadius.circular(5),
+                minHeight: 6,
+              ),
             ),
             const SizedBox(height: 10),
 
