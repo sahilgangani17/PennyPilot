@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:penny_pilot/pages/get_started.dart';
 import 'package:penny_pilot/pages/home_page.dart';
-import 'package:penny_pilot/pages/login.dart';
+// import 'package:penny_pilot/pages/login.dart';
 
 void main() async {
   // Ensure that Firebase is initialized before the app runs
@@ -45,7 +46,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
         } else if (snapshot.hasData) {
           return const HomePage(); // User is logged in
         } else {
-          return const Login(); // User is not logged in
+          return const PennyPilotApp(); // User is not logged in
         }
       },
     );
