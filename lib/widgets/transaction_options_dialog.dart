@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:penny_pilot/database/db_txns.dart';
+import 'package:penny_pilot/pages/home_page.dart';
 import 'package:penny_pilot/utils/appvalidate.dart';
 import 'package:penny_pilot/utils/icon_list.dart';
 import 'package:penny_pilot/helper/helper_funcs.dart';
@@ -14,11 +15,13 @@ class TransactionOptions extends StatefulWidget {
   const TransactionOptions({
     super.key,
     this.txn,
+    required this.page,
     this.editTxnState = EditTxnStates.create
   });
 
   final Txn? txn;
   final editTxnState;
+  final page;
 
   @override
   State<TransactionOptions> createState() => _TransactionOptionsState();
@@ -169,13 +172,17 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                           description: txnDescriptionController.text.isNotEmpty ? txnDescriptionController.text : 'Not Specified',
                           date: "${today.day} / ${today.month} / ${today.year}",
                         )
-                      : null ;
+                     : null ;
                     if (widget.txn == null) {
                       await DatabaseTxn.instance.saveNewTxn(newTxn!);
                     }
                     else {
                       await DatabaseTxn.instance.updateTxn(newTxn!);
                     }
+                    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage(selectedIndex: widget.page)),
+    );
                     setState(() {
                       txnAmountController.clear();
                       txnDescriptionController.clear();

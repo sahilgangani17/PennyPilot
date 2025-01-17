@@ -203,13 +203,8 @@ class _HomePageState extends State<HomePage> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        content: TransactionOptions(),
+        content: TransactionOptions(page: widget.selectedIndex),
       ),
     );
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HomePage(selectedIndex: widget.selectedIndex,)),
-    );
-
   }
 }

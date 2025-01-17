@@ -113,6 +113,7 @@ class _TransactionTile extends State<TransactionTile> {
                         context: context,
                         builder: (context) => AlertDialog(
                           content: TransactionOptions(
+                            page: widget.page,
                             txn: txn,
                             editTxnState: EditTxnStates.edit,
                           ),
