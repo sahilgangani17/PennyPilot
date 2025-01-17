@@ -86,17 +86,6 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                 )
               ),
               
-              /* // Title Input
-              TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: appvalidate.isEmptyCheck,
-                decoration: const InputDecoration(
-                  labelText: 'Title',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16), */
-
               // Type Dropdown
               DropdownButtonFormField<String>(
                 value: txnType,
@@ -113,10 +102,6 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                     value: 'Income',
                     child: Text('Income'),
                   ),
-                  // DropdownMenuItem(
-                  //     value: 'Savings',
-                  //     child : Text('Savings'),
-                  //   ),
                 ],
                 onChanged: (value) {
                   if (value != null) {
@@ -139,7 +124,7 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                   border: const OutlineInputBorder(),
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: appvalidate.isEmptyCheck,
+                validator: appvalidate.validateAmount,
               ),
               const SizedBox(height: 16),
 

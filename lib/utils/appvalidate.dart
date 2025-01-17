@@ -12,6 +12,16 @@ class Appvalidate {
     return null;
   }
 
+  String? validateAmount(String? value) {
+    if (value!.isEmpty) {
+      return 'Please enter an Amount';
+    }
+    if (value.startsWith('-')) {
+      return 'Please enter a valid amount';
+    }
+    return null;
+  }
+
   String? validatePhoneNo(value){
     if(value!.isEmpty){
       return 'Please enter a Phone No';
