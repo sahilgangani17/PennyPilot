@@ -35,7 +35,8 @@ class DatabaseTxn {
   Future<void> createTable(Database db) async {
     await db.execute('''
       CREATE TABLE IF NOT EXISTS $tableName (
-        "$columnId" INTEGER PRIMARY KEY AUTOINCREMENT,
+        "$columnId" $columnIdConstraints,
+        "$columnEmail" $columnEmailConstraints,
         "$columnType" $columnTypeConstraints,
         "$columnAmount" $columnAmountConstraints,
         "$columnCategory" $columnCategoryConstraints,
@@ -57,9 +58,14 @@ class DatabaseTxn {
   }
 
   // Read All Txns
-  Future<List<Txn>> getAllTxns() async {
+  Future<List<Txn>> getAllTxns(String email) async {
     Database db = await instance.database;
-    var txns = await db.query(tableName, orderBy: '$columnId DESC');
+    var txns = await db.query(
+      tableName, 
+      where: '$columnEmail = ?',
+      whereArgs: [email],
+      orderBy: '$columnId DESC'
+    );
     List<Txn> txnsList = txns.isNotEmpty
       ? txns.map((c) => Txn.fromJSON(c)).toList()
       : [];
@@ -67,9 +73,15 @@ class DatabaseTxn {
   }
 
   // Read Recent Transactions
-  Future<List<Txn>> get5RecentTxns() async {
+  Future<List<Txn>> get5RecentTxns(String email) async {
     Database db = await instance.database;
-    var txns = await db.query(tableName, orderBy: '$columnId DESC', limit: 5);
+    var txns = await db.query(
+      tableName, 
+      where: '$columnEmail = ?',
+      whereArgs: [email],
+      orderBy: '$columnId DESC',
+      limit: 5
+    );
     List<Txn> txnsList = txns.isNotEmpty
       ? txns.map((c) => Txn.fromJSON(c)).toList()
       : [];
@@ -77,12 +89,12 @@ class DatabaseTxn {
   }
 
   // Read All Expenses
-  Future<List<Txn>> getExpensesTxns() async {
+  Future<List<Txn>> getExpensesTxns(String email) async {
     Database db = await instance.database;
     var txns = await db.query(
       tableName, orderBy: '$columnId DESC',
-      where: '$columnType = ?',
-      whereArgs: ['Expenses']
+      where: '$columnType = ? && $columnEmail = ?',
+      whereArgs: ['Expenses', email]
     );
     List<Txn> txnsList = txns.isNotEmpty
       ? txns.map((c) => Txn.fromJSON(c)).toList()
@@ -91,12 +103,12 @@ class DatabaseTxn {
   }
 
   // Read All Incomes
-  Future<List<Txn>> getIncomeTxns() async {
+  Future<List<Txn>> getIncomeTxns(String email) async {
     Database db = await instance.database;
     var txns = await db.query(
       tableName, orderBy: '$columnId DESC',
-      where: '$columnType = ?',
-      whereArgs: ['Income']
+      where: '$columnType = ? && $columnEmail = ?',
+      whereArgs: ['Income', email]
     );
     List<Txn> txnsList = txns.isNotEmpty
       ? txns.map((c) => Txn.fromJSON(c)).toList()
@@ -127,11 +139,14 @@ class DatabaseTxn {
   }
 
   // Get Total Income
-  Future<double> getTotalIncome() async {
+  Future<double> getTotalIncome(String email) async {
     Database db = await instance.database;
-    var result = await db.rawQuery(
-      'SELECT SUM($columnAmount) FROM $tableName WHERE $columnType = ?',
-      ['Income']
+    var result = await db.rawQuery('''
+      SELECT SUM($columnAmount) 
+      FROM $tableName 
+      WHERE $columnType = ? AND $columnEmail = ?
+      ''',
+      ['Income',email]
     );
     
     if (result.isNotEmpty) {
@@ -141,11 +156,14 @@ class DatabaseTxn {
   }
 
   // Get Total Expense
-  Future<double> getTotalExpense() async {
+  Future<double> getTotalExpense(String email) async {
     Database db = await instance.database;
-    var result = await db.rawQuery(
-      'SELECT SUM($columnAmount) FROM $tableName WHERE $columnType = ?',
-      ['Expenses']
+    var result = await db.rawQuery('''
+      SELECT SUM($columnAmount) 
+      FROM $tableName 
+      WHERE $columnType = ? AND $columnEmail = ?
+      ''',
+      ['Expenses',email]
     );
     
     if (result.isNotEmpty) {
@@ -155,11 +173,16 @@ class DatabaseTxn {
   }
 
 
-  Future<Map<String, double>> getCategoryWiseExpenses() async {
+  Future<Map<String, double>> getCategoryWiseExpenses(String email) async {
     Database db = await instance.database;
-    var result = await db.rawQuery(
-      'SELECT $columnCategory, SUM($columnAmount) FROM $tableName WHERE $columnType = ? GROUP BY $columnCategory',
-      ['Expenses']
+    var result = await db.rawQuery('''
+      SELECT $columnCategory, 
+      SUM($columnAmount) 
+      FROM $tableName 
+      WHERE $columnType = ? AND $columnEmail = ?
+      GROUP BY $columnCategory
+      ''',
+      ['Expenses',email]
     );
 
     Map<String, double> categoryData = {};
@@ -174,11 +197,16 @@ class DatabaseTxn {
     return categoryData;
   }
 
-  Future<Map<String, double>> getCategoryWiseIncome() async {
+  Future<Map<String, double>> getCategoryWiseIncome(String email) async {
     Database db = await instance.database;
-    var result = await db.rawQuery(
-      'SELECT $columnCategory, SUM($columnAmount) FROM $tableName WHERE $columnType = ? GROUP BY $columnCategory',
-      ['Income'],
+    var result = await db.rawQuery('''
+      SELECT $columnCategory, 
+      SUM($columnAmount) 
+      FROM $tableName 
+      WHERE $columnType = ? AND $columnEmail = ?
+      GROUP BY $columnCategory
+      ''',
+      ['Income',email]
     );
 
     Map<String, double> categoryData = {};

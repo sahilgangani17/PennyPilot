@@ -47,6 +47,26 @@ class Appvalidate {
     return null;
   }
 
+  String? validateNewPassword(value){
+    String passwordPattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$';
+
+    if (value == null || value.isEmpty) {
+      return 'Password is required';
+    }
+    final regExp = RegExp(passwordPattern);
+    if (!regExp.hasMatch(value)) {
+      return '''Password must contain the following: 
+      • 8-20 characters
+      • at least one uppercase letter
+      • one lowercase letter
+      • one number
+      • one special character
+      ''';
+    }
+    
+    return null;
+  }
+
   String? isEmptyCheck(value){
     if(value!.isEmpty){
       return 'Please fill Details';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:penny_pilot/helper/helper_funcs.dart';
 import 'package:penny_pilot/models/transaction.dart';
 import 'package:penny_pilot/database/db_txns.dart';
 import 'package:penny_pilot/widgets/transaction_tile.dart';
@@ -25,14 +26,14 @@ class _DisplayTxns extends State<DisplayTxns> {
   Future<List<Txn>> _getData() async {
     switch(widget.displayTxnType!) {
       case TxnStates.allTxn: 
-        return await DatabaseTxn.instance.getAllTxns();
+        return await DatabaseTxn.instance.getAllTxns(getCurrentUserEmail()!);
       case TxnStates.recentTxns:
         page = 0;
-        return await DatabaseTxn.instance.get5RecentTxns();
+        return await DatabaseTxn.instance.get5RecentTxns(getCurrentUserEmail()!);
       case TxnStates.expensesTxns: 
-        return await DatabaseTxn.instance.getExpensesTxns();
+        return await DatabaseTxn.instance.getExpensesTxns(getCurrentUserEmail()!);
       case TxnStates.incomeTxns:
-        return await DatabaseTxn.instance.getIncomeTxns();
+        return await DatabaseTxn.instance.getIncomeTxns(getCurrentUserEmail()!);
     }
   }
 

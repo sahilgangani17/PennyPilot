@@ -166,6 +166,7 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                     Txn? newTxn = (txnAmount > 0)
                       ? Txn(
                           id: txnId,
+                          email: getCurrentUserEmail()!,
                           type: txnType,
                           amount: txnAmount,
                           category: txnCategory,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:penny_pilot/database/db_saving.dart';
+import 'package:penny_pilot/helper/helper_funcs.dart';
 import 'package:penny_pilot/widgets/display_completed_goals.dart';
 
 class GoalTxnPage extends StatefulWidget {
@@ -14,7 +15,7 @@ class _GoalTxnPageState extends State<GoalTxnPage> {
   // Fetching the category-wise Goal from the database
   Future<Map<String, double>> fetchData() async {
     final dbService = DatabaseSaving.instance;
-    var result = await dbService.fetchGoalHistory(); // Adjust this to fetch Goal data
+    var result = await dbService.fetchGoalHistory(getCurrentUserEmail()!); // Adjust this to fetch Goal data
 
   Map<String, double> categoryData = {};
     for (var row in result) {

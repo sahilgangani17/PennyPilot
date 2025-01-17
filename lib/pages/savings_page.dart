@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:penny_pilot/database/db_saving.dart';  // Database service
+import 'package:penny_pilot/helper/helper_funcs.dart';
 import 'package:penny_pilot/widgets/add_goal.dart'; // Add Goal dialog
 import 'package:penny_pilot/widgets/goal_tile.dart'; // Goal Tile widget
 
@@ -22,7 +24,7 @@ class _SavingGoalsState extends State<SavingGoals> {
 
   void _fetchData() {
     _goals = DatabaseSaving.instance.fetchAllGoals(); // Fetch active goals
-    _totalSavings = DatabaseSaving.instance.fetchTotalSavings(); // Fetch total savings
+    _totalSavings = DatabaseSaving.instance.fetchTotalSavings(getCurrentUserEmail()!); // Fetch total savings
   }
 
   void _refreshGoals() {

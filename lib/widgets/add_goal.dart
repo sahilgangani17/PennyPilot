@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:penny_pilot/database/db_saving.dart';
+import 'package:penny_pilot/helper/helper_funcs.dart';
 import 'package:penny_pilot/utils/icon_list.dart';  // Add this import to use DatabaseService
 
 class AddGoal extends StatefulWidget {
@@ -37,7 +38,7 @@ class _AddGoalState extends State<AddGoal> {
       double targetAmount = double.parse(_targetAmountController.text);
       String targetDate = '${_selectedDate!.day} / ${_selectedDate!.month} / ${_selectedDate!.year}';
       // Save goal to the database
-      await DatabaseSaving.instance.addSavingGoal(goalName, targetAmount, targetDate);
+      await DatabaseSaving.instance.addSavingGoal(getCurrentUserEmail()!,goalName, targetAmount, targetDate);
 
       // Close the dialog and notify parent widget
       Navigator.of(context).pop(true); // Notify that goal was added
