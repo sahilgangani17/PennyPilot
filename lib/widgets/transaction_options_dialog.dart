@@ -27,6 +27,8 @@ class TransactionOptions extends StatefulWidget {
 
 class _TransactionOptionsState extends State<TransactionOptions> {
   
+  final _formKey = GlobalKey<FormState>();
+
   var appvalidate = Appvalidate();
 
   var _heading;
@@ -64,6 +66,7 @@ class _TransactionOptionsState extends State<TransactionOptions> {
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formKey,
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -155,22 +158,25 @@ class _TransactionOptionsState extends State<TransactionOptions> {
               // Add Transaction Button
               ElevatedButton(
                 onPressed: () async {
-                  if (txnAmountController.text.isNotEmpty) {
+                  if (txnAmountController.text.isNotEmpty && _formKey.currentState!.validate()) {
                     Navigator.pop(context);
                     DateTime today = DateTime.now();
-                    Txn newTxn = Txn(
-                      id: txnId,
-                      type: txnType,
-                      amount: convertStringToDouble(txnAmountController.text),
-                      category: txnCategory,
-                      description: txnDescriptionController.text.isNotEmpty ? txnDescriptionController.text : 'Not Specified',
-                      date: "${today.day} / ${today.month} / ${today.year}",
-                    );
+                    double txnAmount = convertStringToDouble(txnAmountController.text);
+                    Txn? newTxn = (txnAmount > 0)
+                      ? Txn(
+                          id: txnId,
+                          type: txnType,
+                          amount: txnAmount,
+                          category: txnCategory,
+                          description: txnDescriptionController.text.isNotEmpty ? txnDescriptionController.text : 'Not Specified',
+                          date: "${today.day} / ${today.month} / ${today.year}",
+                        )
+                      : null ;
                     if (widget.txn == null) {
-                      await DatabaseService.instance.saveNewTxn(newTxn);
+                      await DatabaseService.instance.saveNewTxn(newTxn!);
                     }
                     else {
-                      await DatabaseService.instance.updateTxn(newTxn);
+                      await DatabaseService.instance.updateTxn(newTxn!);
                     }
                     setState(() {
                       txnAmountController.clear();
