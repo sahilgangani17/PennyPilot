@@ -1,121 +1,152 @@
 import 'package:flutter/material.dart';
-//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:penny_pilot/utils/icon_list.dart';
+import 'package:penny_pilot/database/db_saving.dart';
 
 class GoalTile extends StatefulWidget {
-  GoalTile({
+  final String goal;
+  final double savedAmount;
+  final double targetAmount;
+  final Color progressColor;
+  final int goalId;
+  final VoidCallback onProgressUpdated;
+  final bool isCompleted;
+
+  const GoalTile({
     super.key,
     required this.goal,
+    required this.savedAmount,
+    required this.targetAmount,
     required this.progressColor,
+    required this.goalId,
+    required this.onProgressUpdated,
+    required this.isCompleted,
   });
-  
-  final String goal;
-  final Color progressColor;
-
 
   @override
-  State<GoalTile> createState() => _GoalTile();
-  
+  State<GoalTile> createState() => _GoalTileState();
 }
 
-class _GoalTile extends State<GoalTile> {
-  /* Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              offset: Offset(0, 10),
-              color: Colors.grey.withOpacity(0.09),
-              blurRadius: 10,
-              spreadRadius: 4,
-            ),
-          ],
-        ), */
+class _GoalTileState extends State<GoalTile> {
+  final TextEditingController _addAmountController = TextEditingController();
 
-  var appicons = AppIcons();
+  void _addAmount() async {
+    final addAmount = double.tryParse(_addAmountController.text);
+
+    if (addAmount == null || addAmount <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a valid amount')),
+      );
+      return;
+    }
+
+    final newSavedAmount = widget.savedAmount + addAmount;
+
+    // Update goal progress in the database
+    await DatabaseService.instance.updateGoalProgress(widget.goalId, newSavedAmount);
+
+    // Update the progress bar
+    setState(() {
+      // Update progress (this triggers UI refresh)
+    });
+
+    // Check if the goal is completed after the update
+    if (newSavedAmount >= widget.targetAmount) {
+      // Mark as completed and move to history
+      await DatabaseService.instance.markGoalAsCompleted(widget.goalId);
+    }
+
+    // Refresh parent UI to show updated goals
+    widget.onProgressUpdated();
+
+    // Clear the input field
+    _addAmountController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final progress = widget.savedAmount / widget.targetAmount;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Color.fromARGB(100, 200, 213, 185),
+          color: widget.isCompleted
+              ? const Color.fromARGB(100, 230, 230, 230) // Gray for completed goals
+              : const Color.fromARGB(100, 200, 213, 185), // Green for active goals
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
           children: [
+            // Goal Title and Current Saved Amount
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   widget.goal,
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold
-                  ),
+                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
-                Row(
-                  children: [
-                    Icon(
-                      appicons.getCurrencyIcon('Rupee'),
-                      size: 15,
-                    ),
-                    Text(
-                      '10,000',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
-                  ]
-                )
+                Text(
+                  '₹${widget.savedAmount.toStringAsFixed(2)}',
+                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-              child: LinearProgressIndicator(
-                value: 0.4,
-                color: widget.progressColor,
-                backgroundColor: widget.progressColor.withAlpha(25),
-                minHeight: 6,
-                borderRadius: BorderRadius.circular(5),
-              ),
+            const SizedBox(height: 10),
+
+            // Progress Bar
+            LinearProgressIndicator(
+              value: progress > 1 ? 1 : progress,
+              color: widget.progressColor,
+              backgroundColor: widget.progressColor.withAlpha(50),
+              minHeight: 6,
             ),
+            const SizedBox(height: 10),
+
+            // Target Amount and Progress Percentage
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Icon(
-                      appicons.getCurrencyIcon('Rupee'),
-                      color: Colors.grey[600],
-                      size: 15,
-                    ),
-                    Text(
-                      '20,000 Saved',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 15,
-                        //fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ],
+                Text(
+                  'Target: ₹${widget.targetAmount.toStringAsFixed(2)}',
+                  style: TextStyle(color: Colors.grey[600], fontSize: 15),
                 ),
                 Text(
-                  '40%',
-                  style: TextStyle(
-                    color: widget.progressColor,
-                  ),
+                  '${(progress * 100).toStringAsFixed(1)}%',
+                  style: TextStyle(color: widget.progressColor),
                 ),
-              ]
-            ),    
-          ]
-      ),    
-    )
-    );    
-  }   
+              ],
+            ),
+            const SizedBox(height: 10),
 
+            // Add Amount Input and Button (Disable if completed)
+            if (!widget.isCompleted)
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _addAmountController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: 'Add Amount',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: _addAmount,
+                    child: const Text('Add'),
+                  ),
+                ],
+              )
+            else
+              const Text(
+                'Goal Completed',
+                style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
 }
