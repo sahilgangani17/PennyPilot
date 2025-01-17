@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:penny_pilot/database/db_service.dart';
+import 'package:penny_pilot/database/db_txns.dart';
 import 'package:penny_pilot/widgets/PieChart.dart';
 import 'package:penny_pilot/widgets/display_txns.dart';
 
@@ -22,7 +22,7 @@ class _IncomeTxnPageState extends State<IncomeTxnPage> {
 
   // Fetching the category-wise income from the database
   Future<Map<String, double>> fetchData() async {
-    final dbService = DatabaseService.instance;
+    final dbService = DatabaseTxn.instance;
     var categoryData = await dbService.getCategoryWiseIncome(); // Adjust this to fetch income data
     return categoryData;
   }

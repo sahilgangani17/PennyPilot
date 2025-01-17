@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:penny_pilot/database/db_service.dart';
+import 'package:penny_pilot/database/db_txns.dart';
 import 'package:penny_pilot/utils/appvalidate.dart';
 import 'package:penny_pilot/utils/icon_list.dart';
 import 'package:penny_pilot/helper/helper_funcs.dart';
@@ -171,10 +171,10 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                         )
                       : null ;
                     if (widget.txn == null) {
-                      await DatabaseService.instance.saveNewTxn(newTxn!);
+                      await DatabaseTxn.instance.saveNewTxn(newTxn!);
                     }
                     else {
-                      await DatabaseService.instance.updateTxn(newTxn!);
+                      await DatabaseTxn.instance.updateTxn(newTxn!);
                     }
                     setState(() {
                       txnAmountController.clear();

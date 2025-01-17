@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:penny_pilot/database/db_saving.dart';
 import 'package:penny_pilot/models/transaction.dart';
-import 'package:penny_pilot/database/db_service.dart';
+import 'package:penny_pilot/database/db_txns.dart';
 import 'package:penny_pilot/widgets/transaction_tile.dart';
 
 enum TxnStates {
@@ -9,7 +8,6 @@ enum TxnStates {
   recentTxns,
   expensesTxns,
   incomeTxns,
-  savingTxns
 }
 
 class DisplayTxns extends StatefulWidget {
@@ -27,15 +25,13 @@ class _DisplayTxns extends State<DisplayTxns> {
   Future<List<Txn>> _getData() async {
     switch(widget.displayTxnType!) {
       case TxnStates.allTxn: 
-        return await DatabaseService.instance.getAllTxns();
+        return await DatabaseTxn.instance.getAllTxns();
       case TxnStates.recentTxns:
-        return await DatabaseService.instance.get5RecentTxns();
+        return await DatabaseTxn.instance.get5RecentTxns();
       case TxnStates.expensesTxns: 
-        return await DatabaseService.instance.getExpensesTxns();
+        return await DatabaseTxn.instance.getExpensesTxns();
       case TxnStates.incomeTxns:
-        return await DatabaseService.instance.getIncomeTxns();
-      case TxnStates.savingTxns:
-        return await DatabaseSaving.instance.fetchGoalHistory();
+        return await DatabaseTxn.instance.getIncomeTxns();
     }
   }
 
