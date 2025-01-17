@@ -1,3 +1,4 @@
+import 'package:penny_pilot/models/goal.dart';
 import 'package:penny_pilot/models/transaction.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -131,18 +132,11 @@ class DatabaseSaving {
     );
   }
 
-  // Future<List<Map<String, dynamic>>> fetchGoalHistory() async {
-  //   final db = await instance.database;
-  //   return await db.query(
-  //     'goal_history',
-  //     orderBy: 'id DESC', // Fetch completed goals ordered by id
-  //   );
-  // }
-
- Future<List<Txn>> fetchGoalHistory() async {
+  
+ Future<List<Goal>> fetchGoalHistory() async {
   final db = await instance.database; // Use the getter to obtain the database instance
   final result = await db.query('goal_history');
-  return result.map((map) => Txn.fromJSON(map)).toList(); // Map the results to Txn objects
+  return result.map((map) => Goal.fromJSON(map)).toList(); // Map the results to Goal objects
 }
 
 

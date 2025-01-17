@@ -1,33 +1,31 @@
 class Goal {
   final int? id;
-  final double amount;
-  final String type, category, description, date;
+  final double target_amount;
+  final double saved_amount;
+  final String title, created_at;
 
   Goal({
     this.id,
-    required this.type,
-    required this.amount,
-    required this.category,
-    required this.date,
-    this.description = 'Not Specified',
+    required this.title,
+    required this.target_amount,
+    required this.saved_amount,
+    required this.created_at,
   });
 
   factory Goal.fromJSON(Map<String, dynamic> json) =>
       Goal(
         id: json['id'],
-        type: json['type'],
-        amount: json['amount'],
-        category: json['category'],
-        date: json['date'],
-        description: json['description'],
+        title: json['title'],
+        target_amount: json['target_amount'],
+        saved_amount: json['saved_amount'],
+        created_at: json['created_at'],
       );
 
   Map<String, dynamic> toJSON() => {
     'id': id,
-    'type': type,
-    'amount': amount,
-    'category': category,
-    'date': date,
-    'description': description,
+    'title': title,
+    'target_amount': target_amount,
+    'saved_amount': saved_amount,
+    'created_at': created_at,
   };
 }

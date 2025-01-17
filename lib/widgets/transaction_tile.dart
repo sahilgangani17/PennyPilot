@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:penny_pilot/database/db_txns.dart';
+import 'package:penny_pilot/pages/home_page.dart';
 import 'package:penny_pilot/utils/icon_list.dart';
 import 'package:penny_pilot/models/transaction.dart';
 import 'package:penny_pilot/widgets/transaction_options_dialog.dart';
@@ -118,6 +119,10 @@ class _TransactionTile extends State<TransactionTile> {
                   ),
                   IconButton(
                     onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage(selectedIndex: 1)),
+                      );
                       DatabaseTxn.instance.deleteTxn(txn!);
                     }, 
                     icon: Icon(Icons.delete, color: Colors.grey,)

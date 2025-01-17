@@ -8,8 +8,11 @@ import 'savings_page.dart';
 import 'settings_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
+  HomePage({
+    super.key, 
+    this.selectedIndex = 0,
+  });
+  int selectedIndex;   //TODO: Change Selected Index
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -38,8 +41,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  int _selectedIndex = 0;   //TODO: Change Selected Index
-
   final List<Widget> _pages = [
     Dashboard(),
     AnalysisPage(),
@@ -51,7 +52,7 @@ class _HomePageState extends State<HomePage> {
   void _onItemTapped(int index) {
     if (index != 2) {
       setState(() {
-        _selectedIndex = index;
+        widget.selectedIndex = index;
       });
     }
   }
@@ -120,11 +121,11 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        body: _pages[_selectedIndex],
+        body: _pages[widget.selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           iconSize: 32,
-          currentIndex: _selectedIndex,
+          currentIndex: widget.selectedIndex,
           onTap: _onItemTapped,
           items: const [
             BottomNavigationBarItem(
@@ -168,7 +169,7 @@ class _HomePageState extends State<HomePage> {
     );
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => HomePage()),
+      MaterialPageRoute(builder: (context) => HomePage(selectedIndex: widget.selectedIndex,)),
     );
 
   }
