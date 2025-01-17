@@ -180,9 +180,9 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                       await DatabaseTxn.instance.updateTxn(newTxn!);
                     }
                     Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HomePage(selectedIndex: widget.page)),
-    );
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage(selectedIndex: widget.page)),
+                    );
                     setState(() {
                       txnAmountController.clear();
                       txnDescriptionController.clear();
