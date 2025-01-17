@@ -50,15 +50,15 @@ class _SavingGoalsState extends State<SavingGoals> {
                 final totalSavings = snapshot.data ?? 0.0;
                 return Container(
                   padding: const EdgeInsets.all(20),
-                  color: Colors.blue[800],
+                  //color: Colors.blue[800],
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const Text(
                         'Total Savings',
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+                          //color: Colors.white,
+                          fontSize: 40,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -66,7 +66,7 @@ class _SavingGoalsState extends State<SavingGoals> {
                       Text(
                         '₹${totalSavings.toStringAsFixed(2)}',
                         style: const TextStyle(
-                          color: Colors.white,
+                          //color: Colors.white,
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
                         ),
