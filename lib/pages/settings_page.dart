@@ -5,7 +5,7 @@ import 'package:penny_pilot/pages/settingsPages/backup.dart';
 import 'package:penny_pilot/pages/settingsPages/currencyconvertor.dart';
 import 'package:penny_pilot/pages/settingsPages/help&support.dart';
 import 'package:penny_pilot/pages/settingsPages/aboutus.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -23,8 +23,8 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     // flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon');
+    //const AndroidInitializationSettings initializationSettingsAndroid =
+      //  AndroidInitializationSettings('app_icon');
 
     //const InitializationSettings initializationSettings = InitializationSettings(
       //android: initializationSettingsAndroid,

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:penny_pilot/database/db_saving.dart';  // Database service
 import 'package:penny_pilot/helper/helper_funcs.dart';

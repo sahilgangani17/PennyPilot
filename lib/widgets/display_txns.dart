@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:penny_pilot/helper/helper_funcs.dart';
 import 'package:penny_pilot/models/transaction.dart';
 import 'package:penny_pilot/database/db_txns.dart';
