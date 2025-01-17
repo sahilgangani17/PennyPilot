@@ -64,10 +64,7 @@ class DatabaseUser {
     if (result.isNotEmpty) {
       return result.first;
     }
-
     return null; // Return null if no user found
-
-    
   }
 
   Future<List<Map<String, dynamic>>> fetchUsersByEmail(String email) async {
