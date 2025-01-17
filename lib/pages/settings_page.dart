@@ -5,7 +5,8 @@ import 'package:penny_pilot/pages/settingsPages/backup.dart';
 import 'package:penny_pilot/pages/settingsPages/currencyconvertor.dart';
 import 'package:penny_pilot/pages/settingsPages/help&support.dart';
 import 'package:penny_pilot/pages/settingsPages/notifications.dart';
-import 'package:penny_pilot/pages/settingsPages/theme.dart';
+import 'package:penny_pilot/pages/settingsPages/aboutus.dart';
+// import 'package:penny_pilot/pages/settingsPages/theme.dart';
 
 
 class SettingsPage extends StatefulWidget {
@@ -80,19 +81,21 @@ class _SettingsPageState extends State<SettingsPage> {
                         );
                       },
                     ),
-                    SettingsCard(
-                      icon: Icons.palette,
-                      title: "Theme",
-                      subtitle: "Customize app appearance",
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Themes(),
-                          ),
-                        );
-                      },
-                    ),
+                    //Theme Page
+                    // SettingsCard(
+                    //   icon: Icons.palette,
+                    //   title: "Theme",
+                    //   subtitle: "Customize app appearance",
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) => const Themes(),
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
+                    //Backup
                     SettingsCard(
                       icon: Icons.backup,
                       title: "Backup",
@@ -106,6 +109,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         );
                       },
                     ),
+                    //Notification
                     SettingsToggleCard(
                       icon: Icons.notifications,
                       title: "Notifications",
@@ -140,6 +144,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: Column(
                   children: [
                     const SectionTitle(title: "Support"),
+                    //Help And Support
                     SettingsCard(
                       icon: Icons.help_rounded,
                       title: "Help & Support",
@@ -153,6 +158,21 @@ class _SettingsPageState extends State<SettingsPage> {
                         );
                       },
                     ),
+                    //About Us
+                    SettingsCard(
+                      icon: Icons.info,
+                      title: "About Us",
+                      subtitle: "Get To Know Us",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AboutUs(),
+                          ),
+                        );
+                      },
+                    ),
+                    //Rate Us
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.only(
