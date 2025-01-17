@@ -17,11 +17,11 @@ class DisplayTxns extends StatefulWidget {
 
   @override
   State<DisplayTxns> createState() => _DisplayTxns();
-  
 }
 
 class _DisplayTxns extends State<DisplayTxns> {
-  
+
+  // Fetch data based on the txn type
   Future<List<Txn>> _getData() async {
     switch(widget.displayTxnType!) {
       case TxnStates.allTxn: 
@@ -34,25 +34,31 @@ class _DisplayTxns extends State<DisplayTxns> {
         return await DatabaseTxn.instance.getIncomeTxns();
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _getData(), 
+    return FutureBuilder<List<Txn>>(
+      future: _getData(),
       builder: (BuildContext context, AsyncSnapshot<List<Txn>> snapshot) {
+        // Show loading message while data is being fetched
         if (!snapshot.hasData) {
           return Center(child: Text('Loading...'));
         }
-        return snapshot.data!.isEmpty
-          ? Center(child: Text('No Transactions made yet'))
-          : ListView(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            children: snapshot.data!.map((txn) {
-                return TransactionTile(txn: txn);
-              }).toList(),
-            );
-      }
+
+        // Check if no data is available
+        if (snapshot.data!.isEmpty) {
+          return Center(child: Text('No Transactions made yet'));
+        }
+
+        // If data exists, display the list of transactions
+        return ListView(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          children: snapshot.data!.map((txn) {
+            return TransactionTile(txn: txn); // Display each transaction
+          }).toList(),
+        );
+      },
     );
   }
 }

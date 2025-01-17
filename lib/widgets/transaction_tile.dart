@@ -70,7 +70,7 @@ class _TransactionTile extends State<TransactionTile> {
                 ),
               ), 
             ),
-          ),
+          ),  
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

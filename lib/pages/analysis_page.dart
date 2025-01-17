@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:penny_pilot/widgets/display_txns.dart';
+import 'package:penny_pilot/widgets/ExpenaseTxnpage.dart';
+import 'package:penny_pilot/widgets/IncomeTxnpage.dart';
+import 'package:penny_pilot/widgets/allTxnpage.dart';
 
 class AnalysisPage extends StatefulWidget {
   const AnalysisPage({
@@ -44,6 +46,10 @@ class _AnalysisPageState extends State<AnalysisPage> {
             DropdownMenuItem(
               value: 'Income',
               child: Text('Income'),
+            ),
+            DropdownMenuItem(
+              value: 'Savings',
+              child: Text('Savings'),
             ),
           ],
           onChanged: (value) {
@@ -101,27 +107,36 @@ class _AnalysisPageState extends State<AnalysisPage> {
   } */
 }
 
-class AllTxnPage extends StatelessWidget {
-  const AllTxnPage({super.key});
+// class AllTxnPage extends StatelessWidget {
+//   const AllTxnPage({super.key});
   
-  @override
-  Widget build(BuildContext context) {
-    return DisplayTxns(displayTxnType: TxnStates.allTxn);
-  }
-}
-class ExpenseTxnPage extends StatelessWidget {
-  const ExpenseTxnPage({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     return DisplayTxns(displayTxnType: TxnStates.allTxn);
+//   }
+// }
+// class ExpenseTxnPage extends StatelessWidget {
+//   const ExpenseTxnPage({super.key});
   
-  @override
-  Widget build(BuildContext context) {
-    return DisplayTxns(displayTxnType: TxnStates.expensesTxns);
-  }
-}
-class IncomeTxnPage extends StatelessWidget {
-  const IncomeTxnPage({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     return DisplayTxns(displayTxnType: TxnStates.expensesTxns);
+//   }
+// }
+// class IncomeTxnPage extends StatelessWidget {
+//   const IncomeTxnPage({super.key});
   
-  @override
-  Widget build(BuildContext context) {
-    return DisplayTxns(displayTxnType: TxnStates.incomeTxns);
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return DisplayTxns(displayTxnType: TxnStates.incomeTxns);
+//   }
+// }
+
+// class SavingTxtPage extends StatelessWidget {
+//   const SavingTxtPage({super.key});
+  
+//   @override
+//   Widget build(BuildContext context) {
+//     return DisplayTxns(displayTxnType: TxnStates.);
+//   }
+// }

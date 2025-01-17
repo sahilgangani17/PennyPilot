@@ -154,4 +154,45 @@ class DatabaseTxn {
     return 0.0;
   }
 
+
+  Future<Map<String, double>> getCategoryWiseExpenses() async {
+    Database db = await instance.database;
+    var result = await db.rawQuery(
+      'SELECT $columnCategory, SUM($columnAmount) FROM $tableName WHERE $columnType = ? GROUP BY $columnCategory',
+      ['Expenses']
+    );
+
+    Map<String, double> categoryData = {};
+    for (var row in result) {
+      // Ensure that category is a String and total amount is a double
+      String category = row[columnCategory] as String? ?? ''; // Handle null categories if necessary
+      double totalAmount = row['SUM($columnAmount)'] as double? ?? 0.0; // Handle null amount
+
+      // Add the category and total expense to the map
+      categoryData[category] = totalAmount;
+    }
+    return categoryData;
+  }
+
+  Future<Map<String, double>> getCategoryWiseIncome() async {
+    Database db = await instance.database;
+    var result = await db.rawQuery(
+      'SELECT $columnCategory, SUM($columnAmount) FROM $tableName WHERE $columnType = ? GROUP BY $columnCategory',
+      ['Income'],
+    );
+
+    Map<String, double> categoryData = {};
+
+    for (var row in result) {
+      // Ensure you're casting to String and double properly
+      String category = row[columnCategory] as String; // Cast to String
+      double totalAmount = row['SUM($columnAmount)'] as double; // Cast to double
+      categoryData[category] = totalAmount;
+    }
+    
+    return categoryData;
+  }
+
+
+
 }
