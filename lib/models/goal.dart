@@ -8,7 +8,7 @@ class Goal {
     required this.type,
     required this.amount,
     required this.category,
-    required this.date,
+    required this.date, 
     this.description = 'Not Specified',
   });
 

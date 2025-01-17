@@ -30,35 +30,40 @@ class _AllTxnPageState extends State<AllTxnPage> {
     pieChartData = fetchData(); // Correctly initializing fetchData without arguments
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, double>>(
-      future: pieChartData, // Using the pieChartData
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator()); // Loading state
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}')); // Error handling
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No data available.')); // No data found
-        } else {
-          final data = snapshot.data!;
-          final colors = [Colors.green, Colors.red]; // Pie chart colors
+ @override
+Widget build(BuildContext context) {
+  return FutureBuilder<Map<String, double>>(
+    future: pieChartData, // Using the pieChartData
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Center(child: CircularProgressIndicator()); // Loading state
+      } else if (snapshot.hasError) {
+        return Center(child: Text('Error: ${snapshot.error}')); // Error handling
+      } else if (!snapshot.hasData || snapshot.data!.isEmpty || isAllZero(snapshot.data!)) {
+        return Center(child: Text('No data available.')); // No meaningful data found
+      } else {
+        final data = snapshot.data!;
+        final colors = [Colors.green, Colors.red]; // Pie chart colors
 
-          return Column(
-            children: [
-              PieChartWidget(
-                sections: createSections(data, colors),
-              ),
-              // Display legend with labels for Income and Expense
-              _buildLegend(data, colors),
-              DisplayTxns(displayTxnType: TxnStates.allTxn),
-            ],
-          );
-        }
-      },
-    );
-  }
+        return Column(
+          children: [
+            PieChartWidget(
+              sections: createSections(data, colors),
+            ),
+            // Display legend only if data is valid
+            _buildLegend(data, colors),
+            DisplayTxns(displayTxnType: TxnStates.allTxn),
+          ],
+        );
+      }
+    },
+  );
+}
+
+// Helper function to check if all values in the map are zero
+bool isAllZero(Map<String, double> data) {
+  return data.values.every((value) => value == 0);
+}
 
   // Helper function to create PieChartSectionData from the data
  List<PieChartSectionData> createSections(Map<String, double> data, List<Color> colors) {

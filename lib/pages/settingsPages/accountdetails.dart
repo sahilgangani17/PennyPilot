@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:penny_pilot/pages/login.dart';
 
@@ -10,19 +13,61 @@ class Accountdetails extends StatefulWidget {
 }
 
 class _AccountdetailsState extends State<Accountdetails> {
-  
+  String username = '';
+  String email = '';
+  String phoneno = '';
+  String password = '';
+
+  // Get the local file path
+  Future<File> get _localFile async {
+    final path = await getApplicationDocumentsDirectory();
+    return File('$path/user_data.json');
+  }
+
+  // Fetch user data from the JSON file
+  Future<void> _fetchData() async {
+    try {
+      final file = await _localFile;
+      print("Reading from file: ${file.path}"); // Debugging print
+
+      if (await file.exists()) {
+        String data = await file.readAsString();
+        List<dynamic> jsonData = jsonDecode(data);
+
+        setState(() {
+          username = jsonData[0]['username'];
+          email = jsonData[0]['email'];
+          phoneno = jsonData[0]['phoneno'];
+          password = jsonData[0]['password'];
+        });
+
+        print("Data fetched successfully: $jsonData");
+      } else {
+        print("File not found.");
+      }
+    } catch (e) {
+      print("Error reading data from JSON: $e");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData(); // Fetch data when the page is initialized
+  }
+
   Widget appCard(Widget? child) {
     return Container(
       padding: EdgeInsets.all(10),
       margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20)
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20)
       ),
       child: Padding(
         padding: EdgeInsets.all(20),
         child: child
-      )
+      ),
     );
   }
 
@@ -53,7 +98,6 @@ class _AccountdetailsState extends State<Accountdetails> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Account Details"),
-        //backgroundColor: Colors.grey[300],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -61,13 +105,12 @@ class _AccountdetailsState extends State<Accountdetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-            
-            // User Dashboard
+              // Display user details
               appCard(
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    //TODO: Image profile upload from local device
+                    // Display user profile image (you can replace this with dynamic data)
                     ClipRRect(
                       borderRadius: BorderRadius.circular(50),
                       child: Image.network(
@@ -78,7 +121,7 @@ class _AccountdetailsState extends State<Accountdetails> {
                       ),
                     ),
                     Text(
-                      '(UserName)',
+                      username,
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -87,13 +130,11 @@ class _AccountdetailsState extends State<Accountdetails> {
                   ]
                 )
               ),
-            
-            //Login Details
+              // Login Details
               appCard(
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [  
-                    // Heading
                     Text(
                       'Login Details',
                       style: TextStyle(
@@ -103,75 +144,37 @@ class _AccountdetailsState extends State<Accountdetails> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10,),
-                    // Email
-                    detailBox('Email', '{UserEmail}'),
+                    detailBox('Email', email),
                     const SizedBox(height: 10),
-                    // Password
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        detailBox('Password', '{UserPassword}'),
+                        detailBox('Password', password),
                         ElevatedButton(
                           onPressed: () {
-
+                            // Handle password change functionality
                           }, 
                           child: Text('Change')
                         )
                       ],
                     ),
-                    // Phone
-                    detailBox('Phone', '{UserPhone}'),
+                    detailBox('Phone', phoneno),
                   ]
                 ),
               ),
-            
-            
-            /* //Account Settings
-            Container(
-              padding: EdgeInsets.all(20),
-              margin: EdgeInsets.all(10),
-                decoration:BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.white,
-                ),
-                child:Column(
-                  children: [
-                    Text(
-                      'Account Settings',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text('Two factor Authentication'),
-                            //TODO: Switch
-                          ],
-                        ),
-                        SizedBox(height: 10,),
-                      ],
-                    )
-                  ],
-                )
-            ),
-             */
-            ElevatedButton(
-              onPressed: () async{
-                await FirebaseAuth.instance.signOut();
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => Login()),
-                );
-              }, 
-              child: Text('SIGN OUT')
+              ElevatedButton(
+                onPressed: () async{
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => Login()),
+                  );
+                }, 
+                child: Text('SIGN OUT')
               )
-          ],
+            ],
+          ),
         ),
       ),
-    )
     );
   }
 }
