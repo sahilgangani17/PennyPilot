@@ -39,7 +39,7 @@ class _AllTxnPageState extends State<AllTxnPage> {
           return Center(child: CircularProgressIndicator()); // Loading state
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}')); // Error handling
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty || isDataEmpty(snapshot.data!) ) {
           return Center(child: Text('No data available.')); // No data found
         } else {
           final data = snapshot.data!;
@@ -105,5 +105,9 @@ class _AllTxnPageState extends State<AllTxnPage> {
         }),
       ),
     );
+  }
+
+  bool isDataEmpty(Map<String, double> data) {
+    return data.isEmpty || data.values.every((value) => value == 0);
   }
 }

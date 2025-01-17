@@ -1,8 +1,6 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:penny_pilot/database/db_user.dart';
 import 'package:penny_pilot/pages/login.dart';
 
 class Accountdetails extends StatefulWidget {
@@ -16,44 +14,46 @@ class _AccountdetailsState extends State<Accountdetails> {
   String username = '';
   String email = '';
   String phoneno = '';
-  String password = '';
+  String password = ''; // Hide password for security reasons
 
-  // Get the local file path
-  Future<File> get _localFile async {
-    final path = await getApplicationDocumentsDirectory();
-    return File('$path/user_data.json');
-  }
+  // Fetch user details from the database based on current Firebase email
+  Future<void> _fetchUserDetails() async {
+    // Get current user's email from Firebase Authentication
+    final currentUserEmail = FirebaseAuth.instance.currentUser?.email;
 
-  // Fetch user data from the JSON file
-  Future<void> _fetchData() async {
-    try {
-      final file = await _localFile;
-      print("Reading from file: ${file.path}"); // Debugging print
+    // Check if the user is logged in
+    if (currentUserEmail == null) {
+      print("No user is currently logged in.");
+      // Redirect to Login if no user is logged in
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Login()),
+      );
+      return;
+    }
 
-      if (await file.exists()) {
-        String data = await file.readAsString();
-        List<dynamic> jsonData = jsonDecode(data);
+    print('Current user email: $currentUserEmail'); // Debugging line
 
-        setState(() {
-          username = jsonData[0]['username'];
-          email = jsonData[0]['email'];
-          phoneno = jsonData[0]['phoneno'];
-          password = jsonData[0]['password'];
-        });
+    // Fetch user data from the database based on the email
+    var users = await DatabaseUser.instance.fetchUsersByEmail(currentUserEmail);
 
-        print("Data fetched successfully: $jsonData");
-      } else {
-        print("File not found.");
-      }
-    } catch (e) {
-      print("Error reading data from JSON: $e");
+    if (users.isNotEmpty) {
+      setState(() {
+        username = users[0]['username'];
+        email = users[0]['email'];
+        phoneno = users[0]['phoneno'];
+        password = "********"; // Do not display the actual password
+      });
+    } else {
+      print("No user found with email: $currentUserEmail");
+      // Handle case when there are no users found with the provided email
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _fetchData(); // Fetch data when the page is initialized
+    _fetchUserDetails(); // Fetch user data when the page is initialized
   }
 
   Widget appCard(Widget? child) {
@@ -62,11 +62,11 @@ class _AccountdetailsState extends State<Accountdetails> {
       margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20)
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
         padding: EdgeInsets.all(20),
-        child: child
+        child: child,
       ),
     );
   }
@@ -75,21 +75,16 @@ class _AccountdetailsState extends State<Accountdetails> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              heading,
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 11,
-                color: Colors.grey,
-              ),
-            ),
-            Text(content)
-          ],
+        Text(
+          heading,
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontSize: 11,
+            color: Colors.grey,
+          ),
         ),
-      ]
+        Text(content),
+      ],
     );
   }
 
@@ -105,12 +100,12 @@ class _AccountdetailsState extends State<Accountdetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Display user details
+              // Display user profile image and username
               appCard(
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    // Display user profile image (you can replace this with dynamic data)
+                    // Display user profile image (replace with dynamic data if available)
                     ClipRRect(
                       borderRadius: BorderRadius.circular(50),
                       child: Image.network(
@@ -127,14 +122,14 @@ class _AccountdetailsState extends State<Accountdetails> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ]
-                )
+                  ],
+                ),
               ),
-              // Login Details
+              // Display login details
               appCard(
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [  
+                  children: [
                     Text(
                       'Login Details',
                       style: TextStyle(
@@ -143,7 +138,7 @@ class _AccountdetailsState extends State<Accountdetails> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 10,),
+                    const SizedBox(height: 10),
                     detailBox('Email', email),
                     const SizedBox(height: 10),
                     Row(
@@ -153,24 +148,26 @@ class _AccountdetailsState extends State<Accountdetails> {
                         ElevatedButton(
                           onPressed: () {
                             // Handle password change functionality
-                          }, 
-                          child: Text('Change')
-                        )
+                          },
+                          child: Text('Change'),
+                        ),
                       ],
                     ),
                     detailBox('Phone', phoneno),
-                  ]
+                  ],
                 ),
               ),
+              // Sign out button
               ElevatedButton(
-                onPressed: () async{
+                onPressed: () async {
+                  // Sign out the user from Firebase
                   await FirebaseAuth.instance.signOut();
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => Login()),
                   );
-                }, 
-                child: Text('SIGN OUT')
-              )
+                },
+                child: Text('SIGN OUT'),
+              ),
             ],
           ),
         ),
