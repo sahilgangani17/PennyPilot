@@ -1,21 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-
-
 
 class Currencyconvertor extends StatefulWidget {
   const Currencyconvertor({super.key});
 
   @override
   State<Currencyconvertor> createState() => _CurrencyconvertorState();
-
-  //   @override
-  // void initState() {
-  //   super.initState();
-  //   _loadDefaultCurrency(); // Load the default currency
-  // }
-  
 }
 
 class _CurrencyconvertorState extends State<Currencyconvertor> {
@@ -109,175 +99,179 @@ class _CurrencyconvertorState extends State<Currencyconvertor> {
     );
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Currency Converter"),
-          backgroundColor: Colors.grey[300],
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Amount',
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 16,
+      appBar: AppBar(
+        title: const Text("Currency Converter"),
+        backgroundColor: Colors.grey[100],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Amount',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) {
+                            setState(() {
+                              _amount = double.tryParse(value) ?? 0.0;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            label: Text('Enter Amount'),
+                            border: OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey[600]!),
                             ),
                           ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          TextField(
-                            keyboardType: TextInputType.number,
-                            onChanged: (value) {
-                              setState(() {
-                                _amount = double.tryParse(value) ?? 0.0;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              label: Text('Enter Amount'),
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Column(
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                'From',
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 16,
-                                ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'From',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 16,
                               ),
-                              dropDownVariablefrom,
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                String temp = initial_dropdownvalue1;
-                                initial_dropdownvalue1 = initial_dropdownvalue2;
-                                initial_dropdownvalue2 = temp;
-                              });
-                            },
-                            icon: Icon(Icons.swap_vert),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Column(
-                            children: [
-                              Text(
-                                'To',
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 16,
-                                ),
-                              ),
-                              dropDownVariableTo,
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                if (_exchangeRates
-                                        .containsKey(initial_dropdownvalue1) &&
-                                    _exchangeRates[initial_dropdownvalue1]!
-                                        .containsKey(initial_dropdownvalue2)) {
-                                  final double rate =
-                                      _exchangeRates[initial_dropdownvalue1]![
-                                          initial_dropdownvalue2]!;
-                                  _result = (_amount * rate).toStringAsFixed(2);
-                                } else {
-                                  _result = 'Rate not found';
-                                  print(
-                                      'Error: Rate not found for $initial_dropdownvalue1 to $initial_dropdownvalue2');
-                                }
-                              });
-                            },
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  WidgetStatePropertyAll(Colors.grey[200]),
-                              foregroundColor:
-                                  WidgetStatePropertyAll(Colors.black),
                             ),
+                            dropDownVariablefrom,
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              String temp = initial_dropdownvalue1;
+                              initial_dropdownvalue1 = initial_dropdownvalue2;
+                              initial_dropdownvalue2 = temp;
+                            });
+                          },
+                          icon: Icon(Icons.swap_vert),
+                          color: Colors.grey[600],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'To',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 16,
+                              ),
+                            ),
+                            dropDownVariableTo,
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              if (_exchangeRates
+                                      .containsKey(initial_dropdownvalue1) &&
+                                  _exchangeRates[initial_dropdownvalue1]!
+                                      .containsKey(initial_dropdownvalue2)) {
+                                final double rate =
+                                    _exchangeRates[initial_dropdownvalue1]![initial_dropdownvalue2]!;
+                                _result = (_amount * rate).toStringAsFixed(2);
+                              } else {
+                                _result = 'Rate not found';
+                                print('Error: Rate not found for $initial_dropdownvalue1 to $initial_dropdownvalue2');
+                              }
+                            });
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.grey[300]),
+                            foregroundColor: MaterialStateProperty.all(Colors.black),
+                            elevation: MaterialStateProperty.all(5),
+                            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            )),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Text('Convert'),
                           ),
-                          SizedBox(height: 20),
-                          Container(
-                            padding: const EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(_result),
-                                Row(
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          //Copy to clip Board Logic
-                                          Clipboard.setData(
-                                              ClipboardData(text: _result));
-                                          // Optionally, show a Snackbar to confirm the copy operation
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                                content: Text(
-                                                    'Result copied to clipboard')),
-                                          );
-                                        },
-                                        icon: Icon(Icons.copy)),
-                                    // IconButton(
-                                    //     onPressed: () {
-                                    //       //Logic to add amount in transaction
-
-                                    //     },
-                                    //     icon: Icon(Icons.add)),
-                                  ],
-                                )
-                              ],
-                            ),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          padding: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                _result,
+                                style: TextStyle(color: Colors.grey[800], fontSize: 18),
+                              ),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      Clipboard.setData(ClipboardData(text: _result));
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('Result copied to clipboard')),
+                                      );
+                                    },
+                                    icon: Icon(Icons.copy, color: Colors.grey[600]),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
-
-// Future<void> _setDefaultCurrency(String currency) async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   await prefs.setString('defaultCurrency', currency);
-// }
