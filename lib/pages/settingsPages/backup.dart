@@ -12,13 +12,13 @@ class _BackupState extends State<Backup> {
   bool isLocalBackupEnabled = false; // State for local backup toggle
 
   //storage variables
-  final double _storageUsagePercentage = 0.0; 
+  final double _storageUsagePercentage = 0.0;
   final int _usedStorage = 0;
   final int _totalStorage = 1000;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 200, 213, 185),
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: const Text("Backup"),
         backgroundColor: Colors.grey[300],
@@ -40,24 +40,24 @@ class _BackupState extends State<Backup> {
                   Text(
                     'Last Backup',
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
+                      color: Colors.white,
                     ),
                   ),
                   Text(
                     '(Date) - (Time)',
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 22,
                       fontWeight: FontWeight.w500,
+                      color: Colors.white,
                     ),
                   ),
                   Text(
                     'All your financial data is securely stored',
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 14,
+                      color: Colors.white,
                     ),
                   ),
                   SizedBox(
@@ -94,7 +94,7 @@ class _BackupState extends State<Backup> {
                   Container(
                     padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 200, 213, 185),
+                      color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
@@ -116,7 +116,6 @@ class _BackupState extends State<Backup> {
                                 Text(
                                   'Cloud Backup',
                                   style: TextStyle(
-                                    color: Colors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -154,7 +153,7 @@ class _BackupState extends State<Backup> {
                   Container(
                     padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 200, 213, 185),
+                      color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
@@ -176,7 +175,6 @@ class _BackupState extends State<Backup> {
                                 Text(
                                   'Local Backup',
                                   style: TextStyle(
-                                    color: Colors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -237,7 +235,7 @@ class _BackupState extends State<Backup> {
                   Container(
                     padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 200, 213, 185),
+                      color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
@@ -254,7 +252,6 @@ class _BackupState extends State<Backup> {
                                 Text(
                                   '(Date)',
                                   style: TextStyle(
-                                    color: Colors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -287,7 +284,6 @@ class _BackupState extends State<Backup> {
                                 Text(
                                   '(Date)',
                                   style: TextStyle(
-                                    color: Colors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -320,7 +316,6 @@ class _BackupState extends State<Backup> {
                                 Text(
                                   '(Date)',
                                   style: TextStyle(
-                                    color: Colors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -410,7 +405,9 @@ class _BackupState extends State<Backup> {
               height: 20,
             ),
             ElevatedButton.icon(
+              
               style: ButtonStyle(
+                fixedSize: WidgetStatePropertyAll(Size.fromWidth(300)),
                 backgroundColor: WidgetStatePropertyAll(Colors.grey),
               ),
               onPressed: () {},
@@ -421,9 +418,9 @@ class _BackupState extends State<Backup> {
               label: Text(
                 'Backup Now',
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
+                  color: Colors.white,
                 ),
               ),
             ),

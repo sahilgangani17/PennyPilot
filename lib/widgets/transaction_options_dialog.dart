@@ -123,7 +123,7 @@ class _TransactionOptionsState extends State<TransactionOptions> {
                   border: const OutlineInputBorder(),
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: appvalidate.isEmptyCheck,
+                validator: appvalidate.validateAmount,
               ),
               const SizedBox(height: 16),
 
