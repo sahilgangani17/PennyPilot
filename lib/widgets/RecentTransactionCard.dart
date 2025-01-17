@@ -3,10 +3,16 @@ import 'package:penny_pilot/utils/icon_list.dart';
 import 'package:penny_pilot/widgets/display_txns.dart';
 
 // ignore: must_be_immutable
-class TransactionCard extends StatelessWidget {
-  TransactionCard({
+class TransactionCard extends StatefulWidget {
+  const TransactionCard({
     super.key,
   });
+
+  @override
+  State<TransactionCard> createState() => _TransactionCard();
+}
+
+class _TransactionCard extends State<TransactionCard> {
 
   var appicons = AppIcons();
 
