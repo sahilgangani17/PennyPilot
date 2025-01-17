@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:penny_pilot/database/db_txns.dart';
-import 'package:penny_pilot/pages/home_page.dart';
 import 'package:penny_pilot/utils/icon_list.dart';
 import 'package:penny_pilot/models/transaction.dart';
 import 'package:penny_pilot/widgets/transaction_options_dialog.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class TransactionTile extends StatefulWidget {
   TransactionTile({
     super.key,
     required this.txn,
-    required this.flutterLocalNotificationsPlugin,
   });
 
   var appicons = AppIcons();
   final Txn? txn;
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
   @override
   State<TransactionTile> createState() => _TransactionTile();
@@ -26,7 +21,6 @@ class TransactionTile extends StatefulWidget {
 class _TransactionTile extends State<TransactionTile> {
   Txn? txn;
   Color? color;
-  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
   @override
   void initState() {
@@ -114,9 +108,6 @@ class _TransactionTile extends State<TransactionTile> {
                           content: TransactionOptions(
                             txn: txn,
                             editTxnState: EditTxnStates.edit,
-                            onTransactionComplete: (category, amount) {
-                              _addNotification(category, amount);
-                            },
                           ),
                         ),
                       );
@@ -125,7 +116,7 @@ class _TransactionTile extends State<TransactionTile> {
                   ),
                   IconButton(
                     onPressed: () {
-                      DatabaseService.instance.deleteTxn(txn!);
+                      DatabaseTxn.instance.deleteTxn(txn!);
                     }, 
                     icon: Icon(Icons.delete, color: Colors.grey,)
                   )

@@ -202,11 +202,7 @@ class _HomePageState extends State<HomePage> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        content: TransactionOptions(
-          onTransactionComplete: (category, amount) {
-            _showTransactionNotification(category, amount);
-          },
-        ),
+        content: TransactionOptions(),
       ),
     );
     Navigator.pushReplacement(
