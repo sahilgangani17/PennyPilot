@@ -6,7 +6,7 @@ import 'package:penny_pilot/pages/dashboard_page.dart';
 import 'package:penny_pilot/pages/analysis_page.dart';
 import 'package:penny_pilot/pages/savings_page.dart';
 import 'package:penny_pilot/pages/settings_page.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({
@@ -21,17 +21,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var isLogoutLoading = false;
 
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  //FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  @override
+  /* @override
   void initState() {
     super.initState();
-    const AndroidInitializationSettings initializationSettingsAndroid =
+    /* const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
     const InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  }
+    flutterLocalNotificationsPlugin.initialize(initializationSettings); */
+  } */
 
   logout() async {
     setState(() {
@@ -53,8 +53,6 @@ class _HomePageState extends State<HomePage> {
       });
     }
   }
-
-  int _selectedIndex = 0; //TODO: Change Selected Index
 
   final List<Widget> _pages = [
     Dashboard(),

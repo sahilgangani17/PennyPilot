@@ -1,19 +1,20 @@
 class User {
-  final String userName, email;
-
-  User({
-    required this.userName,
+  final int? id;
+  final String  email;
+  
+  const User({
+    this.id,
     required this.email,
   });
 
   factory User.fromJSON(Map<String, dynamic> json) =>
     User(
-      userName: json['userName'],
+      id: json['id'],
       email: json['email'],
     );
 
   Map<String, dynamic> toJSON() => {
-    'userName': userName,
+    'id': id,
     'email': email,
   };
 }

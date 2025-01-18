@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:penny_pilot/database/db_txns.dart';
+import 'package:penny_pilot/helper/helper_funcs.dart';
 import 'package:penny_pilot/widgets/PieChart.dart';
 import 'package:penny_pilot/widgets/display_txns.dart';
 
@@ -18,8 +19,8 @@ class _AllTxnPageState extends State<AllTxnPage> {
   Future<Map<String, double>> fetchData() async {
     final dbService = DatabaseTxn.instance;
 
-    double income = await dbService.getTotalIncome();
-    double expense = await dbService.getTotalExpense();
+    double income = await dbService.getTotalIncome(getCurrentUserEmail()!);
+    double expense = await dbService.getTotalExpense(getCurrentUserEmail()!);
 
     return {'Income': income, 'Expense': expense}; // Returning a map
   }

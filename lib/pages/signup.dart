@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:penny_pilot/Services/auth_service.dart';
-import 'package:penny_pilot/database/db_user.dart';
 import 'package:penny_pilot/pages/login.dart';
 import 'package:penny_pilot/utils/appvalidate.dart';
 
@@ -38,7 +37,7 @@ class _SignupState extends State<Signup> {
         "password": _passwordController.text,
       };
 
-      await DatabaseUser.instance.insertUser(data);
+      //await DatabaseUser.instance.insertUser(data);
       // await _saveDataToJson(data); // Save form data to JSON
       await authService.createUser(data, context); // Simulate user creation (e.g., Firebase)
 
@@ -112,7 +111,7 @@ class _SignupState extends State<Signup> {
                     ),
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                   ),
-                  validator: appvalidate.validatePassword,
+                  validator: appvalidate.validateNewPassword,
                 ),
                 SizedBox(height: 16),
                 SizedBox(

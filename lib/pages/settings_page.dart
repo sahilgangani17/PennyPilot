@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:penny_pilot/pages/login.dart';
 import 'package:penny_pilot/pages/settingsPages/accountdetails.dart';
 import 'package:penny_pilot/pages/settingsPages/backup.dart';
 import 'package:penny_pilot/pages/settingsPages/currencyconvertor.dart';
 import 'package:penny_pilot/pages/settingsPages/help&support.dart';
-// import 'package:penny_pilot/pages/settingsPages/notifications.dart';
 import 'package:penny_pilot/pages/settingsPages/aboutus.dart';
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -21,16 +20,16 @@ class _SettingsPageState extends State<SettingsPage> {
   // late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   // bool notificationsEnabled = false; // To manage notification state
 
-  @override
+  //@override
   void initState() {
     super.initState();
     // flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    // const AndroidInitializationSettings initializationSettingsAndroid =
-    //     AndroidInitializationSettings('app_icon');
+    //const AndroidInitializationSettings initializationSettingsAndroid =
+      //  AndroidInitializationSettings('app_icon');
 
-    // const InitializationSettings initializationSettings = InitializationSettings(
-    //   android: initializationSettingsAndroid,
-    // );
+    //const InitializationSettings initializationSettings = InitializationSettings(
+      //android: initializationSettingsAndroid,
+    //);
 
     // flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
@@ -94,6 +93,19 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: Column(
                   children: [
                     const SectionTitle(title: "Account Settings"),
+                    SettingsCard(
+                      icon: Icons.switch_account_rounded,
+                      title: "Switch Accounts",
+                      subtitle: "Login to another account",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Login(),
+                          ),
+                        );
+                      },
+                    ),
                     SettingsCard(
                       icon: Icons.account_circle,
                       title: "Account Details",

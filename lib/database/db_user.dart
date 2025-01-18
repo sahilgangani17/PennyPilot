@@ -1,6 +1,6 @@
+import 'package:penny_pilot/models/user.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 // Database User Class
 class DatabaseUser {
@@ -14,39 +14,50 @@ class DatabaseUser {
   Future<Database> get database async {
     if (_database != null) return _database!;
     // If database doesn't exist, open or create it
-    _database = await _initDB('users.db');
+    _database = await _initDB('users_DB.db');
     return _database!;
   }
 
   Future<Database> _initDB(String filePath) async {
-    final documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, filePath);
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, filePath);
 
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
-  Future _createDB(Database db, int version) async {
+  Future<void> _createDB(Database db, int version) async {
     const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
     const textType = 'TEXT NOT NULL';
 
     await db.execute('''
-      CREATE TABLE users ( 
-        id $idType, 
-        username $textType,
+      CREATE TABLE IF NOT EXISTS users ( 
+        id $idType,
         email $textType,
-        phoneno $textType,
-        password $textType
       )
     ''');
   }
 
   // Insert user data
-  Future<void> insertUser(Map<String, dynamic> userData) async {
+  Future<int> insertUser(User user) async {
     final db = await instance.database;
-    await db.insert('users', userData, conflictAlgorithm: ConflictAlgorithm.replace);
+    return await db.insert(
+      'users', 
+      user.toJSON(), 
+      conflictAlgorithm: ConflictAlgorithm.replace
+    );
   }
 
-  // Fetch user data
+  // Fetch All Users
+  Future<List<User>> fetchAllUsers() async {
+    Database db = await instance.database;
+    var users = await db.query('users');
+    List<User> usersList = users.isNotEmpty
+      ? users.map((c) => User.fromJSON(c)).toList()
+      : [];
+    return usersList;
+  }
+
+  /* // Fetch user data
   Future<List<Map<String, dynamic>>> fetchUsers() async {
     final db = await instance.database;
     return await db.query('users'); // Fetch all users
@@ -74,5 +85,5 @@ class DatabaseUser {
       where: 'email = ?',
       whereArgs: [email],
     );
-  }
+  } */
 }

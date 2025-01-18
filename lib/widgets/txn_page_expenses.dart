@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:penny_pilot/database/db_txns.dart';
+import 'package:penny_pilot/helper/helper_funcs.dart';
 
 import 'package:penny_pilot/widgets/PieChart.dart';
 import 'package:penny_pilot/widgets/display_txns.dart';
@@ -24,7 +25,7 @@ class _ExpenseTxnPageState extends State<ExpenseTxnPage> {
   // Fetching the category-wise expenses from the database
   Future<Map<String, double>> fetchData() async {
     final dbService = DatabaseTxn.instance;
-    var categoryData = await dbService.getCategoryWiseExpenses();
+    var categoryData = await dbService.getCategoryWiseExpenses(getCurrentUserEmail()!);
     return categoryData;
   }
 

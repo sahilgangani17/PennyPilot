@@ -30,6 +30,7 @@ class DatabaseSaving {
     await db.execute(''' 
       CREATE TABLE IF NOT EXISTS saving_goals (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT NOT NULL,
         title TEXT NOT NULL,
         target_amount REAL NOT NULL,
         saved_amount REAL DEFAULT 0,
@@ -41,6 +42,7 @@ class DatabaseSaving {
     await db.execute(''' 
       CREATE TABLE IF NOT EXISTS goal_history (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT NOT NULL,
         title TEXT NOT NULL,
         target_amount REAL NOT NULL,
         saved_amount REAL NOT NULL,
@@ -55,6 +57,7 @@ class DatabaseSaving {
       await db.execute(''' 
         CREATE TABLE IF NOT EXISTS goal_history (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
+          email TEXT NOT NULL,
           title TEXT NOT NULL,
           target_amount REAL NOT NULL,
           saved_amount REAL NOT NULL,
@@ -66,9 +69,10 @@ class DatabaseSaving {
   }
 
   // Method to add a new saving goal to the saving_goals table
-  Future<int> addSavingGoal(String title, double targetAmount, String date) async {
+  Future<int> addSavingGoal(String email, String title, double targetAmount, String date) async {
     final db = await instance.database;
     return await db.insert('saving_goals', {
+      'email': email,
       'title': title,
       'target_amount': targetAmount,
       'saved_amount': 0, // Initial saved amount is 0
@@ -110,6 +114,7 @@ class DatabaseSaving {
       // Move the completed goal to goal_history
       await db.insert('goal_history', {
         'title': goalData['title'],
+        'email': goalData['email'],
         'target_amount': goalData['target_amount'],
         'saved_amount': goalData['saved_amount'],
         'target_date': goalData['target_date'],
@@ -132,17 +137,26 @@ class DatabaseSaving {
   }
 
   
- Future<List<Goal>> fetchGoalHistory() async {
+ Future<List<Goal>> fetchGoalHistory(String email) async {
   final db = await instance.database; // Use the getter to obtain the database instance
-  final result = await db.query('goal_history');
+  final result = await db.query(
+    'goal_history',
+    where: 'email = ?',
+    whereArgs: [email],
+  );
   return result.map((map) => Goal.fromJSON(map)).toList(); // Map the results to Goal objects
 }
 
 
-  Future<double> fetchTotalSavings() async {
+  Future<double> fetchTotalSavings(String email) async {
     final db = await instance.database;
-    final result = await db.rawQuery(
-      'SELECT SUM(saved_amount) AS total_savings FROM saving_goals WHERE isCompleted = 0',
+    final result = await db.rawQuery('''
+      SELECT SUM(saved_amount) 
+      AS total_savings 
+      FROM saving_goals 
+      WHERE isCompleted = 0 AND email = ?
+      ''',
+      [email]
     );
     return result.isNotEmpty && result.first['total_savings'] != null
         ? result.first['total_savings'] as double

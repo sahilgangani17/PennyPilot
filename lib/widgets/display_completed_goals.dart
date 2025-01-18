@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:penny_pilot/database/db_saving.dart';
+import 'package:penny_pilot/helper/helper_funcs.dart';
 import 'package:penny_pilot/models/goal.dart';
 import 'package:penny_pilot/widgets/completed_goal_tile.dart';
 
@@ -15,7 +16,7 @@ class _DisplayGoals extends State<DisplayGoals> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Goal>>(
-      future: DatabaseSaving.instance.fetchGoalHistory(),
+      future: DatabaseSaving.instance.fetchGoalHistory(getCurrentUserEmail()!),
       builder: (BuildContext context, AsyncSnapshot<List<Goal>> snapshot) {
         // Show loading message while data is being fetched
         if (!snapshot.hasData) {
