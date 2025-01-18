@@ -77,6 +77,10 @@ dev_dependencies:
 flutter:
   assets:
     - lib\src\assets\images\penny_pilot.png
+    - lib\src\assets\images\Aryan_photo.jpeg
+    - lib\src\assets\images\Sankalp_photo.jpeg
+    - lib\src\assets\images\Sahil_photo.jpeg
+    - lib\src\assets\images\riddhi_photo.jpeg
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
