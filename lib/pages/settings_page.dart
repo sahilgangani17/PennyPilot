@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:penny_pilot/helper/helper_funcs.dart';
 import 'package:penny_pilot/pages/login.dart';
 import 'package:penny_pilot/pages/settingsPages/accountdetails.dart';
 import 'package:penny_pilot/pages/settingsPages/backup.dart';
@@ -154,7 +155,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const Backup(),
+                            builder: (context) => Backup(currentUserEmail: getCurrentUserEmail()!),
                           ),
                         );
                       },
