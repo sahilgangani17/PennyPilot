@@ -126,7 +126,7 @@ class _BackupState extends State<Backup> {
             // Last Backup Section
             Container(
               padding: const EdgeInsets.all(20),
-              // color: const Color.fromARGB(255, 9, 104, 172),
+              color: const Color.fromARGB(255, 9, 104, 172),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -136,7 +136,7 @@ class _BackupState extends State<Backup> {
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
-                      color: Colors.black,
+                      color: Colors.white,
                     ),
                   ),
                   Text(
@@ -146,7 +146,7 @@ class _BackupState extends State<Backup> {
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
-                      color: Colors.black,
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -156,55 +156,62 @@ class _BackupState extends State<Backup> {
             const SizedBox(height: 20),
 
             // Backup Button
-            ElevatedButton(
-              onPressed: () => _performBackup(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  
-                ),
-              ),
-              child: const Text(
-                "Backup Now",
-                style: TextStyle(fontSize: 18, color: Colors.black),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Backup History Section
-            Container(
-              margin: const EdgeInsets.all(10),
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
+            Padding(
+              padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  const Text(
-                    'Backup History',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
+                  ElevatedButton(
+                    onPressed: () => _performBackup(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      
+                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        
+                      ),
+                    ),
+                    child: const Text(
+                      "Backup Now",
+                      style: TextStyle(fontSize: 18, color: Colors.black),
                     ),
                   ),
                   const SizedBox(height: 20),
-                  if (_backupHistory.isNotEmpty)
-                    ..._backupHistory.map((entry) => Column(
-                          children: [
-                            backupHistoryRow(entry),
-                            const SizedBox(height: 10),
-                          ],
-                        )),
-                  if (_backupHistory.isEmpty)
-                    const Text(
-                      'No backup history available.',
-                      style: TextStyle(color: Colors.grey),
+                  
+                  // Backup History Section
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
                     ),
+                    child: Column(
+                      children: [
+                        const Text(
+                          'Backup History',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        if (_backupHistory.isNotEmpty)
+                          ..._backupHistory.map((entry) => Column(
+                                children: [
+                                  backupHistoryRow(entry),
+                                  const SizedBox(height: 10),
+                                ],
+                              )),
+                        if (_backupHistory.isEmpty)
+                          const Text(
+                            'No backup history available.',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

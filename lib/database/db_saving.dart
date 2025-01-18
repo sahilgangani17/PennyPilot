@@ -148,6 +148,20 @@ class DatabaseSaving {
     return result.map((map) => Goal.fromJSON(map)).toList(); // Map the results to Goal objects
   }
 
+  Future<double> fetchTotalSaved(String email) async {
+    final db = await instance.database;
+    final result = await db.rawQuery('''
+      SELECT SUM(saved_amount) 
+      AS total_savings 
+      FROM goal_history 
+      WHERE email = ?
+      ''',
+      [email]
+    );
+    return result.isNotEmpty && result.first['total_savings'] != null
+        ? result.first['total_savings'] as double
+        : 0.0;
+  }
 
   Future<double> fetchTotalSavings(String email) async {
     final db = await instance.database;
