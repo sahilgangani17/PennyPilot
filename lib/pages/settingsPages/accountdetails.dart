@@ -215,7 +215,7 @@ class _AccountdetailsState extends State<Accountdetails> {
             children: [
               // Display user profile image and username
               appCard(
-                Row(
+                Column(
                   //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     // Display user profile image (replace with dynamic data if available)

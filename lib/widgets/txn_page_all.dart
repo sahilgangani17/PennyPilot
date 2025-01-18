@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:penny_pilot/database/db_saving.dart';
 import 'package:penny_pilot/database/db_txns.dart';
 import 'package:penny_pilot/helper/helper_funcs.dart';
 import 'package:penny_pilot/widgets/PieChart.dart';
 import 'package:penny_pilot/widgets/display_txns.dart';
+import 'package:penny_pilot/widgets/txn_page_savings.dart';
 
 class AllTxnPage extends StatefulWidget {
   const AllTxnPage({super.key});
@@ -21,8 +23,10 @@ class _AllTxnPageState extends State<AllTxnPage> {
 
     double income = await dbService.getTotalIncome(getCurrentUserEmail()!);
     double expense = await dbService.getTotalExpense(getCurrentUserEmail()!);
+    double saving = await DatabaseSaving.instance.fetchTotalSaved(getCurrentUserEmail()!);
+    
 
-    return {'Income': income, 'Expense': expense}; // Returning a map
+    return {'Income': income, 'Expense': expense, 'Savings': saving}; // Returning a map
   }
 
   @override
@@ -44,7 +48,7 @@ class _AllTxnPageState extends State<AllTxnPage> {
           return Center(child: Text('No data available.')); // No data found
         } else {
           final data = snapshot.data!;
-          final colors = [Colors.green, Colors.red]; // Pie chart colors
+          final colors = [Colors.green, Colors.red, Colors.amber]; // Pie chart colors
 
           return Column(
             children: [
@@ -54,6 +58,7 @@ class _AllTxnPageState extends State<AllTxnPage> {
               // Display legend with labels for Income and Expense
               _buildLegend(data, colors),
               DisplayTxns(displayTxnType: TxnStates.allTxn),
+              GoalTxnPage(),
             ],
           );
         }
