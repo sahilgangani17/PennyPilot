@@ -78,8 +78,8 @@ class AboutUs extends StatelessWidget {
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(40),
-                              child: Image.network(
-                                'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&h=500',
+                              child: Image.asset(
+                                'lib/src/assets/images/Sankalp_photo.jpeg',
                                 width: 80,
                                 height: 80,
                                 fit: BoxFit.cover,
@@ -110,8 +110,8 @@ class AboutUs extends StatelessWidget {
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(40),
-                              child: Image.network(
-                                'https://images.unsplash.com/photo-1534030347209-467a5b0ad3e6?w=500&h=500',
+                              child: Image.asset(
+                                'lib/src/assets/images/Sahil_photo.jpeg',
                                 width: 80,
                                 height: 80,
                                 fit: BoxFit.cover,
@@ -151,8 +151,8 @@ class AboutUs extends StatelessWidget {
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(40),
-                                child: Image.network(
-                                  'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&h=500',
+                                child: Image.asset(
+                                  'lib/src/assets/images/Aryan_photo.jpeg',
                                   width: 80,
                                   height: 80,
                                   fit: BoxFit.cover,
@@ -160,7 +160,7 @@ class AboutUs extends StatelessWidget {
                               ),
                             ),
                             Text(
-                                'Aryan Madhvi',textAlign: TextAlign.center, style: TextStyle(
+                                'Aryan Madhavi',textAlign: TextAlign.center, style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w700,
                             ),
@@ -184,8 +184,8 @@ class AboutUs extends StatelessWidget {
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(40),
-                                child: Image.network(
-                                  'https://images.unsplash.com/photo-1534030347209-467a5b0ad3e6?w=500&h=500',
+                                child: Image.asset(
+                                  'lib/src/assets/images/riddhi_photo.jpeg',
                                   width: 80,
                                   height: 80,
                                   fit: BoxFit.cover,
