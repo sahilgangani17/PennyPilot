@@ -102,18 +102,14 @@ class _AccountdetailsState extends State<Accountdetails> {
               // Display user profile image and username
               appCard(
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     // Display user profile image (replace with dynamic data if available)
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Image.network(
-                        'https://wallpapers.com/images/hd/white-duck-face-close-up-ybtrbmo0scwowgn1.jpg',
-                        fit: BoxFit.cover,
-                        width: 100,
-                        height: 100,
-                      ),
+                    Icon(
+                      Icons.person,
+                      size: 50,
                     ),
+                    const SizedBox(width: 20),
                     Text(
                       email,
                       style: TextStyle(
@@ -157,7 +153,7 @@ class _AccountdetailsState extends State<Accountdetails> {
                 ),
               ),
               // Sign out button
-              ElevatedButton(
+              FilledButton(
                 onPressed: () async {
                   // Sign out the user from Firebase
                   await FirebaseAuth.instance.signOut();
