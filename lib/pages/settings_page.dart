@@ -4,10 +4,10 @@ import 'package:penny_pilot/pages/settingsPages/accountdetails.dart';
 import 'package:penny_pilot/pages/settingsPages/backup.dart';
 import 'package:penny_pilot/pages/settingsPages/currencyconvertor.dart';
 import 'package:penny_pilot/pages/settingsPages/help&support.dart';
-import 'package:penny_pilot/pages/settingsPages/notifications.dart';
+// import 'package:penny_pilot/pages/settingsPages/notifications.dart';
 import 'package:penny_pilot/pages/settingsPages/aboutus.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -25,12 +25,12 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     // flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon');
+    // const AndroidInitializationSettings initializationSettingsAndroid =
+    //     AndroidInitializationSettings('app_icon');
 
-    const InitializationSettings initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-    );
+    // const InitializationSettings initializationSettings = InitializationSettings(
+    //   android: initializationSettingsAndroid,
+    // );
 
     // flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
@@ -102,7 +102,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const Accountdetails(),
+                            builder: (context) => Accountdetails(),
                           ),
                         );
                       },

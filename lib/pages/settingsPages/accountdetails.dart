@@ -4,9 +4,8 @@ import 'package:penny_pilot/database/db_user.dart';
 import 'package:penny_pilot/pages/login.dart';
 
 class Accountdetails extends StatefulWidget {
-  Accountdetails({super.key});
+  const Accountdetails({super.key});
 
-    final currentUserEmail = FirebaseAuth.instance.currentUser?.email;
   @override
   State<Accountdetails> createState() => _AccountdetailsState();
 }
@@ -15,47 +14,33 @@ class _AccountdetailsState extends State<Accountdetails> {
   String username = '';
   String email = '';
   String phoneno = '';
-  String password = ''; // Hide password for security reasons
+  String password = ''; // Hidden password placeholder
 
-  // Fetch user details from the database based on current Firebase email
+  // Fetch user details from the database based on the current Firebase email
   Future<void> _fetchUserDetails() async {
-    // Get current user's email from Firebase Authentication
+    final currentUserEmail = FirebaseAuth.instance.currentUser?.email;
 
-    // Check if the user is logged in
-    if (widget.currentUserEmail == null) {
-      print("No user is currently logged in.");
-      // Redirect to Login if no user is logged in
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Login()),
-      );
-      return;
-    }
+    if (currentUserEmail != null) {
+      var users = await DatabaseUser.instance.fetchUsersByEmail(currentUserEmail);
 
-    print('Current user email: $widget.currentUserEmail'); // Debugging line
-
-    // Fetch user data from the database based on the email
-    var users = await DatabaseUser.instance.fetchUsersByEmail(widget.currentUserEmail.toString());
-
-    if (users.isNotEmpty) {
-      setState(() {
-        username = users[0]['username'];
-        email = users[0]['email'];
-        phoneno = users[0]['phoneno'];
-        password = "********"; // Do not display the actual password
-      });
-    } else {
-      print("No user found with email: $widget.currentUserEmail");
-      // Handle case when there are no users found with the provided email
+      if (users.isNotEmpty) {
+        setState(() {
+          username = users[0]['username'];
+          email = users[0]['email'];
+          phoneno = users[0]['phoneno'];
+          password = "********"; // Hide password for security reasons
+        });
+      }
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _fetchUserDetails(); // Fetch user data when the page is initialized
+    _fetchUserDetails(); // Fetch user data when the page initializes
   }
 
+  // Custom card widget
   Widget appCard(Widget? child) {
     return Container(
       padding: EdgeInsets.all(10),
@@ -71,6 +56,7 @@ class _AccountdetailsState extends State<Accountdetails> {
     );
   }
 
+  // Custom detail box widget
   Widget detailBox(String heading, String content) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,14 +64,126 @@ class _AccountdetailsState extends State<Accountdetails> {
         Text(
           heading,
           textAlign: TextAlign.left,
-          style: TextStyle(
-            fontSize: 11,
-            color: Colors.grey,
-          ),
+          style: TextStyle(fontSize: 11, color: Colors.grey),
         ),
         Text(content),
       ],
     );
+  }
+
+  // Show password change dialog
+  void _showPasswordChangeDialog() {
+    TextEditingController currentPasswordController = TextEditingController();
+    TextEditingController newPasswordController = TextEditingController();
+    final _formKey = GlobalKey<FormState>();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Change Password'),
+          content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Current Password field
+                TextFormField(
+                  controller: currentPasswordController,
+                  obscureText: true,
+                  decoration: InputDecoration(labelText: 'Current Password'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your current password';
+                    }
+                    return null;
+                  },
+                ),
+                // New Password field
+                TextFormField(
+                  controller: newPasswordController,
+                  obscureText: true,
+                  decoration: InputDecoration(labelText: 'New Password'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a new password';
+                    }
+                    if (value.length < 6) {
+                      return 'Password must be at least 6 characters';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  // Hide keyboard when the save button is pressed
+                  FocusScope.of(context).unfocus();
+
+                  try {
+                    // Get the current user
+                    User? user = FirebaseAuth.instance.currentUser;
+
+                    // Reauthenticate the user with the current password
+                    await _reauthenticateUser(user!, currentPasswordController.text);
+
+                    // Update the password with the new one
+                    await user.updatePassword(newPasswordController.text);
+                    await user.reload();
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Password changed successfully!"),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+
+                    // Close the dialog
+                    Navigator.of(context).pop();
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Error changing password: $e"),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                }
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Reauthenticate the user with the current password
+  Future<void> _reauthenticateUser(User user, String currentPassword) async {
+    try {
+      // Create a credential using the current password
+      final credential = EmailAuthProvider.credential(
+        email: user.email!,
+        password: currentPassword,
+      );
+
+      // Reauthenticate with the current credential
+      await user.reauthenticateWithCredential(credential);
+      print("Reauthentication successful");
+    } catch (e) {
+      print("Error during reauthentication: $e");
+      throw Exception("Reauthentication failed. Please check your current password.");
+    }
   }
 
   @override
@@ -117,10 +215,7 @@ class _AccountdetailsState extends State<Accountdetails> {
                     ),
                     Text(
                       username,
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -132,10 +227,7 @@ class _AccountdetailsState extends State<Accountdetails> {
                   children: [
                     Text(
                       'Login Details',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10),
@@ -146,9 +238,7 @@ class _AccountdetailsState extends State<Accountdetails> {
                       children: [
                         detailBox('Password', password),
                         ElevatedButton(
-                          onPressed: () {
-                            // Handle password change functionality
-                          },
+                          onPressed: _showPasswordChangeDialog, // Show password change dialog
                           child: Text('Change'),
                         ),
                       ],
