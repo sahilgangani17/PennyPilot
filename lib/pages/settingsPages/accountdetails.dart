@@ -1,18 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:penny_pilot/database/db_user.dart';
+import 'package:penny_pilot/helper/helper_funcs.dart';
 import 'package:penny_pilot/pages/login.dart';
 
 class Accountdetails extends StatefulWidget {
-  Accountdetails({super.key});
+  const Accountdetails({super.key});
 
-    final currentUserEmail = FirebaseAuth.instance.currentUser?.email;
   @override
   State<Accountdetails> createState() => _AccountdetailsState();
 }
 
 class _AccountdetailsState extends State<Accountdetails> {
-  String username = '';
+  //String username = '';
   String email = '';
   String phoneno = '';
   String password = ''; // Hide password for security reasons
@@ -22,7 +22,7 @@ class _AccountdetailsState extends State<Accountdetails> {
     // Get current user's email from Firebase Authentication
 
     // Check if the user is logged in
-    if (widget.currentUserEmail == null) {
+    if (getCurrentUserEmail() == null) {
       print("No user is currently logged in.");
       // Redirect to Login if no user is logged in
       Navigator.pushReplacement(
@@ -32,22 +32,21 @@ class _AccountdetailsState extends State<Accountdetails> {
       return;
     }
 
-    print('Current user email: $widget.currentUserEmail'); // Debugging line
-
     // Fetch user data from the database based on the email
-    var users = await DatabaseUser.instance.fetchUsersByEmail(widget.currentUserEmail.toString());
+    //var users = await DatabaseUser.instance.fetchAllUsers();
+    var userEmail = getCurrentUserEmail();
 
-    if (users.isNotEmpty) {
+    if (userEmail!.isNotEmpty) {
       setState(() {
-        username = users[0]['username'];
-        email = users[0]['email'];
-        phoneno = users[0]['phoneno'];
+        email = userEmail;
+        //username = users.firstWhere((user) => user.email == userEmail).;
+        //phoneno = users.;
         password = "********"; // Do not display the actual password
       });
-    } else {
+    } /* else {
       print("No user found with email: $widget.currentUserEmail");
       // Handle case when there are no users found with the provided email
-    }
+    } */
   }
 
   @override
@@ -116,7 +115,7 @@ class _AccountdetailsState extends State<Accountdetails> {
                       ),
                     ),
                     Text(
-                      username,
+                      email,
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,

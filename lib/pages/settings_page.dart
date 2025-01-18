@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:penny_pilot/pages/login.dart';
 import 'package:penny_pilot/pages/settingsPages/accountdetails.dart';
 import 'package:penny_pilot/pages/settingsPages/backup.dart';
 import 'package:penny_pilot/pages/settingsPages/currencyconvertor.dart';
@@ -92,6 +93,19 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: Column(
                   children: [
                     const SectionTitle(title: "Account Settings"),
+                    SettingsCard(
+                      icon: Icons.switch_account_rounded,
+                      title: "Switch Accounts",
+                      subtitle: "Login to another account",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Login(),
+                          ),
+                        );
+                      },
+                    ),
                     SettingsCard(
                       icon: Icons.account_circle,
                       title: "Account Details",

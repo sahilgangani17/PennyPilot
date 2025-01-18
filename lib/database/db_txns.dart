@@ -93,7 +93,7 @@ class DatabaseTxn {
     Database db = await instance.database;
     var txns = await db.query(
       tableName, orderBy: '$columnId DESC',
-      where: '$columnType = ? && $columnEmail = ?',
+      where: '$columnType = ? AND $columnEmail = ?',
       whereArgs: ['Expenses', email]
     );
     List<Txn> txnsList = txns.isNotEmpty
@@ -107,7 +107,7 @@ class DatabaseTxn {
     Database db = await instance.database;
     var txns = await db.query(
       tableName, orderBy: '$columnId DESC',
-      where: '$columnType = ? && $columnEmail = ?',
+      where: '$columnType = ? AND $columnEmail = ?',
       whereArgs: ['Income', email]
     );
     List<Txn> txnsList = txns.isNotEmpty
@@ -172,7 +172,6 @@ class DatabaseTxn {
     return 0.0;
   }
 
-
   Future<Map<String, double>> getCategoryWiseExpenses(String email) async {
     Database db = await instance.database;
     var result = await db.rawQuery('''
@@ -221,6 +220,13 @@ class DatabaseTxn {
     return categoryData;
   }
 
-
+  Future<List<String>> getAllUserEmails() async {
+    Database db = await instance.database;
+    var result = await db.rawQuery('''
+      SELECT DISTINCT $columnEmail 
+      FROM $tableName
+      ''');
+    return result.map((row) => row[columnEmail] as String).toList();
+  }
 
 }

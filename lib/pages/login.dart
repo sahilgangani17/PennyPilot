@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:penny_pilot/Services/auth_service.dart';
+import 'package:penny_pilot/database/db_user.dart';
+import 'package:penny_pilot/helper/helper_funcs.dart';
 import 'package:penny_pilot/pages/signup.dart';
 import 'package:penny_pilot/utils/appvalidate.dart';
+import 'package:penny_pilot/models/user.dart' as user_model;
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -29,6 +33,8 @@ class _LoginState extends State<Login> {
         "password": _passwordController.text,
       };
       await authService.login(data, context);
+      
+      await DatabaseUser.instance.insertUser(user_model.User(email: data['email']!));
       setState(() {
         isLoader = false;
       });
