@@ -22,7 +22,7 @@ class _SavingGoalsState extends State<SavingGoals> {
   }
 
   void _fetchData() {
-    _goals = DatabaseSaving.instance.fetchAllGoals(); // Fetch active goals
+    _goals = DatabaseSaving.instance.fetchAllGoals(getCurrentUserEmail()!); // Fetch active goals
     _totalSavings = DatabaseSaving.instance.fetchTotalSavings(getCurrentUserEmail()!); // Fetch total savings
   }
 
@@ -35,7 +35,6 @@ class _SavingGoalsState extends State<SavingGoals> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Column(
           children: [

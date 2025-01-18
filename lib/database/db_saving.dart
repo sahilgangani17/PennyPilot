@@ -127,25 +127,26 @@ class DatabaseSaving {
     return 0;
   }
 
-  Future<List<Map<String, dynamic>>> fetchAllGoals() async {
+  Future<List<Map<String, dynamic>>> fetchAllGoals(String email) async {
     final db = await instance.database;
     return await db.query(
       'saving_goals',
-      where: 'isCompleted = 0', // Fetch only active goals
+      where: 'isCompleted = 0 AND email = ?', // Fetch only active goals
+      whereArgs: [email],
       orderBy: 'id DESC',
     );
   }
 
   
- Future<List<Goal>> fetchGoalHistory(String email) async {
-  final db = await instance.database; // Use the getter to obtain the database instance
-  final result = await db.query(
-    'goal_history',
-    where: 'email = ?',
-    whereArgs: [email],
-  );
-  return result.map((map) => Goal.fromJSON(map)).toList(); // Map the results to Goal objects
-}
+  Future<List<Goal>> fetchGoalHistory(String email) async {
+    final db = await instance.database; // Use the getter to obtain the database instance
+    final result = await db.query(
+      'goal_history',
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+    return result.map((map) => Goal.fromJSON(map)).toList(); // Map the results to Goal objects
+  }
 
 
   Future<double> fetchTotalSavings(String email) async {

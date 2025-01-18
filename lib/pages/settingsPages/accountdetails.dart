@@ -148,7 +148,6 @@ class _AccountdetailsState extends State<Accountdetails> {
                         ),
                       ],
                     ),
-                    detailBox('Phone', phoneno),
                   ],
                 ),
               ),
